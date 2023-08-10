@@ -108,7 +108,6 @@ class AWSBatchStepOperator(BaseStepOperator):
 
         settings = cast(AWSBatchStepOperatorSettings, self.get_settings(info))
 
-
         batch = boto3.client('batch')
         
         # Batch allows 63 characters at maximum for job name - ZenML uses 60 for safety margin.
@@ -142,4 +141,4 @@ class AWSBatchStepOperator(BaseStepOperator):
             if status in ['SUCCEEDED', 'FAILED']:
                 break
             time.sleep(10)
-            print(f'Job completed with status {status}')
+            logger.info(f'Job completed with status {status}')
