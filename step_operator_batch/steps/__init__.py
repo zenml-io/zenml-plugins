@@ -11,8 +11,13 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 #  or implied. See the License for the specific language governing
 #  permissions and limitations under the License.
+"""
+## Exemplary Steps
 
-from pipelines import step_operator_pipeline
+Three very simple steps
+"""
+from .evaluator.evaluator_step import evaluator
+from .importer.importer_step import digits_data_loader
+from .remote_trainer.remote_trainer_step import remote_trainer
 
-if __name__ == "__main__":
-    step_operator_pipeline()
+__all__ = ["digits_data_loader", "remote_trainer", "evaluator"]

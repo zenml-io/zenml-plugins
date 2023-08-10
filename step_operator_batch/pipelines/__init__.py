@@ -11,8 +11,13 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 #  or implied. See the License for the specific language governing
 #  permissions and limitations under the License.
+"""
+## Vertex AI examples pipeline
 
-from pipelines import step_operator_pipeline
+Very simple pipeline to show a pipeline running on Vertex AI
+"""
+from .step_operator_pipeline.step_operator_pipeline import (
+    step_operator_pipeline,
+)
 
-if __name__ == "__main__":
-    step_operator_pipeline()
+__all__ = ["step_operator_pipeline"]
