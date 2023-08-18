@@ -13,17 +13,12 @@
 #  permissions and limitations under the License.
 """Implementation of the a Skypilot based VM orchestrator."""
 
-
-import json
 import copy
 import os
 import sky
 import time
-from typing import TYPE_CHECKING, Any, Dict, Optional, Type, Union, cast, Tuple
+from typing import TYPE_CHECKING, Any, Dict, Optional, Type, Union, cast, Tuple, Literal
 from uuid import uuid4
-
-from docker.errors import ContainerError
-from pydantic import validator
 
 from zenml.client import Client
 from zenml.config.base_settings import BaseSettings
@@ -53,46 +48,86 @@ class SkypilotOrchestratorSettings(BaseSettings):
     """Skypilot orchestrator settings.
 
     Attributes:
-        run_args: Arguments to pass to the `docker run` call. (See
-            https://docker-py.readthedocs.io/en/stable/containers.html for a list
-            of what can be passed.)
+        instance_type: the instance type to use.
+        cpus: the number of CPUs required for the task.
+            If a str, must be a string of the form ``'2'`` or ``'2+'``, where
+            the ``+`` indicates that the task requires at least 2 CPUs.
+        memory: the amount of memory in GiB required. If a
+            str, must be a string of the form ``'16'`` or ``'16+'``, where
+            the ``+`` indicates that the task requires at least 16 GB of memory.
+        accelerators: the accelerators required. If a str, must be
+            a string of the form ``'V100'`` or ``'V100:2'``, where the ``:2``
+            indicates that the task requires 2 V100 GPUs. If a dict, must be a
+            dict of the form ``{'V100': 2}`` or ``{'tpu-v2-8': 1}``.
+        accelerator_args: accelerator-specific arguments. For example,
+            ``{'tpu_vm': True, 'runtime_version': 'tpu-vm-base'}`` for TPUs.
+        use_spot: whether to use spot instances. If None, defaults to
+            False.
+        spot_recovery: the spot recovery strategy to use for the managed
+            spot to recover the cluster from preemption. Refer to
+            `recovery_strategy module <https://github.com/skypilot-org/skypilot/blob/master/sky/spot/recovery_strategy.py>`__ # pylint: disable=line-too-long
+            for more details.
+        region: the region to use.
+        zone: the zone to use.
+        image_id: the image ID to use. If a str, must be a string
+            of the image id from the cloud, such as AWS:
+            ``'ami-1234567890abcdef0'``, GCP:
+            ``'projects/my-project-id/global/images/my-image-name'``;
+            Or, a image tag provided by SkyPilot, such as AWS:
+            ``'skypilot:gpu-ubuntu-2004'``. If a dict, must be a dict mapping
+            from region to image ID, such as:
+
+            .. code-block:: python
+
+                {
+                'us-west1': 'ami-1234567890abcdef0',
+                'us-east1': 'ami-1234567890abcdef0'
+                }
+
+        disk_size: the size of the OS disk in GiB.
+        disk_tier: the disk performance tier to use. If None, defaults to
+            ``'medium'``.
+
+        cluster_name: name of the cluster to create/reuse.  If None,
+            auto-generate a name.
+        retry_until_up: whether to retry launching the cluster until it is
+            up.
+        idle_minutes_to_autostop: automatically stop the cluster after this
+            many minute of idleness, i.e., no running or pending jobs in the
+            cluster's job queue. Idleness gets reset whenever setting-up/
+            running/pending jobs are found in the job queue. Setting this
+            flag is equivalent to running
+            ``sky.launch(..., detach_run=True, ...)`` and then
+            ``sky.autostop(idle_minutes=<minutes>)``. If not set, the cluster
+            will not be autostopped.
+        down: Tear down the cluster after all jobs finish (successfully or
+            abnormally). If --idle-minutes-to-autostop is also set, the
+            cluster will be torn down after the specified idle time.
+            Note that if errors occur during provisioning/data syncing/setting
+            up, the cluster will not be torn down for debugging purposes.
+        stream_logs: if True, show the logs in the terminal.
     """
 
-    run_args: Dict[str, Any] = {}
+    # Resources
+    instance_type: Optional[str] = None
+    cpus: Union[None, int, float, str] = None
+    memory: Union[None, int, float, str] = None
+    accelerators: Union[None, str, Dict[str, int]] = None
+    accelerator_args: Optional[Dict[str, str]] = None
+    use_spot: Optional[bool] = None
+    spot_recovery: Optional[str] = None
+    region: Optional[str] = None
+    zone: Optional[str] = None
+    image_id: Union[Dict[str, str], str, None] = None
+    disk_size: Optional[int] = None
+    disk_tier: Optional[Literal["high", "medium", "low"]] = None
 
-    @validator("run_args", pre=True)
-    def _convert_json_string(
-        cls, value: Union[None, str, Dict[str, Any]]
-    ) -> Optional[Dict[str, Any]]:
-        """Converts potential JSON strings passed via the CLI to dictionaries.
-
-        Args:
-            value: The value to convert.
-
-        Returns:
-            The converted value.
-
-        Raises:
-            TypeError: If the value is not a `str`, `Dict` or `None`.
-            ValueError: If the value is an invalid json string or a json string
-                that does not decode into a dictionary.
-        """
-        if isinstance(value, str):
-            try:
-                dict_ = json.loads(value)
-            except json.JSONDecodeError as e:
-                raise ValueError(f"Invalid json string '{value}'") from e
-
-            if not isinstance(dict_, Dict):
-                raise ValueError(
-                    f"Json string '{value}' did not decode into a dictionary."
-                )
-
-            return dict_
-        elif isinstance(value, Dict) or value is None:
-            return value
-        else:
-            raise TypeError(f"{value} is not a json string or a dictionary.")
+    # Run settings
+    cluster_name: Optional[str] = None
+    retry_until_up: bool = False
+    idle_minutes_to_autostop: Optional[int] = 30
+    down: bool = True
+    stream_logs: bool = True
 
 
 class SkypilotOrchestratorConfig(  # type: ignore[misc] # https://github.com/pydantic/pydantic/issues/4173
@@ -283,6 +318,7 @@ class SkypilotOrchestrator(ContainerizedOrchestrator):
                 "and the pipeline will be run immediately."
             )
 
+        # Set up some variables for configuration
         orchestrator_run_id = str(uuid4())
         environment[ENV_ZENML_SKYPILOT_ORCHESTRATOR_RUN_ID] = orchestrator_run_id
 
@@ -298,8 +334,8 @@ class SkypilotOrchestrator(ContainerizedOrchestrator):
         )
         arguments_str = " ".join(arguments)
 
+        # Set up docker run command
         image = self.get_image(deployment=deployment)
-
         run_args = copy.deepcopy(settings.run_args)
         docker_environment = run_args.pop("environment", {})
         docker_environment.update(environment)
@@ -309,18 +345,23 @@ class SkypilotOrchestrator(ContainerizedOrchestrator):
 
         start_time = time.time()
 
-        # Choose any
+        # Configure cloud and instance type
         cloud = None
         setup = None
         instance_type = None
 
         if "gs" in stack.artifact_store.config.path:
             cloud = sky.clouds.GCP()
-            instance_type = "n1-standard-4"
+            instance_type = settings.instance_type or "n1-standard-4"
         elif "s3" in stack.artifact_store.config.path:
             cloud = sky.clouds.AWS()
-            instance_type = "t3.xlarge"
+            instance_type = settings.instance_type or "t3.xlarge"
             setup = f"aws ecr get-login-password --region {stack.container_registry._get_region()} | docker login --username AWS --password-stdin {stack.container_registry.config.uri}"
+        else:
+            raise RuntimeError(
+                "Currently, SkyPilot only supports GCP and AWS artifact stores. Please use of these artifact stores in the active stack."
+            )
+
         # Run the entire pipeline
         try:
             task = sky.Task(
@@ -332,17 +373,38 @@ class SkypilotOrchestrator(ContainerizedOrchestrator):
                 sky.Resources(
                     cloud=cloud,
                     instance_type=instance_type,
+                    cpus=settings.cpus,
+                    memory=settings.memory,
+                    accelerators=settings.accelerators,
+                    accelerator_args=settings.accelerator_args,
+                    use_spot=settings.use_spot,
+                    spot_recovery=settings.spot_recovery,
+                    region=settings.region,
+                    zone=settings.zone,
+                    image_id=settings.image_id,
+                    disk_size=settings.disk_size,
+                    disk_tier=settings.disk_tier,
                 )
             )
 
-            # Find cluster if exist
-            cluster_name = None
-            for i in sky.status():
-                if type(i["handle"].launched_resources.cloud) is type(cloud):
-                    cluster_name = i["handle"].cluster_name
-                    logger.info(f"Found existing cluster {cluster_name}. Reusing...")
+            cluster_name = settings.cluster_name
+            if cluster_name is None:
+                # Find existing cluster
+                for i in sky.status():
+                    if type(i["handle"].launched_resources.cloud) is type(cloud):
+                        cluster_name = i["handle"].cluster_name
+                        logger.info(
+                            f"Found existing cluster {cluster_name}. Reusing..."
+                        )
 
-            sky.launch(task, cluster_name, retry_until_up=True)
+            sky.launch(
+                task,
+                cluster_name,
+                retry_until_up=settings.retry_until_up,
+                idle_minutes_to_autostop=settings.idle_minutes_to_autostop,
+                down=settings.down,
+                stream_logs=settings.stream_logs,
+            )
 
         except Exception as e:
             raise RuntimeError(e)
