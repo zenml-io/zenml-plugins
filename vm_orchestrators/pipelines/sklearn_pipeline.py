@@ -17,7 +17,9 @@ from zenml import pipeline
 from zenml.config import DockerSettings
 from zenml.integrations.constants import SKLEARN
 
-docker_settings = DockerSettings(required_integrations=[SKLEARN], requirements=["skypilot[gcp,aws]"])
+docker_settings = DockerSettings(
+    required_integrations=[SKLEARN], requirements=["skypilot[gcp,aws]"]
+)
 
 
 @pipeline(settings={"docker": docker_settings})

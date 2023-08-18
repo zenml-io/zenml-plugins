@@ -303,26 +303,30 @@ class SkypilotOrchestrator(ContainerizedOrchestrator):
         run_args = copy.deepcopy(settings.run_args)
         docker_environment = run_args.pop("environment", {})
         docker_environment.update(environment)
-        docker_environment_str = " ".join(f'-e {k}={v}' for k, v in docker_environment.items())
+        docker_environment_str = " ".join(
+            f"-e {k}={v}" for k, v in docker_environment.items()
+        )
 
         start_time = time.time()
-        
+
+        # Choose any
+        cloud = None
+        setup = None
+        instance_type = None
+
         if "gs" in stack.artifact_store.config.path:
             cloud = sky.clouds.GCP()
             instance_type = "n1-standard-4"
         elif "s3" in stack.artifact_store.config.path:
             cloud = sky.clouds.AWS()
             instance_type = "t3.xlarge"
-        else:
-            # Choose any
-            cloud = None
-            instance_type = None
-        
+            setup = f"aws ecr get-login-password --region {stack.container_registry._get_region()} | docker login --username AWS --password-stdin {stack.container_registry.config.uri}"
         # Run the entire pipeline
-        try:        
+        try:
             task = sky.Task(
                 envs=docker_environment,
-                run=f'docker run --rm {docker_environment_str} {image} {entrypoint_str} {arguments_str}',
+                run=f"docker run --rm {docker_environment_str} {image} {entrypoint_str} {arguments_str}",
+                setup=setup,
             )
             task = task.set_resources(
                 sky.Resources(
@@ -330,14 +334,13 @@ class SkypilotOrchestrator(ContainerizedOrchestrator):
                     instance_type=instance_type,
                 )
             )
-            
+
             # Find cluster if exist
-            cluster_name = None 
+            cluster_name = None
             for i in sky.status():
-                if type(i['handle'].launched_resources.cloud) is type(cloud):
-                    cluster_name = i['handle'].cluster_name
-                    
-            breakpoint()
+                if type(i["handle"].launched_resources.cloud) is type(cloud):
+                    cluster_name = i["handle"].cluster_name
+
             sky.launch(task, cluster_name, retry_until_up=True)
 
         except Exception as e:
