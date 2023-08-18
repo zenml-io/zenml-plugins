@@ -340,6 +340,7 @@ class SkypilotOrchestrator(ContainerizedOrchestrator):
             for i in sky.status():
                 if type(i["handle"].launched_resources.cloud) is type(cloud):
                     cluster_name = i["handle"].cluster_name
+                    logger.info(f"Found existing cluster {cluster_name}. Reusing...")
 
             sky.launch(task, cluster_name, retry_until_up=True)
 
