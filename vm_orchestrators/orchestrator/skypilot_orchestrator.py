@@ -22,7 +22,7 @@ from uuid import uuid4
 
 from zenml.client import Client
 from zenml.config.base_settings import BaseSettings
-from zenml.entrypoints import PipelineEntrypointConfiguration
+from zenml.entrypoints import StepEntrypointConfiguration
 from zenml.enums import StackComponentType
 from zenml.logger import get_logger
 from zenml.orchestrators import (
@@ -322,48 +322,71 @@ class SkypilotOrchestrator(ContainerizedOrchestrator):
         orchestrator_run_id = str(uuid4())
         environment[ENV_ZENML_SKYPILOT_ORCHESTRATOR_RUN_ID] = orchestrator_run_id
 
-        settings = cast(
-            SkypilotOrchestratorSettings,
-            self.get_settings(deployment),
-        )
+        # Create the dag
+        sky_dag = sky.Dag()
+        
+        for step_name, step in deployment.step_configurations.items():
+            if self.requires_resources_in_orchestration_environment(step):
+                logger.warning(
+                    "Specifying step resources is not yet supported for "
+                    "the Kubernetes orchestrator, ignoring resource "
+                    "configuration for step %s.",
+                    step_name,
+                )
 
-        entrypoint = PipelineEntrypointConfiguration.get_entrypoint_command()
-        entrypoint_str = " ".join(entrypoint)
-        arguments = PipelineEntrypointConfiguration.get_entrypoint_arguments(
-            deployment_id=deployment.id
-        )
-        arguments_str = " ".join(arguments)
+            assert stack.container_registry
 
-        # Set up docker run command
-        image = self.get_image(deployment=deployment)
-        run_args = copy.deepcopy(settings.run_args)
-        docker_environment = run_args.pop("environment", {})
-        docker_environment.update(environment)
-        docker_environment_str = " ".join(
-            f"-e {k}={v}" for k, v in docker_environment.items()
-        )
+            # Get Docker image for the orchestrator pod
+            try:
+                image = self.get_image(deployment=deployment)
+            except KeyError:
+                # If no generic pipeline image exists (which means all steps have
+                # custom builds) we use a random step image as all of them include
+                # dependencies for the active stack
+                pipeline_step_name = next(iter(deployment.step_configurations))
+                image = self.get_image(
+                    deployment=deployment, step_name=pipeline_step_name
+                )
 
-        start_time = time.time()
+            # Configure entrypoint and args
+            entrypoint = StepEntrypointConfiguration.get_entrypoint_command()
+            entrypoint_str = " ".join(entrypoint)
+            arguments = StepEntrypointConfiguration.get_entrypoint_arguments(
+                step_name=step_name, deployment_id=deployment.id
+            )
+            arguments_str = " ".join(arguments)
 
-        # Configure cloud and instance type
-        cloud = None
-        setup = None
-        instance_type = None
-
-        if "gs" in stack.artifact_store.config.path:
-            cloud = sky.clouds.GCP()
-            instance_type = settings.instance_type or "n1-standard-4"
-        elif "s3" in stack.artifact_store.config.path:
-            cloud = sky.clouds.AWS()
-            instance_type = settings.instance_type or "t3.xlarge"
-            setup = f"aws ecr get-login-password --region {stack.container_registry._get_region()} | docker login --username AWS --password-stdin {stack.container_registry.config.uri}"
-        else:
-            raise RuntimeError(
-                "Currently, SkyPilot only supports GCP and AWS artifact stores. Please use of these artifact stores in the active stack."
+            # Set up docker run command
+            docker_environment = {}
+            docker_environment.update(environment)
+            docker_environment_str = " ".join(
+                f"-e {k}={v}" for k, v in docker_environment.items()
             )
 
-        # Run the entire pipeline
-        try:
+            settings = cast(
+                SkypilotOrchestratorSettings,
+                self.get_settings(deployment),
+            )
+                    
+            start_time = time.time()
+
+            # Configure cloud and instance type
+            cloud = None
+            setup = None
+            instance_type = None
+
+            if "gs" in stack.artifact_store.config.path:
+                cloud = sky.clouds.GCP()
+                instance_type = settings.instance_type or "n1-standard-4"
+            elif "s3" in stack.artifact_store.config.path:
+                cloud = sky.clouds.AWS()
+                instance_type = settings.instance_type or "t3.xlarge"
+                setup = f"aws ecr get-login-password --region {stack.container_registry._get_region()} | docker login --username AWS --password-stdin {stack.container_registry.config.uri}"
+            else:
+                raise RuntimeError(
+                    "Currently, SkyPilot only supports GCP and AWS artifact stores. Please use of these artifact stores in the active stack."
+                )
+
             task = sky.Task(
                 envs=docker_environment,
                 run=f"docker run --rm {docker_environment_str} {image} {entrypoint_str} {arguments_str}",
@@ -387,25 +410,28 @@ class SkypilotOrchestrator(ContainerizedOrchestrator):
                 )
             )
 
-            cluster_name = settings.cluster_name
-            if cluster_name is None:
-                # Find existing cluster
-                for i in sky.status():
-                    if type(i["handle"].launched_resources.cloud) is type(cloud):
-                        cluster_name = i["handle"].cluster_name
-                        logger.info(
-                            f"Found existing cluster {cluster_name}. Reusing..."
-                        )
+            sky_dag.add(task)
 
+        # Resolve cluster
+        cluster_name = settings.cluster_name
+        if cluster_name is None:
+            # Find existing cluster
+            for i in sky.status():
+                if type(i["handle"].launched_resources.cloud) is type(cloud):
+                    cluster_name = i["handle"].cluster_name
+                    logger.info(
+                        f"Found existing cluster {cluster_name}. Reusing..."
+                    )
+
+        try:
             sky.launch(
-                task,
+                sky_dag,
                 cluster_name,
                 retry_until_up=settings.retry_until_up,
                 idle_minutes_to_autostop=settings.idle_minutes_to_autostop,
                 down=settings.down,
                 stream_logs=settings.stream_logs,
             )
-
         except Exception as e:
             raise RuntimeError(e)
 
