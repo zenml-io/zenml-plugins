@@ -365,7 +365,6 @@ class SkypilotOrchestrator(ContainerizedOrchestrator):
         # Run the entire pipeline
         try:
             task = sky.Task(
-                envs=docker_environment,
                 run=f"docker run --rm {docker_environment_str} {image} {entrypoint_str} {arguments_str}",
                 setup=setup,
             )
@@ -390,7 +389,7 @@ class SkypilotOrchestrator(ContainerizedOrchestrator):
             cluster_name = settings.cluster_name
             if cluster_name is None:
                 # Find existing cluster
-                for i in sky.status():
+                for i in sky.status(refresh=True):
                     if type(i["handle"].launched_resources.cloud) is type(cloud):
                         cluster_name = i["handle"].cluster_name
                         logger.info(
