@@ -336,8 +336,7 @@ class SkypilotOrchestrator(ContainerizedOrchestrator):
 
         # Set up docker run command
         image = self.get_image(deployment=deployment)
-        run_args = copy.deepcopy(settings.run_args)
-        docker_environment = run_args.pop("environment", {})
+        docker_environment = {}
         docker_environment.update(environment)
         docker_environment_str = " ".join(
             f"-e {k}={v}" for k, v in docker_environment.items()
