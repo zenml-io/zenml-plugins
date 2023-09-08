@@ -21,10 +21,8 @@ gcloud config set project <PROJECT_ID>
 
 1) Configure or Set your remote stack
 
-{% hint style="info" %}
-You will need to run with a remote orchestrator, container registry and
-artifact store for this to work.
-{% endhint %}
+_You will need to run with a remote orchestrator, container registry and
+artifact store for this to work._
 
 2) Run your pipeline once from a developer machine while connected to your ZenML Server
 ```bash
@@ -44,8 +42,8 @@ Simply copy the build id from the logs.
 2) Deploy the pipeline_trigger to GCP CLoud Functions
 
 Make sure, the complete pipeline code including all dependencies is in the same
-folder as the main.py, along with a requirements.txt file that includes all
-requirements of the pipeline and the stack. 
+folder as the main.py, along with a requirements.txt file that includes **all
+requirements of the pipeline and the stack**. 
 
 The following values you will need to pass in as env vars:
 * PIPELINE_NAME  # This will be the function name of the ZenML pipeline
@@ -63,10 +61,8 @@ gcloud functions deploy zenml_trigger_pipeline \
 --set-env-vars ZENML_PASSWORD=<INSERT-HERE>,ZENML_USERNAME=<INSERT-HERE>,ZENML_SERVER_URL=<INSERT-HERE>,PIPELINE_NAME=<INSERT-HERE>,PIPELINE_BUILD=<INSERT-HERE>,ZENML_STACK=<INSERT-HERE>  
 ```
 
-{% hint style="info" %}
-For large python packages within the requirements file, you might need to 
-increase the `--memory` of this function. 
-{% endhint %}
+_For large python packages within the requirements file, you might need to 
+increase the `--memory` of this function._
 
 3) You may now trigger your pipeline on the endpoint provided by the 
 GCloud function.
