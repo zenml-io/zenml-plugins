@@ -21,7 +21,7 @@ To run this example, you need to have ZenML installed along with the necessary d
 git clone git@github.com:zenml-io/zenml-plugins.git
 
 # navigate to the custom orchestrator directory
-cd zenml-plugins/how_to_custom_orchestrator
+cd zenml-plugins/mosaicml
 
 # install the necessary dependencies
 pip install -r requirements.txt
@@ -32,31 +32,37 @@ pip install -r requirements.txt
 First, you need to register the flavor of the orchestrator:
 
 ```shell
+# initialize zenml
+zenml init 
+
 # register the flavor of the orchestrator
-zenml orchestrator flavor register orchestrator.my_docker_orchestrator.MyDockerOrchestratorFlavor 
+zenml orchestrator flavor register orchestrator.mosaic_orchestrator.MosaicMLOrchestrator 
 ```
 
 Then, you register your custom orchestrator using your registered flavor:
 
 ```shell
 # register the custom orchestrator
-zenml orchestrator register my_docker_orchestrator -f my_docker  
+zenml orchestrator register mosaic_orchestrator -f mosaic  
 ```
 
 ### 📝 Registering and Setting the Stack
 
-Next, you need to register a stack with your custom orchestrator and the default artifact store attached:
+Next, you need to register a stack with your mosaic orchestrator, a [remote artifact store](https://docs.zenml.io/stacks-and-components/component-guide/artifact-stores), and a [remote container registry](https://docs.zenml.io/stacks-and-components/component-guide/container-registries).
 
 ```shell
-# register the stack
-zenml stack register my_stack -o my_docker_orchestrator -a default
+# register a stack with the right type of components
+zenml stack register mosaic_stack \
+  -o mosaic_orchestrator \
+  -a remote_artifact_store \
+  -c remote_registry 
 ```
 
 Finally, set the stack active. This means every pipeline that runs will use the custom orchestrator:
 
 ```shell
 # set the stack active
-zenml stack set my_stack
+zenml stack set mosaic_stack
 ```
 
 ## 📚 Learn More
