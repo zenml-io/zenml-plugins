@@ -1,5 +1,21 @@
 # Model Control Plane backend walkthrough
 
+In this example, we are working with two pipelines, which are independent entities in ZenML. Those pipelines produce artifacts connected to them. But these two pipelines and their artifacts are actually connected! They all work towards delivering predictions to users.
+
+Before the Model Control Plane, it was not possible to establish strong connections between them and group all those entities under one umbrella. Imagine how you would get a trained model artifact from the training pipeline inside the predictions pipeline: you can reference it by ID (meaning frequent updates to your config) or blindly rely on the latest run of the training pipeline. What if the last training run was successful, but didn't fulfill business requirements model metric performance-wise? Your predictions will be based on the poor-performing model, which is unacceptable for critical applications!
+
+With the Model Control Plane, we finally get the ability to nicely and intuitively group pipelines, artifacts, and business-relevant metadata into one business-focused object - a Model. A Model will build all the linage info for you and not only! Within a Model a Model Version can be staged, so you can rely on your predictions pipeline at some stage (say Staging in this example) and control if the Model Version should be promoted or not based on your business logic (here we promote the latest, but this is not a limit). All the objects collected inside a Model Version are easily and without config duplications accessible to your pipelines at any time and even more - you can access data from other Models and their Model Versions with the same ease.
+
+Stay tuned for more features to come (*current state of planning*)
+
+- Modern Cloud UI to make navigation through all your Models even easier
+- Ability to save artifacts inside he steps and restore from that point on failure, which comes in handy for model checkpoints and more
+- Ability to attach metadata to artifacts linked to a Model Version outside of the step creating it (e.g. train and evaluation steps split)
+- Generation of Model Cards using ZenML delivered or your own templates and based on all linage information collected
+- Automatic registration of Model Objects in Model Registry instead of Artifact Store of ZenML
+
+and more!
+
 ## Structure
 
 In this example we are working with a `demo` Model, which is created using Python SDK implicitly.
