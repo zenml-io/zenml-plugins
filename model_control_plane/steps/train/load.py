@@ -11,11 +11,16 @@ from zenml.model import ArtifactConfig, link_output_to_model
 @step
 def load_data() -> (
     Tuple[
-        Annotated[pd.DataFrame, "train_data"],
-        Annotated[pd.DataFrame, "test_data"],
+        Annotated[
+            pd.DataFrame, "train_data"
+        ],  # it will be linked with other name by `link_output_to_model`
+        Annotated[pd.DataFrame, "test_data"],  # it will be linked implicitly
     ]
 ):
-    link_output_to_model(ArtifactConfig(overwrite=True), output_name="train_data")
+    link_output_to_model(
+        ArtifactConfig(artifact_name="train_ds", overwrite=True),
+        output_name="train_data",
+    )
     iris = load_iris()
     data = pd.concat(
         [
