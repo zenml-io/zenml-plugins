@@ -1,7 +1,6 @@
-from typing import Annotated
-
 import pandas as pd
 from sklearn.base import ClassifierMixin
+from typing_extensions import Annotated
 from zenml import step
 from zenml.model.artifact_config import ArtifactConfig
 
