@@ -1,16 +1,16 @@
-# Model Control Plane backend walkthrough
+# Navigating the Model Control Plane Backend: A Guided Tour
 
-In this example, we are working with two pipelines, which are independent entities in ZenML. Those pipelines produce artifacts connected to them. But these two pipelines and their artifacts are actually connected! They all work towards delivering predictions to users.
+In this walkthrough, we delve into the intricacies of the Model Control Plane, focusing on two distinct but interrelated pipelines within ZenML. Each pipeline operates independently within the ZenML framework, producing artifacts tailored to its specific tasks. What makes this exploration fascinating is the realization that these seemingly isolated pipelines are, in fact, intricately connected. Their joint objective? Delivering accurate predictions to end-users.
 
-Before the Model Control Plane, it was not possible to establish strong connections between them and group all those entities under one umbrella. Imagine how you would get a trained model artifact from the training pipeline inside the predictions pipeline: you can reference it by ID (meaning frequent updates to your config) or blindly rely on the latest run of the training pipeline. What if the last training run was successful, but didn't fulfill business requirements model metric performance-wise? Your predictions will be based on the poor-performing model, which is unacceptable for critical applications!
+Before the advent of the Model Control Plane, establishing robust connections between these pipelines and consolidating all associated entities under a unified umbrella was a challenge. Picture this: extracting a trained model artifact from the training pipeline and seamlessly integrating it into the predictions pipeline. Previously, this involved referencing it by ID, leading to frequent updates to configurations, or relying blindly on the latest run of the training pipeline. But what if the last training run, though successful, fell short of the business requirements concerning model metric performance? Deploying predictions based on a subpar model was simply unacceptable, especially for critical applications!
 
-With the Model Control Plane, we finally get the ability to nicely and intuitively group pipelines, artifacts, and business-relevant metadata into one business-focused object - a Model. A Model will build all the linage info for you and not only! Within a Model a Model Version can be staged, so you can rely on your predictions pipeline at some stage (say Staging in this example) and control if the Model Version should be promoted or not based on your business logic (here we promote the latest, but this is not a limit). All the objects collected inside a Model Version are easily and without config duplications accessible to your pipelines at any time and even more - you can access data from other Models and their Model Versions with the same ease.
+Enter the Model Control Plane. This innovative feature empowers users to effortlessly group pipelines, artifacts, and business-relevant metadata into a cohesive and intuitive entity: a Model. A Model meticulously captures lineage information and more. Within a Model, various Model Versions can be staged. For instance, you can depend on your predictions pipeline at a specific stage, such as the Staging phase, and exercise control over whether the Model Version should be promoted based on your business logic (although promoting the latest version is a common practice, it's not a strict limitation). Moreover, all the components housed within a Model Version are readily accessible to your pipelines without the need for redundant configurations. Additionally, accessing data from other Models and their Model Versions is just as effortless, amplifying the platform's flexibility.
 
-## Example
+## Illustrative Example
 
-In this example we are working with a `demo` Model, which is created using Python SDK implicitly.
+To illustrate these concepts, let's consider a `demo` Model will be created implicitly using the Python SDK.
 
-### Preparations
+### Preparatory Steps
 ```bash
 # make sure you have ZenML of 0.45.0 or above installed
 pip3 install "zenml[dev]>=0.45.0"
@@ -26,7 +26,7 @@ zenml model list
 ```
 
 ### Training pipeline
-**Training pipeline** is doing training of a model object and stores datasets and model object itself as link inside newly created Model Version. We achieve this by setting pipeline into Model Context using `ModelConfig` with specified `name` and `create_new_model_version`, rest of the fields are optional for this task.
+The Training pipeline orchestrates the training of a model object, storing datasets and the model object itself as links within a newly created Model Version. This integration is achieved by configuring the pipeline within a Model Context using `ModelConfig`. The `name` and `create_new_model_version` fields are specified, while other fields remain optional for this task.
 ```python
 from zenml import pipeline
 from zenml.model import ModelConfig
@@ -44,7 +44,7 @@ from zenml.model import ModelConfig
 def train_and_promote_model():
     ...
 ```
-As a last step of the pipeline we promote this new Model Version to Staging stage.
+In the final step of the pipeline, the new Model Version is promoted to the Staging stage.
 ```python
 from zenml import get_step_context, step, pipeline
 from zenml.enums import ModelStages
@@ -63,12 +63,12 @@ def train_and_promote_model():
     promote_to_staging(after=["train_and_evaluate"])
 ```
 
-Now let's run training pipeline - it will create a model and a model version under the hood. On top it will take care of linage for your artifacts along the way.
+Executing the training pipeline results in the creation of a model and a corresponding model version, all while maintaining lineage for the associated artifacts.
 ```bash
 # run training pipeline: it will create a model, a model version and link two datasets and one model object to it, pipeline run is linked automatically.
 python3 train.py
 ```
-Upon successful completion let's explore the results:
+Upon successful completion, explore the results to gain insights into the newly created entities:
 ```bash
 # new model `demo` created
 zenml model list
@@ -90,7 +90,7 @@ zenml model version runs demo 1
 ```
 
 ### Predictions pipeline
-**Predictions pipeline** is reading trained model object from the Model Version tagged as Staging to produce predictions and link them also to the same Model Version. In this case `version` is set to a stage value, so on every run a Model Version in Staging will be used. This makes this pipeline agnostic of underlying logic of promotion in Training pipeline.
+The Predictions pipeline reads the trained model object from the Model Version tagged as Staging, generating predictions and linking them to the same Model Version. The `version` is set to a stage value, ensuring that the pipeline uses the Model Version in the Staging stage for every run. This approach makes the pipeline independent of the underlying logic of promotion in the Training pipeline.
 ```python
 from zenml import pipeline
 from zenml.model import ModelConfig
@@ -105,7 +105,7 @@ from zenml.model import ModelConfig
 def do_predictions():
     ...
 ```
-As predictions pipeline can run more often comparing to training pipeline, we will link predictions as a versioned artifact, so we can see full history later on. This is controlled by `overwrite` flag of an artifact configuration.
+Given that the predictions pipeline can run more frequently than the training pipeline, predictions are linked as versioned artifacts. This is controlled by the `overwrite` flag in the artifact configuration.
 ```python
 @step
 def predict(
@@ -117,16 +117,15 @@ def predict(
 ]:
     ...
 ```
-If you would like to use model version not by stage - we got you covered and `version` can be also represented by version number or name.
+In this setup, model versions can also be represented by version numbers or names, providing additional flexibility.
 
-### Exchange artifacts between pipelines using Model Context
+### Artifact Exchange Between Pipelines Using Model Context
 
-Inside predictions pipeline we also pass previously linked artifact from training stage. To achieve this we use `ExternalArtifact`. Since we configured model name and model version is already set on pipeline level no need to repeat it again.
+Within the predictions pipeline, artifacts linked in the training stage are passed on. This is accomplished using `ExternalArtifact`. Given that the model name and version are already set at the pipeline level, there's no need to repeat this information.
 
-*Pro tip*: you can also pull artifacts from other models using `model_name` and `model_version` attributes of `ExternalArtifact`.
+*Handy Tip*: It's worth noting that artifacts from other models can also be fetched using the `model_name` and `model_version` attributes of `ExternalArtifact`.
 
 ```python
-from zenml import pipeline, get_pipeline_context
 from zenml.artifacts.external_artifact import ExternalArtifact
 
 @pipeline(
@@ -143,7 +142,7 @@ def do_predictions():
     )
     ...
 ```
-We also can pass and read any extra configuration required using `extra` pipeline argument and new `get_pipeline_context` function.
+Moreover, any additional configurations required can be effortlessly passed and accessed using the `extra` pipeline argument and the newly introduced `get_pipeline_context` function.
 ```python
 @pipeline(
     extra={"trained_classifier": "iris_classifier"},
@@ -153,7 +152,7 @@ def do_predictions():
     ...
 ```
 
-Now we discussed the features of predictions pipeline - let's give it a shot!
+Upon execution of the prediction pipeline, the Production-staged Model Version is utilized to read the Model Object and generate predictions, which are then linked as versioned artifact references.
 ```bash
 # run prediction pipeline: it will use Production staged Model Version to read Model Object and produce predictions as versioned artifact link
 python3 predict.py
@@ -164,9 +163,9 @@ zenml model version list demo
 # list train, test and inference datasets and predictions artifacts
 zenml model version artifacts demo 1
 ```
-Great! We reused model version in Staging stage and attached inference dataset and predictions to it. They all are collected under same roof of model version, so you can always back trace you predictions to training data and model metrics and more.
+Marvelously, the Staging-staged model version is seamlessly reused, with both the inference dataset and predictions attached to it. This unified approach ensures a hassle-free traceability of predictions back to their training data and model metrics, fostering a comprehensive understanding of the entire process.
 
-Remember, artifacts we create in prediction pipeline are versioned, what if we run it again?
+It's essential to remember that artifacts generated in the prediction pipeline are versioned. What happens if we rerun the pipeline?
 ```bash
 # run prediction pipeline again: it will use same Model Version again and link new predictions version link
 python3 predict.py
@@ -177,20 +176,25 @@ zenml model version artifacts demo 1
 # list runs, prediction runs are also here
 zenml model version runs demo 1
 ```
-All worked as expected! We added two more links to our artifacts to represent new predictions and inference dataset versions, later on you can use that for analysis or to retrieve predictions from specific date, for example.
-Also you can see that prediction pipeline runs are also attached to the same model version for convenience, so you always know which code interacted with your models!
+Everything proceeds as anticipated! Two additional links have been appended to our artifacts, representing new versions of predictions and inference dataset. This nuanced approach allows for in-depth analysis or the retrieval of predictions from specific dates, offering enhanced flexibility. Moreover, the prediction pipeline runs are conveniently tied to the same model version, providing a clear understanding of the code that interacts with your models.
 
-### More CLI features
-#### Update existing model via CLI
+### Bringing Everything Together in Harmony
+Now, let's tie all the threads together in a seamless flow.
+<p align="center">
+  <img src="img/train_prediction_example.png">
+</p>
+
+### Additional CLI Features
+#### Updating Existing Models via CLI
 ```bash
 zenml model update demo -t tag1 -t tag2 -e "some ethical implications"
 ```
-#### Create a model via CLI
+#### Creating a Model via CLI
 ```bash
 zenml model register -n demo_cli -d "created from cli" -t cli
 ```
 
-### Well done, let's clean up a bit!
+### Excellent work! Let's tidy up a bit.
 ```bash
 zenml model delete demo_cli
 zenml model delete demo -y
