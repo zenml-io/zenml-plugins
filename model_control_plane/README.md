@@ -65,7 +65,9 @@ def train_and_promote_model():
 
 Executing the training pipeline results in the creation of a model and a corresponding model version, all while maintaining lineage for the associated artifacts.
 ```bash
-# run training pipeline: it will create a model, a model version and link two datasets and one model object to it, pipeline run is linked automatically.
+# run training pipeline: it will create a model, a 
+# model version and link two datasets and one model 
+# object to it, pipeline run is linked automatically
 python3 train.py
 ```
 Upon successful completion, explore the results to gain insights into the newly created entities:
@@ -154,7 +156,9 @@ def do_predictions():
 
 Upon execution of the prediction pipeline, the Production-staged Model Version is utilized to read the Model Object and generate predictions, which are then linked as versioned artifact references.
 ```bash
-# run prediction pipeline: it will use Production staged Model Version to read Model Object and produce predictions as versioned artifact link
+# run prediction pipeline: it will use Production 
+# staged Model Version to read Model Object and 
+# produce predictions as versioned artifact link
 python3 predict.py
 
 # no new model version created, just consuming existing model
@@ -167,10 +171,12 @@ Marvelously, the Staging-staged model version is seamlessly reused, with both th
 
 It's essential to remember that artifacts generated in the prediction pipeline are versioned. What happens if we rerun the pipeline?
 ```bash
-# run prediction pipeline again: it will use same Model Version again and link new predictions version link
+# run prediction pipeline again: it will use same 
+# Model Version again and link new predictions version link
 python3 predict.py
 
-# list train, test datasets and two version of inference dataset and prediction artifacts
+# list train, test datasets and two version of 
+# inference dataset and prediction artifacts
 zenml model version artifacts demo 1
 
 # list runs, prediction runs are also here
