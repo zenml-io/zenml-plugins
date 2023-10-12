@@ -1,4 +1,4 @@
-from zenml import pipeline, get_pipeline_context
+from zenml import get_pipeline_context, pipeline
 from zenml.artifacts.external_artifact import ExternalArtifact
 from zenml.enums import ModelStages
 from zenml.model import ModelConfig
@@ -16,10 +16,11 @@ from steps.predict.predict import predict
     extra={"trained_classifier": "iris_classifier"},
 )
 def do_predictions():
+    trained_classifier = get_pipeline_context().extra["trained_classifier"]
     inference_data = load_data()
     predict(
         model=ExternalArtifact(
-            model_artifact_name=get_pipeline_context().extra["trained_classifier"]
+            model_artifact_name=trained_classifier
         ),  # model_name and model_version derived from pipeline context
         data=inference_data,
     )

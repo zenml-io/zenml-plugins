@@ -6,22 +6,12 @@ Before the Model Control Plane, it was not possible to establish strong connecti
 
 With the Model Control Plane, we finally get the ability to nicely and intuitively group pipelines, artifacts, and business-relevant metadata into one business-focused object - a Model. A Model will build all the linage info for you and not only! Within a Model a Model Version can be staged, so you can rely on your predictions pipeline at some stage (say Staging in this example) and control if the Model Version should be promoted or not based on your business logic (here we promote the latest, but this is not a limit). All the objects collected inside a Model Version are easily and without config duplications accessible to your pipelines at any time and even more - you can access data from other Models and their Model Versions with the same ease.
 
-Stay tuned for more features to come (*current state of planning*)
-
-- Modern Cloud UI to make navigation through all your Models even easier
-- Ability to save artifacts inside he steps and restore from that point on failure, which comes in handy for model checkpoints and more
-- Ability to attach metadata to artifacts linked to a Model Version outside of the step creating it (e.g. train and evaluation steps split)
-- Generation of Model Cards using ZenML delivered or your own templates and based on all linage information collected
-- Automatic registration of Model Objects in Model Registry instead of Artifact Store of ZenML
-
-and more!
-
 ## Structure
 
 In this example we are working with a `demo` Model, which is created using Python SDK implicitly.
-We have two pipelines:
 
-**Training pipeline** is doing training of a model object and stores datasets and model object itself as link inside newly created Model Version. As a last step of the pipeline we promote this new Model Version to Staging stage. We achieve this by setting pipeline into Model Context using `ModelConfig` with specified `name` and `create_new_model_version`, rest of the fields are optional for this task.
+### Training pipeline
+**Training pipeline** is doing training of a model object and stores datasets and model object itself as link inside newly created Model Version. We achieve this by setting pipeline into Model Context using `ModelConfig` with specified `name` and `create_new_model_version`, rest of the fields are optional for this task.
 ```python
 from zenml import pipeline
 from zenml.model import ModelConfig
@@ -36,10 +26,30 @@ from zenml.model import ModelConfig
         delete_new_version_on_failure=True,
     ),
 )
-def producer():
+def train_and_promote_model():
     ...
 ```
-**Predictions pipeline** is reading trained model object from the Model Version tagged as Staging to produce predictions and link them also to the same Model Version. As predictions pipeline can run more often comparing to training pipeline, we will link predictions as a versioned artifact, so we can see full history later on. We achieve this by setting pipeline into Model Context using `ModelConfig` with specified `name` and `version`. Version can be also represented by version number (`1` or `"1"` in our case) or name (`demo` in our case).
+As a last step of the pipeline we promote this new Model Version to Staging stage.
+```python
+from zenml import get_step_context, step, pipeline
+from zenml.enums import ModelStages
+
+@step
+def promote_to_staging():
+    model_config = get_step_context().model_config
+    model_version = model_config._get_model_version()
+    model_version.set_stage(ModelStages.STAGING, force=True)
+
+@pipeline(
+    ...
+)
+def train_and_promote_model():
+    ...
+    promote_to_staging(after=["train_and_evaluate"])
+```
+
+### Predictions pipeline
+**Predictions pipeline** is reading trained model object from the Model Version tagged as Staging to produce predictions and link them also to the same Model Version. In this case `version` is set to a stage value, so on every run a Model Version in Staging will be used. This makes this pipeline agnostic of underlying logic of promotion in Training pipeline.
 ```python
 from zenml import pipeline
 from zenml.model import ModelConfig
@@ -51,15 +61,29 @@ from zenml.model import ModelConfig
         version=ModelStages.STAGING,
     ),
 )
-def consumer():
+def def do_predictions():
     ...
 ```
+As predictions pipeline can run more often comparing to training pipeline, we will link predictions as a versioned artifact, so we can see full history later on. This is controlled by `overwrite` flag of an artifact configuration.
+```python
+@step
+def predict(
+    ...
+) -> Annotated[
+    pd.Series,
+    "predictions",
+    ArtifactConfig(artifact_name="iris_predictions", overwrite=False),
+]:
+    ...
+```
+If you would like to use model version not by stage - we got you covered and `version` can be also represented by version number or name.
 
-Inside predictions pipeline we also pass previously linked artifact from training stage using Model Context. To achieve this `ExternalArtifact` is used and we also pass artifact name as pipeline configuration extra.
+### Exchange artifacts between pipelines using Model Context
 
-Since we configured Model Context on pipeline level it is not needed to repeat it again in `ExternalArtifact`, but you can also pull artifacts from outside of Model Context using `model_name` and `model_version` attributes of `ExternalArtifact`.
+Inside predictions pipeline we also pass previously linked artifact from training stage. To achieve this we use `ExternalArtifact`. Since we configured model name and model version is already set on pipeline level no need to repeat it again.
 
-We also can pass and read any extra configuration required using `extra` pipeline argument and new `get_pipeline_context` function.
+*Pro tip*: you can also pull artifacts from other models using `model_name` and `model_version` attributes of `ExternalArtifact`.
+
 ```python
 from zenml import pipeline, get_pipeline_context
 from zenml.artifacts.external_artifact import ExternalArtifact
@@ -72,10 +96,19 @@ def do_predictions():
     ...
     predict(
         model=ExternalArtifact(
-            model_artifact_name=get_pipeline_context().extra["trained_classifier"]
+            model_artifact_name=trained_classifier
         ),  # model_name and model_version derived from pipeline context
         ...
     )
+    ...
+```
+We also can pass and read any extra configuration required using `extra` pipeline argument and new `get_pipeline_context` function.
+```python
+@pipeline(
+    extra={"trained_classifier": "iris_classifier"},
+)
+def do_predictions():
+    trained_classifier = get_pipeline_context().extra["trained_classifier"]
     ...
 ```
 
