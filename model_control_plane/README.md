@@ -12,8 +12,8 @@ To illustrate these concepts, let's consider a `demo` Model will be created impl
 
 ### Getting Started
 ```bash
-# make sure you have ZenML of 0.45.0 or above installed
-pip3 install "zenml[dev]>=0.45.0"
+# make sure you have ZenML of 0.45.2 or above installed
+pip3 install "zenml[dev]>=0.45.2"
 
 # [Optional] clean up state before start 
 zenml clean
