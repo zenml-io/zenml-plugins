@@ -44,7 +44,9 @@ from zenml.model import ModelConfig
 def train_and_promote_model():
     ...
 ```
-In the final step of the pipeline, the new Model Version is promoted to the Staging stage.
+
+In the final step of the pipeline, the new Model Version is promoted to the Staging stage if a quality
+control check is passed (accuracy is above a threshold).
 ```python
 from zenml import get_step_context, step, pipeline
 from zenml.enums import ModelStages
@@ -92,6 +94,7 @@ zenml model version runs demo 1
 ```
 
 ### Predictions pipeline
+
 The Predictions Pipeline reads a trained model object from the Model Version labeled as Staging. Here, the `version` is set to a specific stage, ensuring consistency across multiple runs. This approach shields the pipeline from the underlying complexities of the Training pipeline's promotion logic.
 ```python
 from zenml import pipeline

@@ -18,8 +18,8 @@ from steps.train.train import train_and_evaluate
 )
 def train_and_promote_model():
     train_data, test_data = load_data()
-    train_and_evaluate(train_data=train_data, test_data=test_data)
-    promote_to_staging(after=["train_and_evaluate"])
+    model, score = train_and_evaluate(train_data=train_data, test_data=test_data)
+    promote_to_staging(score=score)
 
 
 if __name__ == "__main__":

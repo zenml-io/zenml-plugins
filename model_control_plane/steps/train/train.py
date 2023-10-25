@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.base import ClassifierMixin
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
-from typing_extensions import Annotated
+from typing_extensions import Annotated, Tuple
 from zenml import log_artifact_metadata, step
 from zenml.model import ModelArtifactConfig
 
@@ -11,8 +11,7 @@ from zenml.model import ModelArtifactConfig
 def train_and_evaluate(
     train_data: pd.DataFrame,
     test_data: pd.DataFrame,
-) -> Annotated[
-    ClassifierMixin, "iris_classifier", ModelArtifactConfig()
+) -> Tuple[Annotated[ClassifierMixin, "iris_classifier", ModelArtifactConfig()], float
 ]:  # it will be linked as model object
     """Runs training and evaluation combined.
 
@@ -24,5 +23,6 @@ def train_and_evaluate(
 
     predictions = classifier.predict(test_data.drop(columns=["target"]))
     score = accuracy_score(predictions, test_data["target"])
+    breakpoint()
     log_artifact_metadata(output_name="iris_classifier", accuracy=score)
-    return classifier
+    return classifier, score
