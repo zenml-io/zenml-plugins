@@ -207,13 +207,6 @@ zenml model version runs iris_classifier 1
 
 Everything worked seamlessly! You've added two more links to your artifacts, representing new predictions and inference dataset versions. Later, this detailed history can aid analysis or retrieving predictions from specific dates. Additionally, the prediction pipeline runs are conveniently attached to the same model version, ensuring you always know which code interacted with your models.
 
-### Bringing Everything Together in Harmony
-
-Now, let's tie all the threads together in a seamless flow.
-<p align="center">
-  <img src="img/train_prediction_example.png">
-</p>
-
 ### More Command-Line Features
 
 Explore additional CLI capabilities, like updating existing models and creating new ones, using straightforward commands.
