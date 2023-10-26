@@ -4,7 +4,7 @@ Welcome to our tour into the Model Control Plane, where we'll focus on two indep
 
 Before the Model Control Plane, connecting these pipelines and consolidating everything was a challenge. Imagine extracting a trained model artifact from the training pipeline and smoothly integrating it into the predictions pipeline. Previously, this involved complex ID references, leading to constant config updates, or blindly relying on the latest training run. But what if that run didn't meet the necessary performance standards? Using a subpar model for predictions was out of the question, especially for vital applications!
 
-Enter the Model Control Plane. This feature empowers you to effortlessly group pipelines, artifacts, and crucial business data into a unified entity: a Model. A Model captures lineage information and more. Within a Model, different Model Versions can be staged. For example, you can rely on your predictions at a specific stage, like Production, and decide whether the Model Version should be promoted based on your business rules during training. Plus, accessing data from other Models and their Versions is just as simple, enhancing the system's adaptability.
+Enter the Model Control Plane. This feature empowers you to effortlessly group pipelines, artifacts, and crucial business data into a unified entity: a `Model`. A Model captures lineage information and more. Within a Model, different `Model Versions` can be staged. For example, you can rely on your predictions at a specific stage, like `Production``, and decide whether the Model Version should be promoted based on your business rules during training. Plus, accessing data from other Models and their Versions is just as simple, enhancing the system's adaptability.
 
 ## Example Scenario
 
@@ -19,14 +19,16 @@ pip3 install "zenml[dev]>=0.45.2"
 zenml clean
 
 # install needed integrations
-zenml integration install sklearn
+zenml integration install sklearn -y
 
 # verify existing models (if `zenml clean` executed - should be empty)
 zenml model list
 ```
 
 ### Training pipeline
+
 The Training pipeline orchestrates the training of a model object, storing datasets and the model object itself as links within a newly created Model Version. This integration is achieved by configuring the pipeline within a Model Context using `ModelConfig`. The `name` and `create_new_model_version` fields are specified, while other fields remain optional for this task.
+
 ```python
 from zenml import pipeline
 from zenml.model import ModelConfig
@@ -52,10 +54,13 @@ from zenml import get_step_context, step, pipeline
 from zenml.enums import ModelStages
 
 @step
-def promote_model():
-    model_config = get_step_context().model_config
-    model_version = model_config._get_model_version()
-    model_version.set_stage(ModelStages.PRODUCTION, force=True)
+def promote_model(score: float):
+    # Score has to pass a threshold
+    # One can also do more business logic here, i.e. comparing to the last model
+    if score > 0.9:
+        model_config = get_step_context().model_config
+        model_version = model_config._get_model_version()
+        model_version.set_stage(ModelStages.PRODUCTION, force=True)
 
 @pipeline(
     ...
@@ -110,6 +115,7 @@ from zenml.model import ModelConfig
 def do_predictions():
     ...
 ```
+
 Given the frequent execution of the predictions pipeline compared to the training pipeline, we link predictions as versioned artifacts. The `overwrite` flag in the artifact configuration controls this, allowing for a comprehensive historical view.
 ```python
 @step
@@ -122,6 +128,7 @@ def predict(
 ]:
     ...
 ```
+
 Need to use a specific model version, not limited to stages? No problem. You can represent this either by version number or name, ensuring flexibility in your workflow.
 
 ### Artifacts Exchange Between Pipelines: Seamless Integration
@@ -147,7 +154,9 @@ def do_predictions():
     )
     ...
 ```
+
 Additionally, any extra configurations needed can be seamlessly passed and read using the `extra` pipeline argument and the new `get_pipeline_context` function.
+
 ```python
 @pipeline(
     extra={"trained_classifier": "iris_classifier"},
@@ -158,6 +167,7 @@ def do_predictions():
 ```
 
 Executing the prediction pipeline ensures the use of the Model Version in Production stage, generating predictions as versioned artifacts.
+
 ```bash
 # run prediction pipeline: it will use Production 
 # staged Model Version to read Model Object and 
@@ -170,6 +180,7 @@ zenml model version list iris_classifier
 # list train, test and inference datasets and predictions artifacts
 zenml model version artifacts iris_classifier 1
 ```
+
 Fantastic! By reusing the model version in the Production stage, you've connected the inference dataset and predictions seamlessly. All these elements coexist within the same model version, allowing effortless tracing back to training data and model metrics.
 
 And what if you run the prediction pipeline again?
@@ -185,22 +196,28 @@ zenml model version artifacts iris_classifier 1
 # list runs, prediction runs are also here
 zenml model version runs iris_classifier 1
 ```
+
 Everything worked seamlessly! You've added two more links to your artifacts, representing new predictions and inference dataset versions. Later, this detailed history can aid analysis or retrieving predictions from specific dates. Additionally, the prediction pipeline runs are conveniently attached to the same model version, ensuring you always know which code interacted with your models.
 
 ### Bringing Everything Together in Harmony
+
 Now, let's tie all the threads together in a seamless flow.
 <p align="center">
   <img src="img/train_prediction_example.png">
 </p>
 
 ### More Command-Line Features
+
 Explore additional CLI capabilities, like updating existing models and creating new ones, using straightforward commands.
 
 #### Updating Existing Models via CLI
+
 ```bash
 zenml model update iris_classifier -t tag1 -t tag2 -e "some ethical implications"
 ```
+
 #### Creating a Model via CLI
+
 ```bash
 zenml model register -n iris_classifier_cli -d "created from cli" -t cli
 ```
@@ -210,4 +227,5 @@ zenml model register -n iris_classifier_cli -d "created from cli" -t cli
 zenml model delete iris_classifier_cli
 zenml model delete iris_classifier -y
 ```
+
 Nicely done, and now your workspace is tidy! Feel free to reach out if you have any more questions or if there's anything else you'd like to explore. Happy modeling! 😊
