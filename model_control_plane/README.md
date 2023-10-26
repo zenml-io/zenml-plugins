@@ -104,7 +104,7 @@ from zenml.model import ModelConfig
     enable_cache=False,
     model_config=ModelConfig(
         name="demo",
-        version=ModelStages.Production,
+        version=ModelStages.PRODUCTION,
     ),
 )
 def do_predictions():
