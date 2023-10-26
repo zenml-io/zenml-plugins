@@ -8,7 +8,7 @@ Enter the Model Control Plane. This feature empowers you to effortlessly group p
 
 ## Example Scenario
 
-To illustrate these concepts, let's consider a `demo` Model will be created implicitly using the Python SDK.
+To illustrate these concepts, let's consider a mock `iris_classifier` Model will be created implicitly using the Python SDK.
 
 ### Getting Started
 ```bash
@@ -34,7 +34,7 @@ from zenml.model import ModelConfig
 @pipeline(
     enable_cache=False,
     model_config=ModelConfig(
-        name="demo",
+        name="iris_classifier",
         license="Apache",
         description="Show case Model Control Plane.",
         create_new_model_version=True,
@@ -74,23 +74,23 @@ python3 train.py
 ```
 Once it's done, check the results to see the newly created entities:
 ```bash
-# new model `demo` created
+# new model `iris_classifier` created
 zenml model list
 
 # new model version `1` created
-zenml model version list demo
+zenml model version list iris_classifier
 
 # list generic artifacts - train and test datasets are here
-zenml model version artifacts demo 1
+zenml model version artifacts iris_classifier 1
 
 # list model objects - trained classifier here
-zenml model version model_objects demo 1
+zenml model version model_objects iris_classifier 1
 
 # list deployments - none, as we didn't link any
-zenml model version deployments demo 1
+zenml model version deployments iris_classifier 1
 
 # list runs - training run linked
-zenml model version runs demo 1
+zenml model version runs iris_classifier 1
 ```
 
 ### Predictions pipeline
@@ -103,7 +103,7 @@ from zenml.model import ModelConfig
 @pipeline(
     enable_cache=False,
     model_config=ModelConfig(
-        name="demo",
+        name="iris_classifier",
         version=ModelStages.PRODUCTION,
     ),
 )
@@ -165,10 +165,10 @@ Executing the prediction pipeline ensures the use of the Model Version in Produc
 python3 predict.py
 
 # no new model version created, just consuming existing model
-zenml model version list demo
+zenml model version list iris_classifier
 
 # list train, test and inference datasets and predictions artifacts
-zenml model version artifacts demo 1
+zenml model version artifacts iris_classifier 1
 ```
 Fantastic! By reusing the model version in the Production stage, you've connected the inference dataset and predictions seamlessly. All these elements coexist within the same model version, allowing effortless tracing back to training data and model metrics.
 
@@ -180,10 +180,10 @@ python3 predict.py
 
 # list train, test datasets and two version of 
 # inference dataset and prediction artifacts
-zenml model version artifacts demo 1
+zenml model version artifacts iris_classifier 1
 
 # list runs, prediction runs are also here
-zenml model version runs demo 1
+zenml model version runs iris_classifier 1
 ```
 Everything worked seamlessly! You've added two more links to your artifacts, representing new predictions and inference dataset versions. Later, this detailed history can aid analysis or retrieving predictions from specific dates. Additionally, the prediction pipeline runs are conveniently attached to the same model version, ensuring you always know which code interacted with your models.
 
@@ -198,16 +198,16 @@ Explore additional CLI capabilities, like updating existing models and creating 
 
 #### Updating Existing Models via CLI
 ```bash
-zenml model update demo -t tag1 -t tag2 -e "some ethical implications"
+zenml model update iris_classifier -t tag1 -t tag2 -e "some ethical implications"
 ```
 #### Creating a Model via CLI
 ```bash
-zenml model register -n demo_cli -d "created from cli" -t cli
+zenml model register -n iris_classifier_cli -d "created from cli" -t cli
 ```
 
 ### Well done! Time for a Quick Cleanup
 ```bash
-zenml model delete demo_cli
-zenml model delete demo -y
+zenml model delete iris_classifier_cli
+zenml model delete iris_classifier -y
 ```
 Nicely done, and now your workspace is tidy! Feel free to reach out if you have any more questions or if there's anything else you'd like to explore. Happy modeling! 😊

@@ -9,7 +9,7 @@ from steps.train.train import train_and_evaluate
 @pipeline(
     enable_cache=False,
     model_config=ModelConfig(
-        name="demo",
+        name="iris_classifier",
         license="Apache",
         description="Show case Model Control Plane.",
         create_new_model_version=True,
@@ -18,7 +18,7 @@ from steps.train.train import train_and_evaluate
 )
 def train_and_promote_model():
     train_data, test_data = load_data()
-    model, score = train_and_evaluate(train_data=train_data, test_data=test_data)
+    _, score = train_and_evaluate(train_data=train_data, test_data=test_data)
     promote_model(score=score)
 
 
