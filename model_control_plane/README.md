@@ -4,7 +4,7 @@ Welcome to our tour into the Model Control Plane, where we'll focus on two indep
 
 Before the Model Control Plane, connecting these pipelines and consolidating everything was a challenge. Imagine extracting a trained model artifact from the training pipeline and smoothly integrating it into the predictions pipeline. Previously, this involved complex ID references, leading to constant config updates, or blindly relying on the latest training run. But what if that run didn't meet the necessary performance standards? Using a subpar model for predictions was out of the question, especially for vital applications!
 
-Enter the Model Control Plane. This feature empowers you to effortlessly group pipelines, artifacts, and crucial business data into a unified entity: a Model. A Model captures lineage information and more. Within a Model, different Model Versions can be staged. For example, you can rely on your predictions at a specific stage, like Staging, and decide whether the Model Version should be promoted based on your business rules during training. Plus, accessing data from other Models and their Versions is just as simple, enhancing the system's adaptability.
+Enter the Model Control Plane. This feature empowers you to effortlessly group pipelines, artifacts, and crucial business data into a unified entity: a Model. A Model captures lineage information and more. Within a Model, different Model Versions can be staged. For example, you can rely on your predictions at a specific stage, like Production, and decide whether the Model Version should be promoted based on your business rules during training. Plus, accessing data from other Models and their Versions is just as simple, enhancing the system's adaptability.
 
 ## Example Scenario
 
@@ -45,24 +45,24 @@ def train_and_promote_model():
     ...
 ```
 
-In the final step of the pipeline, the new Model Version is promoted to the Staging stage if a quality
+In the final step of the pipeline, the new Model Version is promoted to the Production stage if a quality
 control check is passed (accuracy is above a threshold).
 ```python
 from zenml import get_step_context, step, pipeline
 from zenml.enums import ModelStages
 
 @step
-def promote_to_staging():
+def promote_model():
     model_config = get_step_context().model_config
     model_version = model_config._get_model_version()
-    model_version.set_stage(ModelStages.STAGING, force=True)
+    model_version.set_stage(ModelStages.PRODUCTION, force=True)
 
 @pipeline(
     ...
 )
 def train_and_promote_model():
     ...
-    promote_to_staging(after=["train_and_evaluate"])
+    promote_model(score=score)
 ```
 
 Running the training pipeline creates a model and a Model Version, all while maintaining a connection to the artifacts.
@@ -95,7 +95,7 @@ zenml model version runs demo 1
 
 ### Predictions pipeline
 
-The Predictions Pipeline reads a trained model object from the Model Version labeled as Staging. Here, the `version` is set to a specific stage, ensuring consistency across multiple runs. This approach shields the pipeline from the underlying complexities of the Training pipeline's promotion logic.
+The Predictions Pipeline reads a trained model object from the Model Version labeled as Production. Here, the `version` is set to a specific stage, ensuring consistency across multiple runs. This approach shields the pipeline from the underlying complexities of the Training pipeline's promotion logic.
 ```python
 from zenml import pipeline
 from zenml.model import ModelConfig
@@ -104,7 +104,7 @@ from zenml.model import ModelConfig
     enable_cache=False,
     model_config=ModelConfig(
         name="demo",
-        version=ModelStages.STAGING,
+        version=ModelStages.Production,
     ),
 )
 def do_predictions():
@@ -157,9 +157,9 @@ def do_predictions():
     ...
 ```
 
-Executing the prediction pipeline ensures the use of the Model Version in Staging stage, generating predictions as versioned artifacts.
+Executing the prediction pipeline ensures the use of the Model Version in Production stage, generating predictions as versioned artifacts.
 ```bash
-# run prediction pipeline: it will use Staging 
+# run prediction pipeline: it will use Production 
 # staged Model Version to read Model Object and 
 # produce predictions as versioned artifact link
 python3 predict.py
@@ -170,7 +170,7 @@ zenml model version list demo
 # list train, test and inference datasets and predictions artifacts
 zenml model version artifacts demo 1
 ```
-Fantastic! By reusing the model version in the Staging stage, you've connected the inference dataset and predictions seamlessly. All these elements coexist within the same model version, allowing effortless tracing back to training data and model metrics.
+Fantastic! By reusing the model version in the Production stage, you've connected the inference dataset and predictions seamlessly. All these elements coexist within the same model version, allowing effortless tracing back to training data and model metrics.
 
 And what if you run the prediction pipeline again?
 ```bash

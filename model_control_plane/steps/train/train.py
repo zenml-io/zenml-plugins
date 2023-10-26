@@ -23,6 +23,5 @@ def train_and_evaluate(
 
     predictions = classifier.predict(test_data.drop(columns=["target"]))
     score = accuracy_score(predictions, test_data["target"])
-    breakpoint()
     log_artifact_metadata(output_name="iris_classifier", accuracy=score)
     return classifier, score

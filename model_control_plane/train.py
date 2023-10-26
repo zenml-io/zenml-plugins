@@ -2,7 +2,7 @@ from zenml import pipeline
 from zenml.model import ModelConfig
 
 from steps.train.load import load_data
-from steps.train.promote import promote_to_staging
+from steps.train.promote import promote_model
 from steps.train.train import train_and_evaluate
 
 
@@ -19,7 +19,7 @@ from steps.train.train import train_and_evaluate
 def train_and_promote_model():
     train_data, test_data = load_data()
     model, score = train_and_evaluate(train_data=train_data, test_data=test_data)
-    promote_to_staging(score=score)
+    promote_model(score=score)
 
 
 if __name__ == "__main__":
