@@ -11,7 +11,7 @@ from steps.predict.predict import predict
     enable_cache=False,
     model_config=ModelConfig(
         name="demo",
-        version=ModelStages.STAGING,
+        version=ModelStages.PRODUCTION,
     ),
     extra={"trained_classifier": "iris_classifier"},
 )
