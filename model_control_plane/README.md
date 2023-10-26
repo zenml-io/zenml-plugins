@@ -6,6 +6,14 @@ Before the Model Control Plane, connecting these pipelines and consolidating eve
 
 Enter the Model Control Plane. This feature empowers you to effortlessly group pipelines, artifacts, and crucial business data into a unified entity: a `Model`. A Model captures lineage information and more. Within a Model, different `Model Versions` can be staged. For example, you can rely on your predictions at a specific stage, like `Production``, and decide whether the Model Version should be promoted based on your business rules during training. Plus, accessing data from other Models and their Versions is just as simple, enhancing the system's adaptability.
 
+## Overview of the process
+
+Here is an overview of the entire process:
+
+![Pipelines Overview](_assets/train_prediction_example.png)
+
+Each time the `train_and_promote` pipeline runs, it creates a new iris_classifier. However, it only promotes the created model to `Production` if a certain accuracy threshold is met. The `do_predictions` pipeline simply picks up the latest Promoted model and runs batch inference on it. That way these two pipelines can independently be run, but can rely on each others output.
+
 ## Example Scenario
 
 To illustrate these concepts, let's consider a mock `iris_classifier` Model will be created implicitly using the Python SDK.
