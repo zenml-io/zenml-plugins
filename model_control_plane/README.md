@@ -18,7 +18,24 @@ Each time the `train_and_promote` pipeline runs, it creates a new iris_classifie
 
 To illustrate these concepts, let's consider a mock `iris_classifier` Model will be created implicitly using the Python SDK.
 
-### Getting Started
+### Getting Started (Notebook)
+
+You can use Google Colab to run this tutorial:
+
+<a href="https://colab.research.google.com/github/zenml-io/zenml-plugins/blob/main/model_control_plane/run.ipynb" target="_parent"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/></a>
+
+Or run in a local notebook:
+
+```shell
+pip install notebook
+jupyter notebook
+# open run.ipynb
+```
+
+### Getting Started (Scripts)
+
+If the notebook approach is not for you, try following the rest of this README:
+
 ```bash
 # make sure you have ZenML of 0.45.2 or above installed
 pip3 install "zenml[dev]>=0.45.2"
@@ -32,6 +49,8 @@ zenml integration install sklearn -y
 # verify existing models (if `zenml clean` executed - should be empty)
 zenml model list
 ```
+
+
 
 ### Training pipeline
 
