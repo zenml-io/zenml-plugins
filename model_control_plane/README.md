@@ -10,7 +10,7 @@ Enter the Model Control Plane. This feature empowers you to effortlessly group p
 
 Here is an overview of the entire process:
 
-<img alt="Pipelines Overview" src="_assets/train_prediction_example.png" alt="Logo" width="400">
+<img alt="Pipelines Overview" src="_assets/train_prediction_example.png" alt="Logo" width="700">
 
 Each time the `train_and_promote` pipeline runs, it creates a new iris_classifier. However, it only promotes the created model to `Production` if a certain accuracy threshold is met. The `do_predictions` pipeline simply picks up the latest Promoted model and runs batch inference on it. That way these two pipelines can independently be run, but can rely on each others output.
 
