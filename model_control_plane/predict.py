@@ -10,7 +10,7 @@ from steps.predict.predict import predict
 @pipeline(
     enable_cache=False,
     model_config=ModelConfig(
-        name="demo",
+        name="iris_classifier",
         version=ModelStages.PRODUCTION,
     ),
     extra={"trained_classifier": "iris_classifier"},
