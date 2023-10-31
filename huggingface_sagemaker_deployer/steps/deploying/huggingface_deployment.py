@@ -75,7 +75,7 @@ def deploy_to_huggingface(
     path_in_repo = url_split[4][1:-1]  # remove the curly brackets
 
     log_artifact_metadata(
-        output_name="None",
+        output_name="huggingface_url",
         endpoint=endpoint,
         repo_id=repo_id,
         revision=revision,
