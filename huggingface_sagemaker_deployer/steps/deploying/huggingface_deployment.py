@@ -41,8 +41,8 @@ def deploy_to_huggingface(
 
     assert (
         secret
-    ), "No secret found with name 'huggingface_creds'. Please create one with your `username` and `token`."
-    huggingface_username = secret.secret_values["username"]
+    ), "No secret found with name 'huggingface_creds'. Please create one with your `token`."
+
     token = secret.secret_values["token"]
     api = HfApi(token=token)
     hf_repo = api.create_repo(
