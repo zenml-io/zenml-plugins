@@ -45,9 +45,7 @@ def deploy_to_huggingface(
 
     token = secret.secret_values["token"]
     api = HfApi(token=token)
-    hf_repo = api.create_repo(
-        repo_id=repo_name, repo_type="model", exist_ok=True
-    )
+    hf_repo = api.create_repo(repo_id=repo_name, repo_type="model", exist_ok=True)
     zenml_repo_root = Client().root
     if not zenml_repo_root:
         logger.warning(
@@ -62,12 +60,12 @@ def deploy_to_huggingface(
         repo_id=hf_repo.repo_id,
         repo_type="model",
     )
-    
+
     repo_commits = api.list_repo_commits(
         repo_id=hf_repo.repo_id,
         repo_type="model",
     )
-    
+
     log_artifact_metadata(
         output_name="huggingface_url",
         repo_id=hf_repo.repo_id,

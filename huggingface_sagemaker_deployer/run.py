@@ -190,9 +190,7 @@ def main(
     # Execute Promoting Pipeline
     if promoting_pipeline:
         run_args_promoting = {}
-        model_config = ModelConfig(
-            name=zenml_model_name
-        )
+        model_config = ModelConfig(name=zenml_model_name)
         pipeline_args["model_config"] = model_config
 
         pipeline_args[
