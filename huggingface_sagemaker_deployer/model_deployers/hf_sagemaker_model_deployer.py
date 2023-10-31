@@ -38,7 +38,10 @@ from hf_sagemaker_model_deployer_flavor import (
     HFSagemakerModelDeployerConfig,
     HFSagemakerModelDeployerSettings,
 )
-from hf_sagemaker_deployment_service import HFSagemakerDeploymentService, HFSagemakerDeploymentConfig
+from hf_sagemaker_deployment_service import (
+    HFSagemakerDeploymentService,
+    HFSagemakerDeploymentConfig,
+)
 
 if TYPE_CHECKING:
     from zenml.models.pipeline_deployment_models import (
@@ -121,11 +124,10 @@ class HFSagemakerModelDeployer(BaseModelDeployer):
         replace: bool = False,
         timeout: int = DEFAULT_HUGGINGFACE_SAGEMAKER_DEPLOYMENT_START_STOP_TIMEOUT,
     ) -> BaseService:
-        """Create a new Sagemaker Huggingface deployment or update an existing one.
-        """
+        """Create a new Sagemaker Huggingface deployment or update an existing one."""
         config = cast(HFSagemakerDeploymentConfig, config)
         service = None
-        
+
         sagemaker_session = self.get_sagemaker_session(config)
 
         # if replace is True, find equivalent deployments
@@ -154,13 +156,13 @@ class HFSagemakerModelDeployer(BaseModelDeployer):
         if service:
             # update an equivalent service in place
             service.update(config)
-            logger.info(
-                f"Updating an existing Seldon deployment service: {service}"
-            )
+            logger.info(f"Updating an existing Seldon deployment service: {service}")
         else:
             # create a new service
             service = HFSagemakerDeploymentService(config=config)
-            logger.info(f"Creating a new Sagemaker Huggingface deployment service: {service}")
+            logger.info(
+                f"Creating a new Sagemaker Huggingface deployment service: {service}"
+            )
 
         # start the service which in turn provisions the Seldon Core
         # deployment server and waits for it to reach a ready state

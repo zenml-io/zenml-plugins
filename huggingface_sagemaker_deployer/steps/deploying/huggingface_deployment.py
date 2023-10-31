@@ -63,7 +63,7 @@ def deploy_to_huggingface(
         repo_type="model",
     )
     # split the string by '/'
-    url_split = url.split('/')
+    url_split = url.split("/")
 
     # the resulting list would look like this: ['{self.endpoint}', '{repo_id}', 'tree', '{revision}', '{path_in_repo}']
 
@@ -73,9 +73,15 @@ def deploy_to_huggingface(
     # skip 'tree'
     revision = url_split[3][1:-1]  # remove the curly brackets
     path_in_repo = url_split[4][1:-1]  # remove the curly brackets
-    
-    log_artifact_metadata(output_name=None, endpoint=endpoint, repo_id=repo_id, revision=revision, path_in_repo=path_in_repo)
-    
+
+    log_artifact_metadata(
+        output_name=None,
+        endpoint=endpoint,
+        repo_id=repo_id,
+        revision=revision,
+        path_in_repo=path_in_repo,
+    )
+
     logger.info(f"Model updated: {url}")
     ### YOUR CODE ENDS HERE ###
 

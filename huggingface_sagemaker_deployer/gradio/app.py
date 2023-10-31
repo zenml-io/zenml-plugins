@@ -1,13 +1,13 @@
 # Apache Software License 2.0
-# 
+#
 # Copyright (c) ZenML GmbH 2023. All rights reserved.
-# 
+#
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 # http://www.apache.org/licenses/LICENSE-2.0
-# 
+#
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,9 +21,16 @@ from os.path import dirname
 
 import gradio as gr
 
+
 @click.command()
-@click.option("--tokenizer_name_or_path", default="tokenizer", help="Name or the path of the tokenizer.")
-@click.option("--model_name_or_path", default="model", help="Name or the path of the model.")
+@click.option(
+    "--tokenizer_name_or_path",
+    default="tokenizer",
+    help="Name or the path of the tokenizer.",
+)
+@click.option(
+    "--model_name_or_path", default="model", help="Name or the path of the model."
+)
 @click.option(
     "--labels", default="Negative,Positive", help="Comma-separated list of labels."
 )
@@ -46,20 +53,20 @@ import gradio as gr
     help="Comma-separated list of examples to show in the Gradio interface.",
 )
 def sentiment_analysis(
-    tokenizer_name_or_path: Optional[str], 
-    model_name_or_path: Optional[str], 
-    labels: Optional[str], 
-    title: Optional[str], 
-    description: Optional[str], 
-    interpretation: Optional[str], 
-    examples: Optional[str], 
+    tokenizer_name_or_path: Optional[str],
+    model_name_or_path: Optional[str],
+    labels: Optional[str],
+    title: Optional[str],
+    description: Optional[str],
+    interpretation: Optional[str],
+    examples: Optional[str],
 ):
     """Launches a Gradio interface for sentiment analysis.
 
     This function launches a Gradio interface for text-classification.
     It loads a model and a tokenizer from the provided paths and uses
     them to predict the sentiment of the input text.
-    
+
     Args:
         tokenizer_name_or_path (str): Name or the path of the tokenizer.
         model_name_or_path (str): Name or the path of the model.
@@ -71,12 +78,13 @@ def sentiment_analysis(
     """
     labels = labels.split(",")
     examples = [examples]
+
     def preprocess(text: str) -> str:
         """Preprocesses the text.
 
         Args:
             text (str): Input text.
-        
+
         Returns:
             str: Preprocessed text.
         """

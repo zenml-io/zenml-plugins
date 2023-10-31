@@ -14,8 +14,8 @@
 """Implementation for the Sagemaker Huggingface Deployer step."""
 
 import json
-import sagemaker 
-import boto3 
+import sagemaker
+import boto3
 from sagemaker.huggingface import HuggingFaceModel
 from sagemaker.huggingface.model import HuggingFacePredictor
 
@@ -37,7 +37,8 @@ logger = get_logger(__name__)
 
 class HFSagemakerDeploymentConfig(ServiceConfig):
     """"""
-    # Huggingface model args 
+
+    # Huggingface model args
     role: Optional[str] = None
     model_data: Optional[str] = None
     entry_point: Optional[str] = None
@@ -48,7 +49,7 @@ class HFSagemakerDeploymentConfig(ServiceConfig):
     image_uri: Optional[str] = None
     model_server_workers: Optional[int] = None
 
-    # Deploy args 
+    # Deploy args
     initial_instance_count: Optional[int] = None
     instance_type: Optional[str] = None
     accelerator_type: Optional[str] = None
@@ -61,10 +62,9 @@ class HFSagemakerDeploymentConfig(ServiceConfig):
     container_startup_health_check_timeout: Optional[int] = None
     inference_recommendation_id: Optional[str] = None
 
-    # Misc args        
+    # Misc args
     env: Dict[str, str] = {}
     sagemaker_session_args: Dict[str, Any] = {}
-
 
     def get_seldon_deployment_labels(self) -> Dict[str, str]:
         """Generate labels for the Seldon Core deployment from the service configuration.
@@ -177,7 +177,7 @@ class HFSagemakerDeploymentService(BaseDeploymentService):
         """Returns sagemaker session from connector"""
         session = sagemaker.Session(boto3.Session(**config.sagemaker_session_args))
         return session
-    
+
     def check_status(self) -> Tuple[ServiceState, str]:
         """Check the the current operational state of the Seldon Core deployment.
 
@@ -221,7 +221,7 @@ class HFSagemakerDeploymentService(BaseDeploymentService):
             The endpoint name of the deployed predictor.
         """
         return f"zenml-{str(self.uuid)}"
-    
+
     def get_predictor(self) -> HuggingFacePredictor:
         return HuggingFacePredictor(self.config.endpoint_name)
 
@@ -260,7 +260,7 @@ class HFSagemakerDeploymentService(BaseDeploymentService):
 
         This should then match the current configuration.
         """
-        self.config['sagemaker_session'] = self.get_sagemaker_session
+        self.config["sagemaker_session"] = self.get_sagemaker_session
 
         # Hugging Face Model Class
         huggingface_model = HuggingFaceModel(
@@ -275,7 +275,7 @@ class HFSagemakerDeploymentService(BaseDeploymentService):
             image_uri=self.config.image_uri,
             model_server_workers=self.config.model_server_workers,
         )
-        
+
         # Stamp this deployment with zenml metadata
         tags = self.config.tags
         annotations = {
@@ -302,27 +302,27 @@ class HFSagemakerDeploymentService(BaseDeploymentService):
             for key, value in self.extra_args.items():
                 labels[f"zenml.{key}"] = value
         """
-        
+
         tags.extend([annotations])
-        
+
         # Override the endpoint name. This is critical to fetch it back
         endpoint_name = f"zenml_service_{str(self.uuid)}"
 
         # deploy model to SageMaker
         predictor: HuggingFacePredictor = huggingface_model.deploy(
-            initial_instance_count= self.config.initial_instance_count,
-            instance_type= self.config.instance_type,
-            accelerator_type= self.config.accelerator_type,
+            initial_instance_count=self.config.initial_instance_count,
+            instance_type=self.config.instance_type,
+            accelerator_type=self.config.accelerator_type,
             endpoint_name=endpoint_name,
             tags=tags,
-            kms_key= self.config.kms_key,
+            kms_key=self.config.kms_key,
             wait=self.config.wait,
-            volume_size= self.config.volume_size,
+            volume_size=self.config.volume_size,
             model_data_download_timeout=self.config.model_data_download_timeout,
             container_startup_health_check_timeout=self.config.container_startup_health_check_timeout,
-            inference_recommendation_id= self.config.inference_recommendation_id,
+            inference_recommendation_id=self.config.inference_recommendation_id,
         )
-        predictor.endpoint_name 
+        predictor.endpoint_name
 
     def deprovision(self, force: bool = False) -> None:
         """Deprovision the remote Seldon Core deployment instance.

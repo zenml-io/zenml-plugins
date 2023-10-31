@@ -49,9 +49,7 @@ def promote_get_metric(
     """
 
     ### ADD YOUR OWN CODE HERE - THIS IS JUST AN EXAMPLE ###
-    model_version = model_registry.get_model_version(
-        name=name, version=version
-    )
+    model_version = model_registry.get_model_version(name=name, version=version)
     mlflow_run = mlflow.get_run(run_id=model_version.metadata.mlflow_run_id)
     logger.info("Getting metric from MLFlow run %s", mlflow_run.info.run_id)
 

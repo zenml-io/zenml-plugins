@@ -189,7 +189,7 @@ def main(
         "learning_rate": learning_rate,
         "weight_decay": weight_decay,
     }
-    
+
     model_config = ModelConfig(
         name=zenml_model_name,
         license="Apache 2.0",
@@ -202,10 +202,8 @@ def main(
         "run_name"
     ] = f"nlp_use_case_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
     pipeline_args["model_config"] = model_config
-    
-    nlp_use_case_training_pipeline.with_options(**pipeline_args)(
-        **run_args_train
-    )
+
+    nlp_use_case_training_pipeline.with_options(**pipeline_args)(**run_args_train)
     logger.info("Training pipeline finished successfully!")
 
     # Execute Promoting Pipeline
@@ -230,9 +228,7 @@ def main(
         pipeline_args[
             "run_name"
         ] = f"nlp_use_case_deploy_pipeline_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
-        nlp_use_case_deploy_pipeline.with_options(**pipeline_args)(
-            **run_args_deploying
-        )
+        nlp_use_case_deploy_pipeline.with_options(**pipeline_args)(**run_args_deploying)
         logger.info("Deploying pipeline finished successfully!")
 
 
