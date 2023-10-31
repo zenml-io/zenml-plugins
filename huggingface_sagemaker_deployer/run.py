@@ -21,7 +21,7 @@ from datetime import datetime as dt
 import click
 from zenml.logger import get_logger
 from zenml.model import ModelConfig
-
+from zenml.enums import ModelStages
 
 from pipelines import (
     nlp_use_case_deploy_pipeline,
@@ -197,13 +197,12 @@ def main(
         create_new_model_version=True,
         delete_new_version_on_failure=True,
     )
-    
+
     pipeline_args["model_config"] = model_config
 
     pipeline_args[
         "run_name"
     ] = f"nlp_use_case_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
-    
 
     nlp_use_case_training_pipeline.with_options(**pipeline_args)(**run_args_train)
     logger.info("Training pipeline finished successfully!")
@@ -220,13 +219,14 @@ def main(
         logger.info("Promoting pipeline finished successfully!")
 
     if deploying_pipeline:
+        # Deploying pipeline has new ZenML model config
+        model_config = ModelConfig(
+            name=zenml_model_name,
+            version=ModelStages.STAGING,
+        )
+        pipeline_args["model_config"] = model_config
         pipeline_args["enable_cache"] = False
-        run_args_deploying = {
-            "title": depployment_app_title,
-            "description": depployment_app_description,
-            "interpretation": depployment_app_interpretation,
-            "example": depployment_app_example,
-        }
+        run_args_deploying = {}
         pipeline_args[
             "run_name"
         ] = f"nlp_use_case_deploy_pipeline_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"

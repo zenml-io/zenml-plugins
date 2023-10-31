@@ -44,9 +44,7 @@ def save_model_to_deploy(
         mlfow_model_name: The name of the model in MLFlow.
     """
     ### ADD YOUR OWN CODE HERE - THIS IS JUST AN EXAMPLE ###
-    logger.info(
-        f" Loading latest version of model {mlflow_model_name}..."
-    )
+    logger.info(f" Loading latest version of model {mlflow_model_name}...")
     # Load model from MLFlow registry
     model_version = model_registry.get_latest_model_version(
         name=mlflow_model_name,

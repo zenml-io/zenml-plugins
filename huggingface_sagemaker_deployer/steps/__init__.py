@@ -23,6 +23,7 @@ from .dataset_loader import (
 from .deploying import (
     deploy_to_huggingface,
     save_model_to_deploy,
+    deploy_hf_to_sagemaker,
 )
 from .promotion import (
     promote_get_metric,

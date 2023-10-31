@@ -17,4 +17,5 @@
 
 
 from .huggingface_deployment import deploy_to_huggingface
+from .sagemaker_deployment import deploy_hf_to_sagemaker
 from .save_model import save_model_to_deploy
