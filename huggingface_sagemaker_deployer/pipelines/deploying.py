@@ -22,7 +22,6 @@ from zenml.client import Client
 from zenml.logger import get_logger
 
 from steps import (
-    deploy_locally,
     deploy_to_huggingface,
     notify_on_failure,
     notify_on_success,
@@ -33,13 +32,6 @@ logger = get_logger(__name__)
 
 # Get experiment tracker
 orchestrator = Client().active_stack.orchestrator
-
-# Check if orchestrator flavor is either default or skypilot
-if orchestrator.flavor not in ["local"]:
-    raise RuntimeError(
-        "Your active stack needs to contain a default or skypilot orchestrator for "
-        "the deployment pipeline to work."
-    )
 
 
 @pipeline(
@@ -80,17 +72,6 @@ def nlp_use_case_deploy_pipeline(
     save_model_to_deploy(
         mlflow_model_name=pipeline_extra["mlflow_model_name"],
         stage=pipeline_extra["target_env"],
-    )
-    ########## Deploy Locally ##########
-    deploy_locally(
-        labels=labels,
-        title=title,
-        description=description,
-        interpretation=interpretation,
-        example=example,
-        model_name_or_path=model_name_or_path,
-        tokenizer_name_or_path=tokenizer_name_or_path,
-        after=["save_model_to_deploy"],
     )
     ########## Deploy to HuggingFace ##########
     deploy_to_huggingface(

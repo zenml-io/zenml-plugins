@@ -18,9 +18,10 @@
 import numpy as np
 from datasets import load_metric
 from zenml.enums import StrEnum
+from typing import Dict, List
 
 
-def compute_metrics(eval_pred: tuple) -> dict[str, float]:
+def compute_metrics(eval_pred: tuple) -> Dict[str, float]:
     """Compute the metrics for the model.
 
     Args:
@@ -44,7 +45,7 @@ def compute_metrics(eval_pred: tuple) -> dict[str, float]:
     return {"accuracy": accuracy, "f1": f1, "precision": precision}
 
 
-def find_max_length(dataset: list[str]) -> int:
+def find_max_length(dataset: List[str]) -> int:
     """Find the maximum length of the dataset.
 
     Args:

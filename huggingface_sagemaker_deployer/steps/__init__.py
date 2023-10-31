@@ -21,7 +21,6 @@ from .dataset_loader import (
     data_loader,
 )
 from .deploying import (
-    deploy_locally,
     deploy_to_huggingface,
     save_model_to_deploy,
 )

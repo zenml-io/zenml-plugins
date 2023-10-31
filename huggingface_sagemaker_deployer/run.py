@@ -20,6 +20,8 @@ from datetime import datetime as dt
 
 import click
 from zenml.logger import get_logger
+from zenml.model import ModelConfig
+
 
 from pipelines import (
     nlp_use_case_deploy_pipeline,
@@ -111,6 +113,12 @@ Examples:
     help="Whether to run the pipeline that deploys the model to selected deployment platform.",
 )
 @click.option(
+    "--zenml-model-name",
+    default="distil_bert_sentiment_analysis",
+    type=click.STRING,
+    help="Name of the ZenML Model.",
+)
+@click.option(
     "--depployment-app-title",
     default="Sentiment Analyzer",
     type=click.STRING,
@@ -143,6 +151,7 @@ def main(
     weight_decay: float = 0.01,
     promoting_pipeline: bool = False,
     deploying_pipeline: bool = False,
+    zenml_model_name: str = "distil_bert_sentiment_analysis",
     depployment_app_title: str = "Sentiment Analyzer",
     depployment_app_description: str = "Sentiment Analyzer",
     depployment_app_interpretation: str = "default",
@@ -180,10 +189,20 @@ def main(
         "learning_rate": learning_rate,
         "weight_decay": weight_decay,
     }
+    
+    model_config = ModelConfig(
+        name=zenml_model_name,
+        license="Apache 2.0",
+        description="Show case Model Control Plane.",
+        create_new_model_version=True,
+        delete_new_version_on_failure=True,
+    )
 
     pipeline_args[
         "run_name"
     ] = f"nlp_use_case_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
+    pipeline_args["model_config"] = model_config
+    
     nlp_use_case_training_pipeline.with_options(**pipeline_args)(
         **run_args_train
     )

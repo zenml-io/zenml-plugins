@@ -17,5 +17,4 @@
 
 
 from .huggingface_deployment import deploy_to_huggingface
-from .local_deployment import deploy_locally
 from .save_model import save_model_to_deploy

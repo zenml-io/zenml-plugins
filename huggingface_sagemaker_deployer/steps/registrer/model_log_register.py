@@ -15,42 +15,45 @@
 # limitations under the License.
 #
 
-import os
-
-from huggingface_hub import HfApi
-from zenml import step, get_step_context
-from zenml.enums import ModelStages
-from zenml.client import Client
-from zenml.logger import get_logger
-from zenml.model import ModelArtifactConfig
 from typing import Optional
 
+import mlflow
 from transformers import (
     PreTrainedModel,
     PreTrainedTokenizerBase,
 )
 from zenml import step
-from zenml import step, pipeline, log_artifact_metadata, get_step_context
-from zenml.model import ModelConfig
-
+from zenml.client import Client
+from zenml.integrations.mlflow.experiment_trackers import MLFlowExperimentTracker
 from zenml.logger import get_logger
 
 # Initialize logger
 logger = get_logger(__name__)
 
+# Get experiment tracker
+experiment_tracker = Client().active_stack.experiment_tracker
+
+# Check if experiment tracker is set and is of type MLFlowExperimentTracker
+if not experiment_tracker or not isinstance(
+    experiment_tracker, MLFlowExperimentTracker
+):
+    raise RuntimeError(
+        "Your active stack needs to contain a MLFlow experiment tracker for "
+        "this example to work."
+    )
 
 
-@step
+@step(experiment_tracker=experiment_tracker.name)
 def register_model(
     model: PreTrainedModel,
     tokenizer: PreTrainedTokenizerBase,
-    repo_name: Optional[str] = "model",
+    mlflow_model_name: Optional[str] = "model",
 ):
     """
-    Register model to Huggingface.
+    Register model to MLFlow.
 
     This step takes in a model and tokenizer artifact previously loaded and pre-processed by
-    other steps in your pipeline, then registers the model to Huggingface Hub.
+    other steps in your pipeline, then registers the model to MLFlow registry.
 
     Model training steps should have caching disabled if they are not deterministic
     (i.e. if the model training involve some random processes like initializing
@@ -64,33 +67,14 @@ def register_model(
         The trained model and tokenizer.
     """
     ### ADD YOUR OWN CODE HERE - THIS IS JUST AN EXAMPLE ###
-    secret = Client().get_secret("huggingface_creds")
-        
-    assert (
-        secret
-    ), "No secret found with name 'huggingface_creds'. Please create one with your `username` and `token`."
-    huggingface_username = secret.secret_values["username"]
-    token = secret.secret_values["token"]
-    api = HfApi(token=token)
-    hf_repo = api.create_repo(
-        repo_id=repo_name, repo_type="space", space_sdk="gradio", exist_ok=True
+    components = {
+        "model": model,
+        "tokenizer": tokenizer,
+    }
+    mlflow.transformers.log_model(
+        transformers_model=components,
+        artifact_path=mlflow_model_name,
+        registered_model_name=mlflow_model_name,
+        task="text-classification",
     )
-    zenml_repo_root = Client().root
-    if not zenml_repo_root:
-        logger.warning(
-            "You're running the `deploy_to_huggingface` step outside of a ZenML repo."
-            "Since the deployment step to huggingface is all about pushing the repo to huggingface, "
-            "this step will not work outside of a ZenML repo where the gradio folder is present."
-        )
-        raise
-    
-    log_artifact_metadata()
-    
-    gradio_folder_path = os.path.join(zenml_repo_root, "gradio")
-    space = api.upload_folder(
-        folder_path=gradio_folder_path,
-        repo_id=hf_repo.repo_id,
-        repo_type="space",
-    )
-    logger.info(f"Space created: {space}")
     ### YOUR CODE ENDS HERE ###

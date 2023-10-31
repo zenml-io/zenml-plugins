@@ -29,6 +29,8 @@ from steps import (
     register_model,
     tokenization_step,
     tokenizer_loader,
+    deploy_to_huggingface,
+    save_model_to_deploy,
 )
 
 logger = get_logger(__name__)
@@ -36,6 +38,7 @@ logger = get_logger(__name__)
 
 @pipeline(on_failure=notify_on_failure)
 def nlp_use_case_training_pipeline(
+    hf_repo_name: str = "hf-repo",
     lower_case: Optional[bool] = True,
     padding: Optional[str] = "max_length",
     max_seq_length: Optional[int] = 128,
@@ -103,6 +106,19 @@ def nlp_use_case_training_pipeline(
         model=model,
         tokenizer=tokenizer,
         mlflow_model_name="nlp_use_case_model",
+    )
+
+    ########## Save Model locally ##########
+    save_model_to_deploy(
+        mlflow_model_name=pipeline_extra["mlflow_model_name"],
+        stage=pipeline_extra["target_env"],
+        after=["register_model"],
+    )
+
+    ########## Deploy to HuggingFace ##########
+    deploy_to_huggingface(
+        repo_name=hf_repo_name,
+        after=["save_model_to_deploy"],
     )
 
     notify_on_success(after=["register_model"])

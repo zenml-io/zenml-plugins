@@ -16,13 +16,11 @@
 #
 
 import os
-
+from typing_extensions import Annotated
 from huggingface_hub import HfApi
-from zenml import step, get_step_context
-from zenml.enums import ModelStages
+from zenml import step, log_artifact_metadata
 from zenml.client import Client
 from zenml.logger import get_logger
-from zenml.model import ModelArtifactConfig
 
 # Initialize logger
 logger = get_logger(__name__)
@@ -31,7 +29,7 @@ logger = get_logger(__name__)
 @step()
 def deploy_to_huggingface(
     repo_name: str,
-):
+) -> Annotated[str, "huggingface_url"]:
     """
     This step deploy the model to huggingface.
 
@@ -40,11 +38,7 @@ def deploy_to_huggingface(
     """
     ### ADD YOUR OWN CODE HERE - THIS IS JUST AN EXAMPLE ###
     secret = Client().get_secret("huggingface_creds")
-    
-    model_config = get_step_context().model_config
-    model_version = model_config._get_model_version()
-    model_version.set_stage(ModelStages.PRODUCTION, force=True)
-        
+
     assert (
         secret
     ), "No secret found with name 'huggingface_creds'. Please create one with your `username` and `token`."
@@ -63,11 +57,26 @@ def deploy_to_huggingface(
         )
         raise
     gradio_folder_path = os.path.join(zenml_repo_root, "gradio")
-    space = api.upload_folder(
+    url = api.upload_folder(
         folder_path=gradio_folder_path,
         repo_id=hf_repo.repo_id,
-        repo_type="space",
+        repo_type="model",
     )
-    space
-    logger.info(f"Space created: {space}")
+    # split the string by '/'
+    url_split = url.split('/')
+
+    # the resulting list would look like this: ['{self.endpoint}', '{repo_id}', 'tree', '{revision}', '{path_in_repo}']
+
+    # now assign each split string to a variable
+    endpoint = url_split[0][1:-1]  # remove the curly brackets
+    repo_id = url_split[1][1:-1]  # remove the curly brackets
+    # skip 'tree'
+    revision = url_split[3][1:-1]  # remove the curly brackets
+    path_in_repo = url_split[4][1:-1]  # remove the curly brackets
+    
+    log_artifact_metadata(output_name=None, endpoint=endpoint, repo_id=repo_id, revision=revision, path_in_repo=path_in_repo)
+    
+    logger.info(f"Model updated: {url}")
     ### YOUR CODE ENDS HERE ###
+
+    return url
