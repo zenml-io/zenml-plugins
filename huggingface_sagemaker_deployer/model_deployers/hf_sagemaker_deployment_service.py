@@ -11,9 +11,14 @@
 #  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
 #  or implied. See the License for the specific language governing
 #  permissions and limitations under the License.
-"""Implementation for the Seldon Deployment step."""
+"""Implementation for the Sagemaker Huggingface Deployer step."""
 
 import json
+import sagemaker 
+import boto3 
+from sagemaker.huggingface import HuggingFaceModel
+from sagemaker.huggingface.model import HuggingFacePredictor
+
 import os
 from typing import Any, Dict, Generator, List, Optional, Tuple, cast
 from uuid import UUID
@@ -22,13 +27,6 @@ import requests
 from pydantic import Field, ValidationError
 
 from zenml import __version__
-from zenml.integrations.seldon.seldon_client import (
-    SeldonClient,
-    SeldonDeployment,
-    SeldonDeploymentNotFoundError,
-    SeldonDeploymentPredictorParameter,
-    SeldonResourceRequirements,
-)
 from zenml.logger import get_logger
 from zenml.services.service import BaseDeploymentService, ServiceConfig
 from zenml.services.service_status import ServiceState, ServiceStatus
@@ -38,39 +36,35 @@ logger = get_logger(__name__)
 
 
 class HFSagemakerDeploymentConfig(ServiceConfig):
-    """Seldon Core deployment service configuration.
+    """"""
+    # Huggingface model args 
+    role: Optional[str] = None
+    model_data: Optional[str] = None
+    entry_point: Optional[str] = None
+    transformers_version: Optional[str] = None
+    tensorflow_version: Optional[str] = None
+    pytorch_version: Optional[str] = None
+    py_version: Optional[str] = None
+    image_uri: Optional[str] = None
+    model_server_workers: Optional[int] = None
 
-    Attributes:
-        model_uri: URI of the model (or models) to serve.
-        model_name: the name of the model. Multiple versions of the same model
-            should use the same model name.
-        implementation: the Seldon Core implementation used to serve the model.
-            The implementation type can be one of the following: `TENSORFLOW_SERVER`,
-            `SKLEARN_SERVER`, `XGBOOST_SERVER`, `custom`.
-        replicas: number of replicas to use for the prediction service.
-        secret_name: the name of a Kubernetes secret containing additional
-            configuration parameters for the Seldon Core deployment (e.g.
-            credentials to access the Artifact Store).
-        model_metadata: optional model metadata information (see
-            https://docs.seldon.io/projects/seldon-core/en/latest/reference/apis/metadata.html).
-        extra_args: additional arguments to pass to the Seldon Core deployment
-            resource configuration.
-        is_custom_deployment: whether the deployment is a custom deployment
-        spec: custom Kubernetes resource specification for the Seldon Core
-    """
+    # Deploy args 
+    initial_instance_count: Optional[int] = None
+    instance_type: Optional[str] = None
+    accelerator_type: Optional[str] = None
+    endpoint_name: Optional[str] = None
+    tags: Optional[List[Dict[str, str]]] = []
+    kms_key: Optional[str] = None
+    wait: bool = True
+    volume_size: Optional[int] = None
+    model_data_download_timeout: Optional[int] = None
+    container_startup_health_check_timeout: Optional[int] = None
+    inference_recommendation_id: Optional[str] = None
 
-    model_uri: str = ""
-    model_name: str = "default"
-    # TODO [ENG-775]: have an enum of all supported Seldon Core implementations
-    implementation: str
-    parameters: Optional[List[SeldonDeploymentPredictorParameter]]
-    resources: Optional[SeldonResourceRequirements]
-    replicas: int = 1
-    secret_name: Optional[str]
-    model_metadata: Dict[str, Any] = Field(default_factory=dict)
-    extra_args: Dict[str, Any] = Field(default_factory=dict)
-    is_custom_deployment: Optional[bool] = False
-    spec: Optional[Dict[Any, Any]] = Field(default_factory=dict)
+    # Misc args        
+    env: Dict[str, str] = {}
+    sagemaker_session_args: Dict[str, Any] = {}
+
 
     def get_seldon_deployment_labels(self) -> Dict[str, str]:
         """Generate labels for the Seldon Core deployment from the service configuration.
@@ -177,6 +171,13 @@ class HFSagemakerDeploymentService(BaseDeploymentService):
         default_factory=lambda: HFSagemakerDeploymentServiceStatus()
     )
 
+    def get_sagemaker_session(
+        self, config: HFSagemakerDeploymentConfig
+    ) -> sagemaker.Session:
+        """Returns sagemaker session from connector"""
+        session = sagemaker.Session(boto3.Session(**config.sagemaker_session_args))
+        return session
+    
     def check_status(self) -> Tuple[ServiceState, str]:
         """Check the the current operational state of the Seldon Core deployment.
 
@@ -220,6 +221,9 @@ class HFSagemakerDeploymentService(BaseDeploymentService):
             The endpoint name of the deployed predictor.
         """
         return f"zenml-{str(self.uuid)}"
+    
+    def get_predictor(self) -> HuggingFacePredictor:
+        return HuggingFacePredictor(self.config.endpoint_name)
 
     @classmethod
     def create_from_deployment(
@@ -256,34 +260,69 @@ class HFSagemakerDeploymentService(BaseDeploymentService):
 
         This should then match the current configuration.
         """
-        client = self._get_client()
+        self.config['sagemaker_session'] = self.get_sagemaker_session
 
-        name = self.seldon_deployment_name
-
-        deployment = SeldonDeployment.build(
-            name=name,
-            model_uri=self.config.model_uri,
-            model_name=self.config.model_name,
-            implementation=self.config.implementation,
-            parameters=self.config.parameters,
-            engineResources=self.config.resources,
-            secret_name=self.config.secret_name,
-            labels=self._get_seldon_deployment_labels(),
-            annotations=self.config.get_seldon_deployment_annotations(),
-            is_custom_deployment=self.config.is_custom_deployment,
-            spec=self.config.spec,
+        # Hugging Face Model Class
+        huggingface_model = HuggingFaceModel(
+            env=self.config.env,
+            role=self.config.role,
+            model_data=self.config.model_data,
+            entry_point=self.config.entry_point,
+            transformers_version=self.config.transformers_version,
+            tensorflow_version=self.config.tensorflow_version,
+            pytorch_version=self.config.pytorch_version,
+            py_version=self.config.py_version,
+            image_uri=self.config.image_uri,
+            model_server_workers=self.config.model_server_workers,
         )
-        deployment.spec.replicas = self.config.replicas
-        deployment.spec.predictors[0].replicas = self.config.replicas
+        
+        # Stamp this deployment with zenml metadata
+        tags = self.config.tags
+        annotations = {
+            "zenml.service_config": self.json(),
+            "zenml.version": __version__,
+            "zenml.service_uuid": str(self.uuid),
+        }
+        """
+        # TODO: Add these
+        labels = {}
+        if self.pipeline_name:
+            labels["zenml.pipeline_name"] = self.pipeline_name
+        if self.run_name:
+            labels["zenml.run_name"] = self.run_name
+        if self.pipeline_step_name:
+            labels["zenml.pipeline_step_name"] = self.pipeline_step_name
+        if self.model_name:
+            labels["zenml.model_name"] = self.model_name
+        if self.model_uri:
+            labels["zenml.model_uri"] = self.model_uri
+        if self.implementation:
+            labels["zenml.model_type"] = self.implementation
+        if self.extra_args:
+            for key, value in self.extra_args.items():
+                labels[f"zenml.{key}"] = value
+        """
+        
+        tags.extend([annotations])
+        
+        # Override the endpoint name. This is critical to fetch it back
+        endpoint_name = f"zenml_service_{str(self.uuid)}"
 
-        # check if the Seldon deployment already exists
-        try:
-            client.get_deployment(name=name)
-            # update the existing deployment
-            client.update_deployment(deployment)
-        except SeldonDeploymentNotFoundError:
-            # create the deployment
-            client.create_deployment(deployment=deployment)
+        # deploy model to SageMaker
+        predictor: HuggingFacePredictor = huggingface_model.deploy(
+            initial_instance_count= self.config.initial_instance_count,
+            instance_type= self.config.instance_type,
+            accelerator_type= self.config.accelerator_type,
+            endpoint_name=endpoint_name,
+            tags=tags,
+            kms_key= self.config.kms_key,
+            wait=self.config.wait,
+            volume_size= self.config.volume_size,
+            model_data_download_timeout=self.config.model_data_download_timeout,
+            container_startup_health_check_timeout=self.config.container_startup_health_check_timeout,
+            inference_recommendation_id= self.config.inference_recommendation_id,
+        )
+        predictor.endpoint_name 
 
     def deprovision(self, force: bool = False) -> None:
         """Deprovision the remote Seldon Core deployment instance.

@@ -29,24 +29,10 @@ if TYPE_CHECKING:
 HF_SAGEMAKER_MODEL_DEPLOYER_FLAVOR = "hf_sagemaker"
 
 
-class HFSagemakerModelDeployerSettings(BaseSettings):
-    """Skypilot orchestrator base settings.
-
-    Attributes:
-
-    """
-
-    # Resources
-    instance_type: str
-    initial_instance_count: Optional[int] = None
-    accelerator_type: Optional[str] = None
-    sagemaker_session_args: Dict[str, Any] = {}
-
-
 class HFSagemakerModelDeployerConfig(  # type: ignore[misc] # https://github.com/pydantic/pydantic/issues/4173
-    BaseModelDeployerConfig, HFSagemakerModelDeployerSettings
+    BaseModelDeployerConfig
 ):
-    """Skypilot orchestrator base config."""
+    """HFSagemakerModelDeployerConfig orchestrator base config."""
 
     @property
     def is_local(self) -> bool:
