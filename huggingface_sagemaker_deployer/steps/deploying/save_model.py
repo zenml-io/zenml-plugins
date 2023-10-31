@@ -20,7 +20,6 @@ import mlflow
 from zenml import step
 from zenml.client import Client
 from zenml.logger import get_logger
-from zenml.model_registries.base_model_registry import ModelVersionStage
 
 # Initialize logger
 logger = get_logger(__name__)
@@ -32,7 +31,6 @@ model_registry = Client().active_stack.model_registry
 @step()
 def save_model_to_deploy(
     mlflow_model_name: str,
-    stage: str,
 ):
     """
     This step saves the latest model and tokenizer to the local filesystem.
@@ -44,16 +42,14 @@ def save_model_to_deploy(
 
     Args:
         mlfow_model_name: The name of the model in MLFlow.
-        stage: The stage of the model in MLFlow.
     """
     ### ADD YOUR OWN CODE HERE - THIS IS JUST AN EXAMPLE ###
     logger.info(
-        f" Loading latest version of model {mlflow_model_name} for stage {stage}..."
+        f" Loading latest version of model {mlflow_model_name}..."
     )
     # Load model from MLFlow registry
     model_version = model_registry.get_latest_model_version(
         name=mlflow_model_name,
-        stage=ModelVersionStage(stage),
     ).version
     # Load model from MLFlow registry
     model_version = model_registry.get_model_version(

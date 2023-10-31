@@ -111,7 +111,6 @@ def nlp_use_case_training_pipeline(
     ########## Save Model locally ##########
     save_model_to_deploy(
         mlflow_model_name=pipeline_extra["mlflow_model_name"],
-        stage=pipeline_extra["target_env"],
         after=["register_model"],
     )
 
