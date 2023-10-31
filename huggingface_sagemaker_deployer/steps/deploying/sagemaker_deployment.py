@@ -33,9 +33,6 @@ def deploy_hf_to_sagemaker() -> Annotated[str, "sagemaker_endpoint_name"]:
     """
     context = get_step_context()
     mv = context.model_config.get_or_create_model_version()
-    breakpoint()
-    print(mv.get_artifact_object(name="huggingface_url").metadata["endpoint"].value)
     print(mv.get_artifact_object(name="huggingface_url").metadata["repo_id"].value)
     print(mv.get_artifact_object(name="huggingface_url").metadata["revision"].value)
-    print(mv.get_artifact_object(name="huggingface_url").metadata["path_in_repo"].value)
     return ""
