@@ -18,7 +18,8 @@ from hf_sagemaker_model_deployer import (  # noqa
 )
 from hf_sagemaker_model_deployer_flavor import (  # noqa
     HFSagemakerModelDeployerFlavor,
-    HFSagemakerModelDeployerConfig
+    HFSagemakerModelDeployerConfig,
+    HFSagemakerModelDeployerSettings,
 )
 from hf_sagemaker_deployment_service import (  # noqa
     HFSagemakerDeploymentService,
@@ -28,5 +29,6 @@ __all__ = [
     "HFSagemakerModelDeployer",
     "HFSagemakerModelDeployerFlavor",
     "HFSagemakerModelDeployerConfig",
+    "HFSagemakerModelDeployerSettings",
     "HFSagemakerDeploymentService",
 ]

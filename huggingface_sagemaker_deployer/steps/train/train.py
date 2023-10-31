@@ -11,7 +11,8 @@ from zenml.model import ModelArtifactConfig
 def train_and_evaluate(
     train_data: pd.DataFrame,
     test_data: pd.DataFrame,
-) -> Tuple[Annotated[ClassifierMixin, "iris_classifier", ModelArtifactConfig()], float
+) -> Tuple[
+    Annotated[ClassifierMixin, "iris_classifier", ModelArtifactConfig()], float
 ]:  # it will be linked as model object
     """Runs training and evaluation combined.
 

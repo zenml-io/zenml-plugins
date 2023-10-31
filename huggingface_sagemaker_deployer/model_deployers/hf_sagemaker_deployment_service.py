@@ -37,7 +37,7 @@ from zenml.services.service_type import ServiceType
 logger = get_logger(__name__)
 
 
-class SeldonDeploymentConfig(ServiceConfig):
+class HFSagemakerDeploymentConfig(ServiceConfig):
     """Seldon Core deployment service configuration.
 
     Attributes:
@@ -121,7 +121,7 @@ class SeldonDeploymentConfig(ServiceConfig):
     @classmethod
     def create_from_deployment(
         cls, deployment: SeldonDeployment
-    ) -> "SeldonDeploymentConfig":
+    ) -> "HFSagemakerDeploymentConfig":
         """Recreate the configuration of a Seldon Core Service from a deployed instance.
 
         Args:
@@ -136,9 +136,7 @@ class SeldonDeploymentConfig(ServiceConfig):
                 the expected annotations or it contains an invalid or
                 incompatible Seldon Core service configuration.
         """
-        config_data = deployment.metadata.annotations.get(
-            "zenml.service_config"
-        )
+        config_data = deployment.metadata.annotations.get("zenml.service_config")
         if not config_data:
             raise ValueError(
                 f"The given deployment resource does not contain a "
@@ -155,8 +153,8 @@ class SeldonDeploymentConfig(ServiceConfig):
         return service_config
 
 
-class SeldonDeploymentServiceStatus(ServiceStatus):
-    """Seldon Core deployment service status."""
+class HFSagemakerDeploymentServiceStatus(ServiceStatus):
+    """HF Sagemaker deployment service status."""
 
 
 class HFSagemakerDeploymentService(BaseDeploymentService):
@@ -168,32 +166,16 @@ class HFSagemakerDeploymentService(BaseDeploymentService):
     """
 
     SERVICE_TYPE = ServiceType(
-        name="seldon-deployment",
+        name="huggingface-sagemaker-deployment",
         type="model-serving",
-        flavor="seldon",
-        description="Seldon Core prediction service",
+        flavor="huggingface-sagemaker",
+        description="Huggingface Sagemaker deployment service to deploy HF models on Sagemaker.",
     )
 
-    config: SeldonDeploymentConfig
-    status: SeldonDeploymentServiceStatus = Field(
-        default_factory=lambda: SeldonDeploymentServiceStatus()
+    config: HFSagemakerDeploymentConfig
+    status: HFSagemakerDeploymentServiceStatus = Field(
+        default_factory=lambda: HFSagemakerDeploymentServiceStatus()
     )
-
-    def _get_client(self) -> SeldonClient:
-        """Get the Seldon Core client from the active Seldon Core model deployer.
-
-        Returns:
-            The Seldon Core client.
-        """
-        from zenml.integrations.seldon.model_deployers.seldon_model_deployer import (
-            SeldonModelDeployer,
-        )
-
-        model_deployer = cast(
-            SeldonModelDeployer,
-            SeldonModelDeployer.get_active_model_deployer(),
-        )
-        return model_deployer.seldon_client
 
     def check_status(self) -> Tuple[ServiceState, str]:
         """Check the the current operational state of the Seldon Core deployment.
@@ -219,8 +201,7 @@ class HFSagemakerDeploymentService(BaseDeploymentService):
         if deployment.is_failed():
             return (
                 ServiceState.ERROR,
-                f"Seldon Core deployment '{name}' failed: "
-                f"{deployment.get_error()}",
+                f"Seldon Core deployment '{name}' failed: " f"{deployment.get_error()}",
             )
 
         pending_message = deployment.get_pending_message() or ""
@@ -230,26 +211,15 @@ class HFSagemakerDeploymentService(BaseDeploymentService):
         )
 
     @property
-    def seldon_deployment_name(self) -> str:
-        """Get the name of the Seldon Core deployment.
+    def endpoint_name(self) -> str:
+        """Get the name of the endpoint from sagemaker.
 
         It should return the one that uniquely corresponds to this service instance.
 
         Returns:
-            The name of the Seldon Core deployment.
+            The endpoint name of the deployed predictor.
         """
         return f"zenml-{str(self.uuid)}"
-
-    def _get_seldon_deployment_labels(self) -> Dict[str, str]:
-        """Generate the labels for the Seldon Core deployment from the service configuration.
-
-        Returns:
-            The labels for the Seldon Core deployment.
-        """
-        labels = self.config.get_seldon_deployment_labels()
-        labels["zenml.service_uuid"] = str(self.uuid)
-        SeldonClient.sanitize_labels(labels)
-        return labels
 
     @classmethod
     def create_from_deployment(
@@ -270,7 +240,7 @@ class HFSagemakerDeploymentService(BaseDeploymentService):
             ValueError: if the given deployment resource does not contain
                 the expected service_uuid label.
         """
-        config = SeldonDeploymentConfig.create_from_deployment(deployment)
+        config = HFSagemakerDeploymentConfig.create_from_deployment(deployment)
         uuid = deployment.metadata.labels.get("zenml.service_uuid")
         if not uuid:
             raise ValueError(

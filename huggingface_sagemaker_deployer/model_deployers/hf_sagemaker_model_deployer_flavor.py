@@ -13,12 +13,14 @@
 #  permissions and limitations under the License.
 """BentoML model deployer flavor."""
 
-from typing import TYPE_CHECKING, Optional, Type
+from typing import TYPE_CHECKING, Optional, Type, Dict, Any
 
 from zenml.model_deployers.base_model_deployer import (
     BaseModelDeployerConfig,
     BaseModelDeployerFlavor,
 )
+from zenml.models import ServiceConnectorRequirements
+from zenml.config.base_settings import BaseSettings
 
 if TYPE_CHECKING:
     from hf_sagemaker_model_deployer import HFSagemakerModelDeployer
@@ -27,10 +29,36 @@ if TYPE_CHECKING:
 HF_SAGEMAKER_MODEL_DEPLOYER_FLAVOR = "hf_sagemaker"
 
 
-class HFSagemakerModelDeployerConfig(BaseModelDeployerConfig):
-    """Configuration for the HFSagemakerModelDeployer."""
+class HFSagemakerModelDeployerSettings(BaseSettings):
+    """Skypilot orchestrator base settings.
 
-    service_path: str = ""
+    Attributes:
+
+    """
+
+    # Resources
+    instance_type: str
+    initial_instance_count: Optional[int] = None
+    accelerator_type: Optional[str] = None
+    sagemaker_session_args: Dict[str, Any] = {}
+
+
+class HFSagemakerModelDeployerConfig(  # type: ignore[misc] # https://github.com/pydantic/pydantic/issues/4173
+    BaseModelDeployerConfig, HFSagemakerModelDeployerSettings
+):
+    """Skypilot orchestrator base config."""
+
+    @property
+    def is_local(self) -> bool:
+        """Checks if this stack component is running locally.
+
+        This designation is used to determine if the stack component can be
+        shared with other users or if it is only usable on the local host.
+
+        Returns:
+            True if this config is for a local component, False otherwise.
+        """
+        return True
 
 
 class HFSagemakerModelDeployerFlavor(BaseModelDeployerFlavor):
@@ -44,7 +72,6 @@ class HFSagemakerModelDeployerFlavor(BaseModelDeployerFlavor):
             Name of the flavor.
         """
         return HF_SAGEMAKER_MODEL_DEPLOYER_FLAVOR
-
 
     @property
     def config_class(self) -> Type[HFSagemakerModelDeployerConfig]:
@@ -67,3 +94,20 @@ class HFSagemakerModelDeployerFlavor(BaseModelDeployerFlavor):
         )
 
         return HFSagemakerModelDeployer
+
+    @property
+    def service_connector_requirements(
+        self,
+    ) -> Optional[ServiceConnectorRequirements]:
+        """Service connector resource requirements for service connectors.
+
+        Specifies resource requirements that are used to filter the available
+        service connector types that are compatible with this flavor.
+
+        Returns:
+            Requirements for compatible service connectors, if a service
+            connector is required for this flavor.
+        """
+        return ServiceConnectorRequirements(
+            resource_type="aws-generic",
+        )
