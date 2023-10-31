@@ -105,7 +105,7 @@ def nlp_use_case_training_pipeline(
     register_model(
         model=model,
         tokenizer=tokenizer,
-        mlflow_model_name="nlp_use_case_model",
+        mlflow_model_name=pipeline_extra["mlflow_model_name"],
     )
 
     ########## Save Model locally ##########
