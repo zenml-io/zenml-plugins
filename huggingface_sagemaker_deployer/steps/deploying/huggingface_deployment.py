@@ -46,7 +46,7 @@ def deploy_to_huggingface(
     token = secret.secret_values["token"]
     api = HfApi(token=token)
     hf_repo = api.create_repo(
-        repo_id=repo_name, repo_type="space", space_sdk="gradio", exist_ok=True
+        repo_id=repo_name, repo_type="model", exist_ok=True
     )
     zenml_repo_root = Client().root
     if not zenml_repo_root:

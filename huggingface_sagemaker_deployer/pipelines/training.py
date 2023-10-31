@@ -91,27 +91,27 @@ def nlp_use_case_training_pipeline(
     )
 
     ########## Training stage ##########
-    model, tokenizer = model_trainer(
-        tokenized_dataset=tokenized_data,
-        tokenizer=tokenizer,
-        train_batch_size=train_batch_size,
-        eval_batch_size=eval_batch_size,
-        num_epochs=num_epochs,
-        learning_rate=learning_rate,
-        weight_decay=weight_decay,
-    )
+    # model, tokenizer = model_trainer(
+    #     tokenized_dataset=tokenized_data,
+    #     tokenizer=tokenizer,
+    #     train_batch_size=train_batch_size,
+    #     eval_batch_size=eval_batch_size,
+    #     num_epochs=num_epochs,
+    #     learning_rate=learning_rate,
+    #     weight_decay=weight_decay,
+    # )
 
     ########## Log and Register stage ##########
-    register_model(
-        model=model,
-        tokenizer=tokenizer,
-        mlflow_model_name=pipeline_extra["mlflow_model_name"],
-    )
+    # register_model(
+    #     model=model,
+    #     tokenizer=tokenizer,
+    #     mlflow_model_name=pipeline_extra["mlflow_model_name"],
+    # )
 
     ########## Save Model locally ##########
     save_model_to_deploy(
         mlflow_model_name=pipeline_extra["mlflow_model_name"],
-        after=["register_model"],
+        after=["tokenization_step"],
     )
 
     ########## Deploy to HuggingFace ##########
@@ -120,5 +120,5 @@ def nlp_use_case_training_pipeline(
         after=["save_model_to_deploy"],
     )
 
-    notify_on_success(after=["register_model"])
+    notify_on_success(after=["deploy_to_huggingface"])
     ### YOUR CODE ENDS HERE ###

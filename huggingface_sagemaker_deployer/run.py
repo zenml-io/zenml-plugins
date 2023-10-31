@@ -101,9 +101,15 @@ Examples:
     help="Weight decay for training the model.",
 )
 @click.option(
-    "--promoting-pipeline",
+    "--training-pipeline",
     is_flag=True,
     default=True,
+    help="Whether to run the pipeline that trains the model.",
+)
+@click.option(
+    "--promoting-pipeline",
+    is_flag=True,
+    default=False,
     help="Whether to run the pipeline that promotes the model to staging.",
 )
 @click.option(
@@ -118,30 +124,6 @@ Examples:
     type=click.STRING,
     help="Name of the ZenML Model.",
 )
-@click.option(
-    "--depployment-app-title",
-    default="Sentiment Analyzer",
-    type=click.STRING,
-    help="Title of the Gradio interface.",
-)
-@click.option(
-    "--depployment-app-description",
-    default="Sentiment Analyzer",
-    type=click.STRING,
-    help="Description of the Gradio interface.",
-)
-@click.option(
-    "--depployment-app-interpretation",
-    default="default",
-    type=click.STRING,
-    help="Interpretation mode for the Gradio interface.",
-)
-@click.option(
-    "--depployment-app-example",
-    default="",
-    type=click.STRING,
-    help="Comma-separated list of examples to show in the Gradio interface.",
-)
 def main(
     no_cache: bool = True,
     num_epochs: int = 3,
@@ -149,13 +131,10 @@ def main(
     eval_batch_size: int = 8,
     learning_rate: float = 2e-5,
     weight_decay: float = 0.01,
+    training_pipeline: bool = True,
     promoting_pipeline: bool = False,
     deploying_pipeline: bool = False,
     zenml_model_name: str = "distil_bert_sentiment_analysis",
-    depployment_app_title: str = "Sentiment Analyzer",
-    depployment_app_description: str = "Sentiment Analyzer",
-    depployment_app_interpretation: str = "default",
-    depployment_app_example: str = "",
 ):
     """Main entry point for the pipeline execution.
 
@@ -182,30 +161,31 @@ def main(
         pipeline_args["enable_cache"] = False
 
     # Execute Training Pipeline
-    run_args_train = {
-        "num_epochs": num_epochs,
-        "train_batch_size": train_batch_size,
-        "eval_batch_size": eval_batch_size,
-        "learning_rate": learning_rate,
-        "weight_decay": weight_decay,
-    }
+    if training_pipeline:
+        run_args_train = {
+            "num_epochs": num_epochs,
+            "train_batch_size": train_batch_size,
+            "eval_batch_size": eval_batch_size,
+            "learning_rate": learning_rate,
+            "weight_decay": weight_decay,
+        }
 
-    model_config = ModelConfig(
-        name=zenml_model_name,
-        license="Apache 2.0",
-        description="Show case Model Control Plane.",
-        create_new_model_version=True,
-        delete_new_version_on_failure=True,
-    )
+        model_config = ModelConfig(
+            name=zenml_model_name,
+            license="Apache 2.0",
+            description="Show case Model Control Plane.",
+            create_new_model_version=True,
+            delete_new_version_on_failure=True,
+        )
 
-    pipeline_args["model_config"] = model_config
+        pipeline_args["model_config"] = model_config
 
-    pipeline_args[
-        "run_name"
-    ] = f"nlp_use_case_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
+        pipeline_args[
+            "run_name"
+        ] = f"nlp_use_case_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
 
-    nlp_use_case_training_pipeline.with_options(**pipeline_args)(**run_args_train)
-    logger.info("Training pipeline finished successfully!")
+        nlp_use_case_training_pipeline.with_options(**pipeline_args)(**run_args_train)
+        logger.info("Training pipeline finished successfully!")
 
     # Execute Promoting Pipeline
     if promoting_pipeline:
