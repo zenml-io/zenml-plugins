@@ -42,8 +42,9 @@ def deploy_hf_to_sagemaker() -> (
     """
     context = get_step_context()
     mv = context.model_config.get_or_create_model_version()
-    repo_id = mv.get_artifact_object(name="huggingface_url").metadata["repo_id"].value
-    revision = mv.get_artifact_object(name="huggingface_url").metadata["revision"].value
+    deployment_metadata = mv.get_artifact_object(name="huggingface_url").metadata
+    repo_id = deployment_metadata["repo_id"].value
+    revision = deployment_metadata["revision"].value
 
     REGION_NAME = "us-east-1"
     os.environ["AWS_DEFAULT_REGION"] = REGION_NAME
