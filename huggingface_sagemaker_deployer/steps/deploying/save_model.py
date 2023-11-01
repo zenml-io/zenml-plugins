@@ -28,7 +28,7 @@ logger = get_logger(__name__)
 model_registry = Client().active_stack.model_registry
 
 
-@step()
+@step
 def save_model_to_deploy(
     mlflow_model_name: str,
 ):

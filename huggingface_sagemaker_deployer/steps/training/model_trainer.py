@@ -33,6 +33,7 @@ from zenml.client import Client
 from zenml.integrations.mlflow.experiment_trackers import (
     MLFlowExperimentTracker,
 )
+from zenml.model import ModelArtifactConfig
 from zenml.logger import get_logger
 
 from utils.misc import compute_metrics
@@ -64,10 +65,11 @@ def model_trainer(
     load_best_model_at_end: Optional[bool] = True,
     eval_batch_size: Optional[int] = 16,
     weight_decay: Optional[float] = 0.01,
-    mlflow_model_name: Optional[str] = "model",
 ) -> Tuple[
-    Annotated[PreTrainedModel, "model"],
-    Annotated[PreTrainedTokenizerBase, "tokenizer"],
+    Annotated[PreTrainedModel, "model", ModelArtifactConfig(overwrite=True)],
+    Annotated[
+        PreTrainedTokenizerBase, "tokenizer", ModelArtifactConfig(overwrite=True)
+    ],
 ]:
     """
     Configure and train a model on the training dataset.
@@ -91,7 +93,6 @@ def model_trainer(
         load_best_model_at_end: Whether to load the best model at the end of training.
         eval_batch_size: Evaluation batch size.
         weight_decay: Weight decay.
-        mlflow_model_name: The name of the model in MLFlow.
 
     Returns:
         The trained model and tokenizer.

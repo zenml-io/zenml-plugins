@@ -99,7 +99,7 @@ def promote_metric_compare_promoter(
         # Also update the ZenML model control plane
         model_config = get_step_context().model_config
         model_version = model_config._get_model_version()
-        model_version.set_stage(ModelStages.STAGING, force=True)
+        model_version.set_stage(ModelStages.PRODUCTION, force=True)
 
     logger.info(
         f"Current model version in `{pipeline_extra['target_env']}` is `{promoted_version}`"

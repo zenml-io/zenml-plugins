@@ -205,7 +205,7 @@ def main(
         # Deploying pipeline has new ZenML model config
         model_config = ModelConfig(
             name=zenml_model_name,
-            version=ModelStages.STAGING,
+            version=ModelStages.PRODUCTION,
         )
         pipeline_args["model_config"] = model_config
         pipeline_args["enable_cache"] = False

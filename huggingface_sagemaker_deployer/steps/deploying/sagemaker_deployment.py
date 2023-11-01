@@ -18,6 +18,7 @@
 from typing_extensions import Annotated
 from zenml import step, get_step_context
 from zenml.logger import get_logger
+from zenml.model import DeploymentArtifactConfig
 from sagemaker.huggingface import get_huggingface_llm_image_uri
 from sagemaker.huggingface import HuggingFaceModel
 import sagemaker
@@ -30,8 +31,10 @@ import time
 logger = get_logger(__name__)
 
 
-@step()
-def deploy_hf_to_sagemaker() -> Annotated[str, "sagemaker_endpoint_name"]:
+@step
+def deploy_hf_to_sagemaker() -> (
+    Annotated[str, "sagemaker_endpoint_name", DeploymentArtifactConfig()]
+):
     """
     This step deploy the model to huggingface.
 
