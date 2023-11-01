@@ -15,23 +15,25 @@
 # limitations under the License.
 #
 
-from typing_extensions import Annotated
-from zenml import step, get_step_context
-from zenml.logger import get_logger
-from sagemaker.huggingface import get_huggingface_llm_image_uri
-from sagemaker.huggingface import HuggingFaceModel
-import sagemaker
-import boto3
-
 import os
 import time
+
+import boto3
+import sagemaker
+from sagemaker.huggingface import HuggingFaceModel, get_huggingface_llm_image_uri
+from typing_extensions import Annotated
+from zenml import get_step_context, step
+from zenml.logger import get_logger
+from zenml.model import DeploymentArtifactConfig
 
 # Initialize logger
 logger = get_logger(__name__)
 
 
-@step()
-def deploy_hf_to_sagemaker() -> Annotated[str, "sagemaker_endpoint_name"]:
+@step
+def deploy_hf_to_sagemaker() -> (
+    Annotated[str, "sagemaker_endpoint_name", DeploymentArtifactConfig()]
+):
     """
     This step deploy the model to huggingface.
 
@@ -40,8 +42,9 @@ def deploy_hf_to_sagemaker() -> Annotated[str, "sagemaker_endpoint_name"]:
     """
     context = get_step_context()
     mv = context.model_config.get_or_create_model_version()
-    repo_id = mv.get_artifact_object(name="huggingface_url").metadata["repo_id"].value
-    revision = mv.get_artifact_object(name="huggingface_url").metadata["revision"].value
+    deployment_metadata = mv.get_artifact_object(name="huggingface_url").metadata
+    repo_id = deployment_metadata["repo_id"].value
+    revision = deployment_metadata["revision"].value
 
     REGION_NAME = "us-east-1"
     os.environ["AWS_DEFAULT_REGION"] = REGION_NAME

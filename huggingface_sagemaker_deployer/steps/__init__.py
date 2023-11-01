@@ -21,9 +21,9 @@ from .dataset_loader import (
     data_loader,
 )
 from .deploying import (
+    deploy_hf_to_sagemaker,
     deploy_to_huggingface,
     save_model_to_deploy,
-    deploy_hf_to_sagemaker,
 )
 from .promotion import (
     promote_get_metric,

@@ -16,20 +16,22 @@
 #
 
 import os
-from typing_extensions import Annotated
+
 from huggingface_hub import HfApi
-from zenml import step, log_artifact_metadata
+from typing_extensions import Annotated
+from zenml import log_artifact_metadata, step
 from zenml.client import Client
 from zenml.logger import get_logger
+from zenml.model import DeploymentArtifactConfig
 
 # Initialize logger
 logger = get_logger(__name__)
 
 
-@step()
+@step
 def deploy_to_huggingface(
     repo_name: str,
-) -> Annotated[str, "huggingface_url"]:
+) -> Annotated[str, "huggingface_url", DeploymentArtifactConfig()]:
     """
     This step deploy the model to huggingface.
 

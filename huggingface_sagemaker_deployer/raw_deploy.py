@@ -1,7 +1,7 @@
-import sagemaker
-import boto3
-
 import os
+
+import boto3
+import sagemaker
 
 REGION_NAME = "us-east-1"
 os.environ["AWS_DEFAULT_REGION"] = REGION_NAME
