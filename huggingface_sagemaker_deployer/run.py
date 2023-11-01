@@ -19,15 +19,14 @@ import os
 from datetime import datetime as dt
 
 import click
-from zenml.logger import get_logger
-from zenml.model import ModelConfig
-from zenml.enums import ModelStages
-
 from pipelines import (
     nlp_use_case_deploy_pipeline,
     nlp_use_case_promote_pipeline,
     nlp_use_case_training_pipeline,
 )
+from zenml.enums import ModelStages
+from zenml.logger import get_logger
+from zenml.model import ModelConfig
 
 logger = get_logger(__name__)
 

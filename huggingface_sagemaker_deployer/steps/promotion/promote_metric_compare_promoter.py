@@ -18,9 +18,9 @@
 
 from zenml import get_step_context, step
 from zenml.client import Client
+from zenml.enums import ModelStages
 from zenml.logger import get_logger
 from zenml.model_registries.base_model_registry import ModelVersionStage
-from zenml.enums import ModelStages
 
 logger = get_logger(__name__)
 

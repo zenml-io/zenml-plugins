@@ -13,14 +13,13 @@
 #  permissions and limitations under the License.
 """BentoML model deployer flavor."""
 
-from typing import TYPE_CHECKING, Optional, Type, Dict, Any
+from typing import TYPE_CHECKING, Optional, Type
 
 from zenml.model_deployers.base_model_deployer import (
     BaseModelDeployerConfig,
     BaseModelDeployerFlavor,
 )
 from zenml.models import ServiceConnectorRequirements
-from zenml.config.base_settings import BaseSettings
 
 if TYPE_CHECKING:
     from hf_sagemaker_model_deployer import HFSagemakerModelDeployer

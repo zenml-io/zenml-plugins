@@ -28,15 +28,14 @@ from transformers import (
     TrainingArguments,
 )
 from typing_extensions import Annotated
+from utils.misc import compute_metrics
 from zenml import step
 from zenml.client import Client
 from zenml.integrations.mlflow.experiment_trackers import (
     MLFlowExperimentTracker,
 )
-from zenml.model import ModelArtifactConfig
 from zenml.logger import get_logger
-
-from utils.misc import compute_metrics
+from zenml.model import ModelArtifactConfig
 
 # Initialize logger
 logger = get_logger(__name__)

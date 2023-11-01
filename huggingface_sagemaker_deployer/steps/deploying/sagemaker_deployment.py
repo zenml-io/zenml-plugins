@@ -15,17 +15,16 @@
 # limitations under the License.
 #
 
-from typing_extensions import Annotated
-from zenml import step, get_step_context
-from zenml.logger import get_logger
-from zenml.model import DeploymentArtifactConfig
-from sagemaker.huggingface import get_huggingface_llm_image_uri
-from sagemaker.huggingface import HuggingFaceModel
-import sagemaker
-import boto3
-
 import os
 import time
+
+import boto3
+import sagemaker
+from sagemaker.huggingface import HuggingFaceModel, get_huggingface_llm_image_uri
+from typing_extensions import Annotated
+from zenml import get_step_context, step
+from zenml.logger import get_logger
+from zenml.model import DeploymentArtifactConfig
 
 # Initialize logger
 logger = get_logger(__name__)

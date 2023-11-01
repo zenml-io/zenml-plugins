@@ -15,17 +15,15 @@
 # limitations under the License.
 #
 
-from typing import List, Optional
-
-from zenml import get_pipeline_context, pipeline
-from zenml.client import Client
-from zenml.logger import get_logger
 
 from steps import (
+    deploy_hf_to_sagemaker,
     notify_on_failure,
     notify_on_success,
-    deploy_hf_to_sagemaker,
 )
+from zenml import pipeline
+from zenml.client import Client
+from zenml.logger import get_logger
 
 logger = get_logger(__name__)
 

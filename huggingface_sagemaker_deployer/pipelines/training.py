@@ -18,20 +18,19 @@
 
 from typing import Optional
 
-from zenml import get_pipeline_context, pipeline
-from zenml.logger import get_logger
-
 from steps import (
     data_loader,
+    deploy_to_huggingface,
     model_trainer,
     notify_on_failure,
     notify_on_success,
     register_model,
+    save_model_to_deploy,
     tokenization_step,
     tokenizer_loader,
-    deploy_to_huggingface,
-    save_model_to_deploy,
 )
+from zenml import get_pipeline_context, pipeline
+from zenml.logger import get_logger
 
 logger = get_logger(__name__)
 
