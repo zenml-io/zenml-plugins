@@ -30,6 +30,6 @@ settings:
 
 extra:
   mlflow_model_name: nlp_use_case_model
-  target_env: Staging
+  target_env: Production
   notify_on_success: False
   notify_on_failure: True
