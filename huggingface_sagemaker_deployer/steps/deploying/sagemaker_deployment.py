@@ -15,12 +15,8 @@
 # limitations under the License.
 #
 
-import os
-import time
-
-import boto3
-import sagemaker
-from sagemaker.huggingface import HuggingFaceModel, get_huggingface_llm_image_uri
+from gradio.aws_helper import get_sagemaker_role, get_sagemaker_session
+from sagemaker.huggingface import HuggingFaceModel
 from typing_extensions import Annotated
 from zenml import get_step_context, step
 from zenml.logger import get_logger
@@ -46,33 +42,23 @@ def deploy_hf_to_sagemaker() -> (
     repo_id = deployment_metadata["repo_id"].value
     revision = deployment_metadata["revision"].value
 
-    REGION_NAME = "us-east-1"
-    os.environ["AWS_DEFAULT_REGION"] = REGION_NAME
-    ROLE_NAME = "hamza_connector"
+    # Sagemaker
+    role = get_sagemaker_role()
+    session = get_sagemaker_session()
 
-    auth_arguments = {
-        "aws_access_key_id": os.environ["AWS_ACCESS_KEY_ID"],
-        "aws_secret_access_key": os.environ["AWS_SECRET_ACCESS_KEY"],
-        "aws_session_token": os.environ["AWS_SESSION_TOKEN"],
-        "region_name": REGION_NAME,
+    hub = {
+        "HF_MODEL_ID": repo_id,
+        "HF_MODEL_REVISION": revision,
+        "HF_TASK": "text-classification",
     }
-
-    iam = boto3.client("iam", **auth_arguments)
-    role = iam.get_role(RoleName=ROLE_NAME)["Role"]["Arn"]
-
-    session = sagemaker.Session(boto3.Session(**auth_arguments))
-
-    # image uri
-    llm_image = get_huggingface_llm_image_uri("huggingface")
-
-    # Falcon 7b
-    hub = {"HF_MODEL_ID": repo_id, "HF_MODEL_REVISION": revision}
 
     # Hugging Face Model Class
     huggingface_model = HuggingFaceModel(
         env=hub,
         role=role,  # iam role from AWS
-        image_uri=llm_image,
+        transformers_version="4.26.0",
+        pytorch_version="1.13.1",
+        py_version="py39",
         sagemaker_session=session,
     )
 
@@ -84,9 +70,4 @@ def deploy_hf_to_sagemaker() -> (
     )
     endpoint_name = predictor.endpoint_name
 
-    time.sleep(10)
-
-    # DELETE ENDPOINT to avoid unnecessary expenses
-    predictor.delete_model()
-    predictor.delete_endpoint()
     return endpoint_name

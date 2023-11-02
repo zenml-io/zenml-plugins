@@ -13,24 +13,20 @@
 #  permissions and limitations under the License.
 """Implementation of the HF Sagemaker client for ZenML."""
 
-import base64
 import json
-import sagemaker
 import re
 import time
-from typing import Any, Dict, Generator, List, Optional
-import boto3
+from typing import Any, Dict, List, Optional
 
+import sagemaker
 from pydantic import BaseModel, Field, ValidationError
-
 from zenml.logger import get_logger
-from zenml.utils.enum_utils import StrEnum
 
 logger = get_logger(__name__)
 
+
 class HFSagemakerDeployment(BaseModel):
-    """
-    """
+    """ """
 
     kind: str = Field(SELDON_DEPLOYMENT_KIND, const=True)
     apiVersion: str = Field(SELDON_DEPLOYMENT_API_VERSION, const=True)
@@ -258,10 +254,7 @@ class HFSagemakerDeploymentNotFoundError(HFSagemakerClientError):
 class HFSagemakerClient:
     """A client for interacting with HFSagemaker Deployments."""
 
-    def __init__(
-        self,
-        sagemaker_session: sagemaker.Session
-    ):
+    def __init__(self, sagemaker_session: sagemaker.Session):
         """Initialize a HFSagemaker Core client.
 
         Args:
@@ -273,15 +266,12 @@ class HFSagemakerClient:
 
     @staticmethod
     def sanitize_tags(tags: Dict[str, str]) -> None:
-        """
-        """
+        """ """
         for key, value in tags.items():
             # Kubernetes labels must be alphanumeric, no longer than
             # 63 characters, and must begin and end with an alphanumeric
             # character ([a-z0-9A-Z])
-            tags[key] = re.sub(r"[^0-9a-zA-Z-_\.]+", "_", value)[:63].strip(
-                "-_."
-            )
+            tags[key] = re.sub(r"[^0-9a-zA-Z-_\.]+", "_", value)[:63].strip("-_.")
 
     def create_deployment(
         self,
@@ -316,15 +306,13 @@ class HFSagemakerClient:
             deployment.mark_as_managed_by_zenml()
 
             body_deploy = deployment.dict(exclude_none=True)
-            response = (
-                self._custom_objects_api.create_namespaced_custom_object(
-                    group="machinelearning.seldon.io",
-                    version="v1",
-                    namespace=self._namespace,
-                    plural="seldondeployments",
-                    body=body_deploy,
-                    _request_timeout=poll_timeout or None,
-                )
+            response = self._custom_objects_api.create_namespaced_custom_object(
+                group="machinelearning.seldon.io",
+                version="v1",
+                namespace=self._namespace,
+                plural="seldondeployments",
+                body=body_deploy,
+                _request_timeout=poll_timeout or None,
             )
             logger.debug("HFSagemaker Core API response: %s", response)
         except k8s_client.rest.ApiException as e:
@@ -379,16 +367,14 @@ class HFSagemakerClient:
             # a HFSagemakerDeploymentNotFoundError otherwise
             self.get_deployment(name=name)
 
-            response = (
-                self._custom_objects_api.delete_namespaced_custom_object(
-                    group="machinelearning.seldon.io",
-                    version="v1",
-                    namespace=self._namespace,
-                    plural="seldondeployments",
-                    name=name,
-                    _request_timeout=poll_timeout or None,
-                    grace_period_seconds=0 if force else None,
-                )
+            response = self._custom_objects_api.delete_namespaced_custom_object(
+                group="machinelearning.seldon.io",
+                version="v1",
+                namespace=self._namespace,
+                plural="seldondeployments",
+                name=name,
+                _request_timeout=poll_timeout or None,
+                grace_period_seconds=0 if force else None,
             )
             logger.debug("HFSagemaker Core API response: %s", response)
         except k8s_client.rest.ApiException as e:
@@ -432,9 +418,7 @@ class HFSagemakerClient:
                 deployment.
         """
         try:
-            logger.debug(
-                f"Updating HFSagemakerDeployment resource: {deployment.name}"
-            )
+            logger.debug(f"Updating HFSagemakerDeployment resource: {deployment.name}")
 
             # mark the deployment as managed by ZenML, to differentiate
             # between deployments that are created by ZenML and those that
@@ -537,8 +521,7 @@ class HFSagemakerClient:
         self,
         tags: Optional[Dict[str, str]] = None,
     ) -> List[sagemaker.Predictor]:
-        """
-        """
+        """ """
         tags = tags or {}
         # Initialize a list to store the filtered SageMaker endpoints
         filtered_endpoints = []
@@ -549,7 +532,7 @@ class HFSagemakerClient:
             for endpoint in filtered_endpoints:
                 # Create a SageMaker predictor for the endpoint
                 predictor = sagemaker.Predictor(
-                    endpoint_name=endpoint['EndpointName'],
+                    endpoint_name=endpoint["EndpointName"],
                     sagemaker_session=sagemaker_session,
                 )
                 predictors.append(predictor)
@@ -561,19 +544,23 @@ class HFSagemakerClient:
 
             # Get the SageMaker session
             sagemaker_session = self.get_sagemaker_session()
-            
+
             # List all SageMaker endpoints
             endpoints = sagemaker_session.list_endpoints()
 
-            for endpoint in endpoints['Endpoints']:
+            for endpoint in endpoints["Endpoints"]:
                 # Get the tags associated with the endpoint
-                response = sagemaker_session.list_tags(ResourceArn=endpoint['EndpointArn'])
-                endpoint_tags = response.get('Tags', [])
+                response = sagemaker_session.list_tags(
+                    ResourceArn=endpoint["EndpointArn"]
+                )
+                endpoint_tags = response.get("Tags", [])
 
                 # Check if all tags in the 'tags' parameter are present in 'endpoint_tags'
                 all_tags_present = all(
-                    all(tag_key in endpoint_tags and endpoint_tags[tag_key] == tag_value
-                        for tag_key, tag_value in tags.items())
+                    all(
+                        tag_key in endpoint_tags and endpoint_tags[tag_key] == tag_value
+                        for tag_key, tag_value in tags.items()
+                    )
                 )
 
                 if all_tags_present:
@@ -588,16 +575,12 @@ class HFSagemakerClient:
             logger.error(f"An error occurred: {str(e)}")
 
         return initialize_sagemaker_predictors(filtered_endpoints, sagemaker_session)
-    
 
     @staticmethod
     def sanitize_tags(tags: Dict[str, str]) -> None:
-        """
-        """
+        """ """
         for key, value in tags.items():
             # Kubernetes labels must be alphanumeric, no longer than
             # 63 characters, and must begin and end with an alphanumeric
             # character ([a-z0-9A-Z])
-            tags[key] = re.sub(r"[^0-9a-zA-Z-_\.]+", "_", value)[:63].strip(
-                "-_."
-            )
+            tags[key] = re.sub(r"[^0-9a-zA-Z-_\.]+", "_", value)[:63].strip("-_.")

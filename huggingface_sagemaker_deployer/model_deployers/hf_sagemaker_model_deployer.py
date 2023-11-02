@@ -13,44 +13,28 @@
 #  permissions and limitations under the License.
 """Implementation of the Seldon Model Deployer."""
 
-import json
-import os
-import sagemaker
-import boto3
-import re
-from datetime import datetime
 from typing import TYPE_CHECKING, ClassVar, Dict, List, Optional, Type, cast
 from uuid import UUID
 
-from zenml.analytics.enums import AnalyticsEvent
-from zenml.analytics.utils import track_handler
-from zenml.client import Client
-from zenml.config.build_configuration import BuildConfiguration
-from zenml.enums import StackComponentType
-from zenml.logger import get_logger
-from zenml.model_deployers import BaseModelDeployer, BaseModelDeployerFlavor
-from zenml.secret.base_secret import BaseSecretSchema
-from zenml.services.service import BaseService, ServiceConfig
-from zenml.stack import StackValidator
-
+import boto3
+import sagemaker
 from hf_sagemaker_client import (
     HFSagemakerClient,
 )
-from hf_sagemaker_model_deployer_flavor import (
-    HFSagemakerModelDeployerFlavor,
-    HFSagemakerModelDeployerConfig,
-    HFSagemakerModelDeployerSettings,
-)
 from hf_sagemaker_deployment_service import (
-    HFSagemakerDeploymentService,
     HFSagemakerDeploymentConfig,
+    HFSagemakerDeploymentService,
 )
+from hf_sagemaker_model_deployer_flavor import (
+    HFSagemakerModelDeployerConfig,
+    HFSagemakerModelDeployerFlavor,
+)
+from zenml.logger import get_logger
+from zenml.model_deployers import BaseModelDeployer, BaseModelDeployerFlavor
+from zenml.services.service import BaseService
 
 if TYPE_CHECKING:
-    from zenml.models.pipeline_deployment_models import (
-        PipelineDeploymentBaseModel,
-    )
-    from zenml.config.base_settings import BaseSettings
+    pass
 
 logger = get_logger(__name__)
 
@@ -65,8 +49,6 @@ class HFSagemakerModelDeployer(BaseModelDeployer):
     NAME: ClassVar[str] = "Huggingface Sagemaker"
     FLAVOR: ClassVar[Type[BaseModelDeployerFlavor]] = HFSagemakerModelDeployerFlavor
 
-    
-    
     @property
     def config(self) -> HFSagemakerModelDeployerConfig:
         """Returns the `HFSagemakerModelDeployerConfig` config.
@@ -91,12 +73,12 @@ class HFSagemakerModelDeployer(BaseModelDeployer):
             sagemaker_session=self.get_sagemaker_session(self.config),
         )
         return self._client
-    
+
     def get_sagemaker_session(
         self, config: HFSagemakerDeploymentConfig
     ) -> sagemaker.Session:
         """Returns sagemaker session from connector"""
-                # Refresh the client also if the connector has expired
+        # Refresh the client also if the connector has expired
         if self._client and not self.connector_has_expired():
             return self._client
 
@@ -110,16 +92,15 @@ class HFSagemakerModelDeployer(BaseModelDeployer):
                     f"Expected to receive a `boto3.Session` object from the "
                     f"linked connector, but got type `{type(boto_session)}`."
                 )
-        # Option 2: Explicit configuration    
+        # Option 2: Explicit configuration
         elif config.sagemaker_session_args:
             boto_session = boto3.Session(**config.sagemaker_session_args)
         # Option 3: Implicit configuration
         else:
             boto_session = boto3.Session()
 
-
         return sagemaker.Session(boto_session=boto_session)
-        
+
     @staticmethod
     def get_model_server_info(  # type: ignore[override]
         service_instance: "HFSagemakerDeploymentService",
@@ -146,9 +127,9 @@ class HFSagemakerModelDeployer(BaseModelDeployer):
         config = cast(HFSagemakerDeploymentConfig, config)
         service = None
 
-        #sagemaker_session = self.get_sagemaker_session(config)
-        #iam_role_arn = config.iam_role_arn or self.config.iam_role_arn
-        #if not iam_role_arn:
+        # sagemaker_session = self.get_sagemaker_session(config)
+        # iam_role_arn = config.iam_role_arn or self.config.iam_role_arn
+        # if not iam_role_arn:
         #    raise ValueError(
         #        "No IAM role ARN was provided. Please provide one either "
         #        "through the connector or through the config."
@@ -242,10 +223,10 @@ class HFSagemakerModelDeployer(BaseModelDeployer):
             image_uri=image_uri or "",
         )
         tags = config.get_hf_sagemaker_deployment_tags()
-        #if service_uuid:
-            # the service UUID is not a label covered by the Seldon
-            # deployment service configuration, so we need to add it
-            # separately
+        # if service_uuid:
+        # the service UUID is not a label covered by the Seldon
+        # deployment service configuration, so we need to add it
+        # separately
         #    tags["zenml.service_uuid"] = str(service_uuid)
 
         deployments = self.hf_sagemaker_client.find_deployments(tags=tags)
@@ -338,7 +319,3 @@ class HFSagemakerModelDeployer(BaseModelDeployer):
             # information for the Seldon Core model server storage initializer
             # if no other Seldon Core model servers are using it
             self._delete_kubernetes_secret(service.config.secret_name)
-
-
-
-

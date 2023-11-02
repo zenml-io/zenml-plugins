@@ -13,12 +13,16 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import os
 from os.path import dirname
 from typing import Optional
 
 import click
 import numpy as np
+import sagemaker
+from aws_helper import get_sagemaker_session
 from transformers import AutoModelForSequenceClassification, AutoTokenizer
+from zenml.client import Client
 
 import gradio as gr
 
@@ -26,11 +30,11 @@ import gradio as gr
 @click.command()
 @click.option(
     "--tokenizer_name_or_path",
-    default="tokenizer",
+    default=None,
     help="Name or the path of the tokenizer.",
 )
 @click.option(
-    "--model_name_or_path", default="model", help="Name or the path of the model."
+    "--model_name_or_path", default=None, help="Name or the path of the model."
 )
 @click.option(
     "--labels", default="Negative,Positive", help="Comma-separated list of labels."
@@ -78,7 +82,6 @@ def sentiment_analysis(
         examples (str): Comma-separated list of examples to show in the Gradio interface.
     """
     labels = labels.split(",")
-    examples = [examples]
 
     def preprocess(text: str) -> str:
         """Preprocesses the text.
@@ -100,31 +103,60 @@ def sentiment_analysis(
         e_x = np.exp(x - np.max(x))
         return e_x / e_x.sum(axis=0)
 
-    def analyze_text(text):
-        model_path = f"{dirname(__file__)}/{model_name_or_path}/"
-        print(f"Loading model from {model_path}")
-        tokenizer_path = f"{dirname(__file__)}/{tokenizer_name_or_path}/"
-        print(f"Loading tokenizer from {tokenizer_path}")
-        tokenizer = AutoTokenizer.from_pretrained(tokenizer_path)
-        model = AutoModelForSequenceClassification.from_pretrained(model_path)
+    def analyze_text(inference_type, text):
+        if inference_type == "local":
+            cur_path = os.path.abspath(dirname(__file__))
+            model_path, tokenizer_path = cur_path, cur_path
+            if model_name_or_path:
+                model_path = f"{dirname(__file__)}/{model_name_or_path}/"
+            print(f"Loading model from {model_path}")
+            if tokenizer_name_or_path:
+                tokenizer_path = f"{dirname(__file__)}/{tokenizer_name_or_path}/"
+            print(f"Loading tokenizer from {tokenizer_path}")
+            tokenizer = AutoTokenizer.from_pretrained(tokenizer_path)
+            model = AutoModelForSequenceClassification.from_pretrained(model_path)
 
-        text = preprocess(text)
-        encoded_input = tokenizer(text, return_tensors="pt")
-        output = model(**encoded_input)
-        scores_ = output[0][0].detach().numpy()
-        scores_ = softmax(scores_)
+            text = preprocess(text)
+            encoded_input = tokenizer(text, return_tensors="pt")
+            output = model(**encoded_input)
+            scores_ = output[0][0].detach().numpy()
+            scores_ = softmax(scores_)
+            scores = {l: float(s) for (l, s) in zip(labels, scores_)}
+        else:
+            client = Client()
+            latest_run = client.get_pipeline("nlp_use_case_deploy_pipeline").runs[0]
+            endpoint_name = (
+                latest_run.steps["deploy_hf_to_sagemaker"]
+                .outputs["sagemaker_endpoint_name"]
+                .load()
+            )
 
-        scores = {l: float(s) for (l, s) in zip(labels, scores_)}
+            predictor = sagemaker.Predictor(
+                endpoint_name=endpoint_name,
+                sagemaker_session=get_sagemaker_session(),
+                serializer=sagemaker.serializers.JSONSerializer(),
+                deserializer=sagemaker.deserializers.JSONDeserializer(),
+            )
+            res = predictor.predict({"inputs": text})
+            if res[0]["label"] == "LABEL_1":
+                scores = {"Negative": 1 - res[0]["score"], "Positive": res[0]["score"]}
+            else:
+                scores = {"Negative": res[0]["score"], "Positive": 1 - res[0]["score"]}
+
         return scores
 
     demo = gr.Interface(
         fn=analyze_text,
-        inputs=[gr.TextArea("Write your text or tweet here", label="Analyze Text")],
+        inputs=[
+            gr.Dropdown(
+                ["local", "sagemaker"], label="Select inference type", value="sagemaker"
+            ),
+            gr.TextArea("Write your text or tweet here", label="Analyze Text"),
+        ],
         outputs=["label"],
         title=title,
         description=description,
         interpretation=interpretation,
-        examples=examples,
     )
 
     demo.launch(share=True, debug=True)

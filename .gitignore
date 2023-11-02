@@ -165,3 +165,12 @@ cython_debug/
 
 huggingface_sagemaker_deployer/gradio/model/
 huggingface_sagemaker_deployer/gradio/tokenizer/
+huggingface_sagemaker_deployer/gradio/config.json
+huggingface_sagemaker_deployer/gradio/merges.txt
+huggingface_sagemaker_deployer/gradio/predict.py
+huggingface_sagemaker_deployer/gradio/pytorch_model.bin
+huggingface_sagemaker_deployer/gradio/special_tokens_map.json
+huggingface_sagemaker_deployer/gradio/tokenizer.json
+huggingface_sagemaker_deployer/gradio/tokenizer_config.json
+huggingface_sagemaker_deployer/gradio/vocab.json
+huggingface_sagemaker_deployer/gradio/flagged/

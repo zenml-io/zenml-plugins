@@ -56,8 +56,8 @@ def save_model_to_deploy(
     )
     transformer_model = mlflow.transformers.load_model(model_version.model_source_uri)
     # Save the model and tokenizer locally
-    model_path = "./gradio/model"  # replace with the actual path
-    tokenizer_path = "./gradio/tokenizer"  # replace with the actual path
+    model_path = "./gradio/"  # replace with the actual path
+    tokenizer_path = "./gradio/"  # replace with the actual path
 
     # Save model locally
     transformer_model.model.save_pretrained(model_path)
