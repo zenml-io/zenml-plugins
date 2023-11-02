@@ -74,9 +74,7 @@ def nlp_use_case_training_pipeline(
     pipeline_extra = get_pipeline_context().extra
 
     ########## Load Dataset stage ##########
-    dataset = data_loader(
-        shuffle=True,
-    )
+    dataset = data_loader()
 
     ########## Tokenization stage ##########
     tokenizer = tokenizer_loader(lower_case=lower_case)
