@@ -20,16 +20,20 @@ from sagemaker.huggingface import HuggingFaceModel
 from typing_extensions import Annotated
 from zenml import get_step_context, step
 from zenml.logger import get_logger
-from zenml.model import DeploymentArtifactConfig
 
 # Initialize logger
 logger = get_logger(__name__)
 
 
 @step
-def deploy_hf_to_sagemaker() -> (
-    Annotated[str, "sagemaker_endpoint_name", DeploymentArtifactConfig()]
-):
+def deploy_hf_to_sagemaker(
+    transformers_version: str = "4.26.0",
+    pytorch_version: str = "1.13.1",
+    py_version: str = "py39",
+    hf_task: str = "text-classification",
+    instance_type: str = "ml.g5.2xlarge",
+    container_startup_health_check_timeout: int = 300,
+) -> Annotated[str, "sagemaker_endpoint_name"]:
     """
     This step deploy the model to huggingface.
 
@@ -49,25 +53,25 @@ def deploy_hf_to_sagemaker() -> (
     hub = {
         "HF_MODEL_ID": repo_id,
         "HF_MODEL_REVISION": revision,
-        "HF_TASK": "text-classification",
+        "HF_TASK": hf_task,
     }
 
     # Hugging Face Model Class
     huggingface_model = HuggingFaceModel(
         env=hub,
         role=role,  # iam role from AWS
-        transformers_version="4.26.0",
-        pytorch_version="1.13.1",
-        py_version="py39",
+        transformers_version=transformers_version,
+        pytorch_version=pytorch_version,
+        py_version=py_version,
         sagemaker_session=session,
     )
 
     # deploy model to SageMaker
     predictor = huggingface_model.deploy(
-        initial_instance_count=1,  # number of instances
-        instance_type="ml.g5.2xlarge",  #'ml.g5.4xlarge'
-        container_startup_health_check_timeout=300,
+        initial_instance_count=1,
+        instance_type=instance_type,
+        container_startup_health_check_timeout=container_startup_health_check_timeout,
     )
     endpoint_name = predictor.endpoint_name
-
+    logger.info(f"Model deployed to SageMaker: {endpoint_name}")
     return endpoint_name
