@@ -39,7 +39,7 @@ class HFSagemakerDeploymentConfig(ServiceConfig):
     """"""
 
     # Huggingface model args
-    role: Optional[str] = None
+    iam_role_arn: Optional[str] = None
     model_data: Optional[str] = None
     entry_point: Optional[str] = None
     transformers_version: Optional[str] = None
@@ -48,6 +48,7 @@ class HFSagemakerDeploymentConfig(ServiceConfig):
     py_version: Optional[str] = None
     image_uri: Optional[str] = None
     model_server_workers: Optional[int] = None
+    hf_model_uri: Optional[str] = None
 
     # Deploy args
     initial_instance_count: Optional[int] = None
@@ -66,7 +67,7 @@ class HFSagemakerDeploymentConfig(ServiceConfig):
     env: Dict[str, str] = {}
     sagemaker_session_args: Dict[str, Any] = {}
 
-    def get_seldon_deployment_labels(self) -> Dict[str, str]:
+    def get_hf_sagemaker_deployment_tags(self) -> Dict[str, str]:
         """Generate labels for the Seldon Core deployment from the service configuration.
 
         These labels are attached to the Seldon Core deployment resource
@@ -75,24 +76,24 @@ class HFSagemakerDeploymentConfig(ServiceConfig):
         Returns:
             The labels for the Seldon Core deployment.
         """
-        labels = {}
+        if not tags:
+            tags = {}
+        else:
+            for key, value in self.tags.items():
+                tags.pop(key)
+                tags[f"zenml.{key}"] = value
+        tags["app"] = "zenml"
         if self.pipeline_name:
-            labels["zenml.pipeline_name"] = self.pipeline_name
+            tags["zenml.pipeline_name"] = self.pipeline_name
         if self.run_name:
-            labels["zenml.run_name"] = self.run_name
+            tags["zenml.run_name"] = self.run_name
         if self.pipeline_step_name:
-            labels["zenml.pipeline_step_name"] = self.pipeline_step_name
+            tags["zenml.pipeline_step_name"] = self.pipeline_step_name
         if self.model_name:
-            labels["zenml.model_name"] = self.model_name
+            tags["zenml.model_name"] = self.model_name
         if self.model_uri:
-            labels["zenml.model_uri"] = self.model_uri
-        if self.implementation:
-            labels["zenml.model_type"] = self.implementation
-        if self.extra_args:
-            for key, value in self.extra_args.items():
-                labels[f"zenml.{key}"] = value
-        SeldonClient.sanitize_labels(labels)
-        return labels
+            tags["zenml.hf_model_uri"] = self.model_uri
+        return tags
 
     def get_seldon_deployment_annotations(self) -> Dict[str, str]:
         """Generate annotations for the Seldon Core deployment from the service configuration.
@@ -227,7 +228,7 @@ class HFSagemakerDeploymentService(BaseDeploymentService):
 
     @classmethod
     def create_from_deployment(
-        cls, deployment: SeldonDeployment
+        cls, deployment: sagemaker.Predictor
     ) -> "HFSagemakerDeploymentService":
         """Recreate a Seldon Core service from a Seldon Core deployment resource.
 

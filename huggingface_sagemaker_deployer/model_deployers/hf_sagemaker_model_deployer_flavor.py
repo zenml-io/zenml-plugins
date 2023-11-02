@@ -34,6 +34,8 @@ class HFSagemakerModelDeployerConfig(  # type: ignore[misc] # https://github.com
 ):
     """HFSagemakerModelDeployerConfig orchestrator base config."""
 
+    iam_role_arn: Optional[str] = None
+
     @property
     def is_local(self) -> bool:
         """Checks if this stack component is running locally.

@@ -33,6 +33,9 @@ from zenml.secret.base_secret import BaseSecretSchema
 from zenml.services.service import BaseService, ServiceConfig
 from zenml.stack import StackValidator
 
+from hf_sagemaker_client import (
+    HFSagemakerClient,
+)
 from hf_sagemaker_model_deployer_flavor import (
     HFSagemakerModelDeployerFlavor,
     HFSagemakerModelDeployerConfig,
@@ -62,6 +65,8 @@ class HFSagemakerModelDeployer(BaseModelDeployer):
     NAME: ClassVar[str] = "Huggingface Sagemaker"
     FLAVOR: ClassVar[Type[BaseModelDeployerFlavor]] = HFSagemakerModelDeployerFlavor
 
+    
+    
     @property
     def config(self) -> HFSagemakerModelDeployerConfig:
         """Returns the `HFSagemakerModelDeployerConfig` config.
@@ -71,37 +76,50 @@ class HFSagemakerModelDeployer(BaseModelDeployer):
         """
         return cast(HFSagemakerModelDeployerConfig, self._config)
 
-    def prepare_environment_variable(self, set: bool = True) -> None:
-        """Set up Environment variables that are required for the orchestrator.
+    @property
+    def hf_sagemaker_client(self) -> HFSagemakerClient:
+        """Get the Seldon Core client associated with this model deployer.
 
-        Args:
-            set: Whether to set the environment variables or not.
+        Returns:
+            The Seldon Core client.
 
         Raises:
-            ValueError: If no service connector is found.
+            RuntimeError: If the Kubernetes namespace is not configured when
+                using a service connector to deploy models with Seldon Core.
         """
-        connector = self.get_connector()
-        if connector is None:
-            raise ValueError(
-                "No service connector found. Please make sure to set up a connector "
-                "that is compatible with this orchestrator."
-            )
-        if set:
-            # The AWS connector creates a local configuration profile with the name computed from
-            # the first 8 digits of its UUID.
-            aws_profile = f"zenml-{str(connector.id)[:8]}"
-            os.environ[ENV_AWS_PROFILE] = aws_profile
-        else:
-            os.environ.pop(ENV_AWS_PROFILE, None)
-
+        self._client = HFSagemakerClient(
+            sagemaker_session=self.get_sagemaker_session(self.config),
+        )
+        return self._client
+    
     def get_sagemaker_session(
         self, config: HFSagemakerDeploymentConfig
     ) -> sagemaker.Session:
         """Returns sagemaker session from connector"""
-        self.prepare_environment_variable(set=True)
-        session = sagemaker.Session(boto3.Session(**config.sagemaker_session_args))
-        return session
+                # Refresh the client also if the connector has expired
+        if self._client and not self.connector_has_expired():
+            return self._client
 
+        # Get authenticated session
+        # Option 1: Service connector
+        boto_session: boto3.Session
+        if connector := self.get_connector():
+            boto_session = connector.connect()
+            if not isinstance(boto_session, boto3.Session):
+                raise RuntimeError(
+                    f"Expected to receive a `boto3.Session` object from the "
+                    f"linked connector, but got type `{type(boto_session)}`."
+                )
+        # Option 2: Explicit configuration    
+        elif config.sagemaker_session_args:
+            boto_session = boto3.Session(**config.sagemaker_session_args)
+        # Option 3: Implicit configuration
+        else:
+            boto_session = boto3.Session()
+
+
+        return sagemaker.Session(boto_session=boto_session)
+        
     @staticmethod
     def get_model_server_info(  # type: ignore[override]
         service_instance: "HFSagemakerDeploymentService",
@@ -128,8 +146,13 @@ class HFSagemakerModelDeployer(BaseModelDeployer):
         config = cast(HFSagemakerDeploymentConfig, config)
         service = None
 
-        sagemaker_session = self.get_sagemaker_session(config)
-
+        #sagemaker_session = self.get_sagemaker_session(config)
+        #iam_role_arn = config.iam_role_arn or self.config.iam_role_arn
+        #if not iam_role_arn:
+        #    raise ValueError(
+        #        "No IAM role ARN was provided. Please provide one either "
+        #        "through the connector or through the config."
+        #    )
         # if replace is True, find equivalent deployments
         if replace is True:
             equivalent_services = self.find_model_server(
@@ -180,9 +203,9 @@ class HFSagemakerModelDeployer(BaseModelDeployer):
         pipeline_name: Optional[str] = None,
         run_name: Optional[str] = None,
         pipeline_step_name: Optional[str] = None,
-        model_name: Optional[str] = None,
-        model_uri: Optional[str] = None,
-        model_type: Optional[str] = None,
+        endpoint_name: Optional[str] = None,
+        image_uri: Optional[str] = None,
+        tags: Optional[Dict[str, str]] = None,
     ) -> List[BaseService]:
         """Find one or more Seldon Core model services that match the given criteria.
 
@@ -210,39 +233,29 @@ class HFSagemakerModelDeployer(BaseModelDeployer):
             model servers that match the input search criteria.
         """
         # Use a Seldon deployment service configuration to compute the labels
-        config = SeldonDeploymentConfig(
+        config = HFSagemakerDeploymentConfig(
             pipeline_name=pipeline_name or "",
             run_name=run_name or "",
             pipeline_run_id=run_name or "",
             pipeline_step_name=pipeline_step_name or "",
-            model_name=model_name or "",
-            model_uri=model_uri or "",
-            implementation=model_type or "",
+            endpoint_name=endpoint_name or "",
+            image_uri=image_uri or "",
         )
-        labels = config.get_seldon_deployment_labels()
-        if service_uuid:
+        tags = config.get_hf_sagemaker_deployment_tags()
+        #if service_uuid:
             # the service UUID is not a label covered by the Seldon
             # deployment service configuration, so we need to add it
             # separately
-            labels["zenml.service_uuid"] = str(service_uuid)
+        #    tags["zenml.service_uuid"] = str(service_uuid)
 
-        deployments = self.seldon_client.find_deployments(labels=labels)
+        deployments = self.hf_sagemaker_client.find_deployments(tags=tags)
         # sort the deployments in descending order of their creation time
-        deployments.sort(
-            key=lambda deployment: datetime.strptime(
-                deployment.metadata.creationTimestamp,
-                "%Y-%m-%dT%H:%M:%SZ",
-            )
-            if deployment.metadata.creationTimestamp
-            else datetime.min,
-            reverse=True,
-        )
 
         services: List[BaseService] = []
         for deployment in deployments:
             # recreate the Seldon deployment service object from the Seldon
             # deployment resource
-            service = SeldonDeploymentService.create_from_deployment(
+            service = HFSagemakerDeploymentService.create_from_deployment(
                 deployment=deployment
             )
             if running and not service.is_running:
@@ -325,3 +338,7 @@ class HFSagemakerModelDeployer(BaseModelDeployer):
             # information for the Seldon Core model server storage initializer
             # if no other Seldon Core model servers are using it
             self._delete_kubernetes_secret(service.config.secret_name)
+
+
+
+
