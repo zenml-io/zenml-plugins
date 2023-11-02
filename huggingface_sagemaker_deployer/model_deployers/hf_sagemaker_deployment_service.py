@@ -14,18 +14,16 @@
 """Implementation for the Sagemaker Huggingface Deployer step."""
 
 import json
-import sagemaker
-import boto3
-from sagemaker.huggingface import HuggingFaceModel
-from sagemaker.huggingface.model import HuggingFacePredictor
-
 import os
 from typing import Any, Dict, Generator, List, Optional, Tuple, cast
 from uuid import UUID
 
+import boto3
 import requests
+import sagemaker
 from pydantic import Field, ValidationError
-
+from sagemaker.huggingface import HuggingFaceModel
+from sagemaker.huggingface.model import HuggingFacePredictor
 from zenml import __version__
 from zenml.logger import get_logger
 from zenml.services.service import BaseDeploymentService, ServiceConfig

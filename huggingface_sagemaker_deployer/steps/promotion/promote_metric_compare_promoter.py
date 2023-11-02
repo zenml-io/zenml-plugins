@@ -18,9 +18,9 @@
 
 from zenml import get_step_context, step
 from zenml.client import Client
+from zenml.enums import ModelStages
 from zenml.logger import get_logger
 from zenml.model_registries.base_model_registry import ModelVersionStage
-from zenml.enums import ModelStages
 
 logger = get_logger(__name__)
 
@@ -99,7 +99,7 @@ def promote_metric_compare_promoter(
         # Also update the ZenML model control plane
         model_config = get_step_context().model_config
         model_version = model_config._get_model_version()
-        model_version.set_stage(ModelStages.STAGING, force=True)
+        model_version.set_stage(ModelStages.PRODUCTION, force=True)
 
     logger.info(
         f"Current model version in `{pipeline_extra['target_env']}` is `{promoted_version}`"

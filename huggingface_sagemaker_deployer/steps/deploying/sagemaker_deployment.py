@@ -15,16 +15,25 @@
 # limitations under the License.
 #
 
+import os
+import time
+
+import boto3
+import sagemaker
+from sagemaker.huggingface import HuggingFaceModel, get_huggingface_llm_image_uri
 from typing_extensions import Annotated
-from zenml import step, get_step_context
+from zenml import get_step_context, step
 from zenml.logger import get_logger
+from zenml.model import DeploymentArtifactConfig
 
 # Initialize logger
 logger = get_logger(__name__)
 
 
-@step()
-def deploy_hf_to_sagemaker() -> Annotated[str, "sagemaker_endpoint_name"]:
+@step
+def deploy_hf_to_sagemaker() -> (
+    Annotated[str, "sagemaker_endpoint_name", DeploymentArtifactConfig()]
+):
     """
     This step deploy the model to huggingface.
 
@@ -33,8 +42,51 @@ def deploy_hf_to_sagemaker() -> Annotated[str, "sagemaker_endpoint_name"]:
     """
     context = get_step_context()
     mv = context.model_config.get_or_create_model_version()
-    print(mv.get_artifact_object(name="huggingface_url").metadata["endpoint"].value)
-    print(mv.get_artifact_object(name="huggingface_url").metadata["repo_id"].value)
-    print(mv.get_artifact_object(name="huggingface_url").metadata["revision"].value)
-    print(mv.get_artifact_object(name="huggingface_url").metadata["path_in_repo"].value)
-    return ""
+    deployment_metadata = mv.get_artifact_object(name="huggingface_url").metadata
+    repo_id = deployment_metadata["repo_id"].value
+    revision = deployment_metadata["revision"].value
+
+    REGION_NAME = "us-east-1"
+    os.environ["AWS_DEFAULT_REGION"] = REGION_NAME
+    ROLE_NAME = "hamza_connector"
+
+    auth_arguments = {
+        "aws_access_key_id": os.environ["AWS_ACCESS_KEY_ID"],
+        "aws_secret_access_key": os.environ["AWS_SECRET_ACCESS_KEY"],
+        "aws_session_token": os.environ["AWS_SESSION_TOKEN"],
+        "region_name": REGION_NAME,
+    }
+
+    iam = boto3.client("iam", **auth_arguments)
+    role = iam.get_role(RoleName=ROLE_NAME)["Role"]["Arn"]
+
+    session = sagemaker.Session(boto3.Session(**auth_arguments))
+
+    # image uri
+    llm_image = get_huggingface_llm_image_uri("huggingface")
+
+    # Falcon 7b
+    hub = {"HF_MODEL_ID": repo_id, "HF_MODEL_REVISION": revision}
+
+    # Hugging Face Model Class
+    huggingface_model = HuggingFaceModel(
+        env=hub,
+        role=role,  # iam role from AWS
+        image_uri=llm_image,
+        sagemaker_session=session,
+    )
+
+    # deploy model to SageMaker
+    predictor = huggingface_model.deploy(
+        initial_instance_count=1,  # number of instances
+        instance_type="ml.g5.2xlarge",  #'ml.g5.4xlarge'
+        container_startup_health_check_timeout=300,
+    )
+    endpoint_name = predictor.endpoint_name
+
+    time.sleep(10)
+
+    # DELETE ENDPOINT to avoid unnecessary expenses
+    predictor.delete_model()
+    predictor.delete_endpoint()
+    return endpoint_name

@@ -15,10 +15,10 @@
 # limitations under the License.
 #
 
+from typing import Dict, List
+
 import numpy as np
 from datasets import load_metric
-from zenml.enums import StrEnum
-from typing import Dict, List
 
 
 def compute_metrics(eval_pred: tuple) -> Dict[str, float]:

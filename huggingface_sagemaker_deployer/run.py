@@ -19,15 +19,14 @@ import os
 from datetime import datetime as dt
 
 import click
-from zenml.logger import get_logger
-from zenml.model import ModelConfig
-from zenml.enums import ModelStages
-
 from pipelines import (
     nlp_use_case_deploy_pipeline,
     nlp_use_case_promote_pipeline,
     nlp_use_case_training_pipeline,
 )
+from zenml.enums import ModelStages
+from zenml.logger import get_logger
+from zenml.model import ModelConfig
 
 logger = get_logger(__name__)
 
@@ -103,7 +102,7 @@ Examples:
 @click.option(
     "--training-pipeline",
     is_flag=True,
-    default=True,
+    default=False,
     help="Whether to run the pipeline that trains the model.",
 )
 @click.option(
@@ -131,7 +130,7 @@ def main(
     eval_batch_size: int = 8,
     learning_rate: float = 2e-5,
     weight_decay: float = 0.01,
-    training_pipeline: bool = True,
+    training_pipeline: bool = False,
     promoting_pipeline: bool = False,
     deploying_pipeline: bool = False,
     zenml_model_name: str = "distil_bert_sentiment_analysis",
@@ -190,6 +189,9 @@ def main(
     # Execute Promoting Pipeline
     if promoting_pipeline:
         run_args_promoting = {}
+        model_config = ModelConfig(name=zenml_model_name)
+        pipeline_args["model_config"] = model_config
+
         pipeline_args[
             "run_name"
         ] = f"nlp_use_case_promoting_pipeline_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
@@ -202,7 +204,7 @@ def main(
         # Deploying pipeline has new ZenML model config
         model_config = ModelConfig(
             name=zenml_model_name,
-            version=ModelStages.STAGING,
+            version=ModelStages.PRODUCTION,
         )
         pipeline_args["model_config"] = model_config
         pipeline_args["enable_cache"] = False

@@ -19,6 +19,7 @@ from transformers import AutoTokenizer, PreTrainedTokenizerBase
 from typing_extensions import Annotated
 from zenml import step
 from zenml.logger import get_logger
+from zenml.model import ModelArtifactConfig
 
 logger = get_logger(__name__)
 
@@ -26,7 +27,9 @@ logger = get_logger(__name__)
 @step
 def tokenizer_loader(
     lower_case: bool,
-) -> Annotated[PreTrainedTokenizerBase, "tokenizer"]:
+) -> Annotated[
+    PreTrainedTokenizerBase, "tokenizer", ModelArtifactConfig(overwrite=True)
+]:
     """Tokenizer selection step.
 
     This step is responsible for selecting and initializing the tokenizer based

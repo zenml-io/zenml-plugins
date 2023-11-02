@@ -24,9 +24,7 @@ logger = get_logger(__name__)
 
 
 @step
-def data_loader(
-    shuffle: bool = True,
-) -> Annotated[DatasetDict, "dataset"]:
+def data_loader() -> Annotated[DatasetDict, "dataset"]:
     """
     Data loader step.
 
