@@ -23,7 +23,6 @@ from zenml import log_artifact_metadata, step
 from zenml.client import Client
 from zenml.logger import get_logger
 
-
 # Initialize logger
 logger = get_logger(__name__)
 

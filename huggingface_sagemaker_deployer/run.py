@@ -183,7 +183,9 @@ def main(
             "run_name"
         ] = f"sentinment_analysis_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
 
-        sentinment_analysis_training_pipeline.with_options(**pipeline_args)(**run_args_train)
+        sentinment_analysis_training_pipeline.with_options(**pipeline_args)(
+            **run_args_train
+        )
         logger.info("Training pipeline finished successfully!")
 
     # Execute Promoting Pipeline
@@ -212,7 +214,9 @@ def main(
         pipeline_args[
             "run_name"
         ] = f"sentinment_analysis_deploy_pipeline_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
-        sentinment_analysis_deploy_pipeline.with_options(**pipeline_args)(**run_args_deploying)
+        sentinment_analysis_deploy_pipeline.with_options(**pipeline_args)(
+            **run_args_deploying
+        )
         logger.info("Deploying pipeline finished successfully!")
 
 

@@ -124,7 +124,9 @@ def sentiment_analysis(
             scores = {l: float(s) for (l, s) in zip(labels, scores_)}
         else:
             client = Client()
-            latest_run = client.get_pipeline("sentinment_analysis_deploy_pipeline").runs[0]
+            latest_run = client.get_pipeline(
+                "sentinment_analysis_deploy_pipeline"
+            ).runs[0]
             endpoint_name = (
                 latest_run.steps["deploy_hf_to_sagemaker"]
                 .outputs["sagemaker_endpoint_name"]
