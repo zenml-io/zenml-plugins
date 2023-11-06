@@ -20,9 +20,9 @@ from datetime import datetime as dt
 
 import click
 from pipelines import (
-    nlp_use_case_deploy_pipeline,
-    nlp_use_case_promote_pipeline,
-    nlp_use_case_training_pipeline,
+    sentinment_analysis_deploy_pipeline,
+    sentinment_analysis_promote_pipeline,
+    sentinment_analysis_training_pipeline,
 )
 from zenml.enums import ModelStages
 from zenml.logger import get_logger
@@ -181,9 +181,9 @@ def main(
 
         pipeline_args[
             "run_name"
-        ] = f"nlp_use_case_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
+        ] = f"sentinment_analysis_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
 
-        nlp_use_case_training_pipeline.with_options(**pipeline_args)(**run_args_train)
+        sentinment_analysis_training_pipeline.with_options(**pipeline_args)(**run_args_train)
         logger.info("Training pipeline finished successfully!")
 
     # Execute Promoting Pipeline
@@ -194,8 +194,8 @@ def main(
 
         pipeline_args[
             "run_name"
-        ] = f"nlp_use_case_promoting_pipeline_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
-        nlp_use_case_promote_pipeline.with_options(**pipeline_args)(
+        ] = f"sentinment_analysis_promoting_pipeline_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
+        sentinment_analysis_promote_pipeline.with_options(**pipeline_args)(
             **run_args_promoting
         )
         logger.info("Promoting pipeline finished successfully!")
@@ -211,8 +211,8 @@ def main(
         run_args_deploying = {}
         pipeline_args[
             "run_name"
-        ] = f"nlp_use_case_deploy_pipeline_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
-        nlp_use_case_deploy_pipeline.with_options(**pipeline_args)(**run_args_deploying)
+        ] = f"sentinment_analysis_deploy_pipeline_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
+        sentinment_analysis_deploy_pipeline.with_options(**pipeline_args)(**run_args_deploying)
         logger.info("Deploying pipeline finished successfully!")
 
 

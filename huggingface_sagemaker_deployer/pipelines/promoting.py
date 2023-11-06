@@ -32,7 +32,7 @@ logger = get_logger(__name__)
 @pipeline(
     on_failure=notify_on_failure,
 )
-def nlp_use_case_promote_pipeline():
+def sentinment_analysis_promote_pipeline():
     """
     Model promotion pipeline.
 

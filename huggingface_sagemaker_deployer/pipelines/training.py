@@ -36,7 +36,7 @@ logger = get_logger(__name__)
 
 
 @pipeline(on_failure=notify_on_failure)
-def nlp_use_case_training_pipeline(
+def sentinment_analysis_training_pipeline(
     hf_repo_name: str = "hf-repo",
     lower_case: Optional[bool] = True,
     padding: Optional[str] = "max_length",

@@ -174,3 +174,6 @@ huggingface_sagemaker_deployer/gradio/tokenizer.json
 huggingface_sagemaker_deployer/gradio/tokenizer_config.json
 huggingface_sagemaker_deployer/gradio/vocab.json
 huggingface_sagemaker_deployer/gradio/flagged/
+
+huggingface_sagemaker_deployer/gradio/model.safetensors
+huggingface_sagemaker_deployer/zenml_artifact/

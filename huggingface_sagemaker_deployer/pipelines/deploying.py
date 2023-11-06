@@ -34,7 +34,7 @@ orchestrator = Client().active_stack.orchestrator
 @pipeline(
     on_failure=notify_on_failure,
 )
-def nlp_use_case_deploy_pipeline():
+def sentinment_analysis_deploy_pipeline():
     """
     Model deployment pipeline.
 

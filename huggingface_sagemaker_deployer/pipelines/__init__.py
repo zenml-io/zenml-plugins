@@ -16,6 +16,6 @@
 #
 
 
-from .deploying import nlp_use_case_deploy_pipeline
-from .promoting import nlp_use_case_promote_pipeline
-from .training import nlp_use_case_training_pipeline
+from .deploying import sentinment_analysis_deploy_pipeline
+from .promoting import sentinment_analysis_promote_pipeline
+from .training import sentinment_analysis_training_pipeline
