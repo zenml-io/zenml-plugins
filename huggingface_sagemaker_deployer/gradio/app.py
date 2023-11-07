@@ -125,7 +125,8 @@ def sentiment_analysis(
         else:
             client = Client()
             latest_run = client.get_pipeline(
-                "sentinment_analysis_deploy_pipeline"
+                "sentinment_analysis_deploy_pipeline",
+                version=1
             ).runs[0]
             endpoint_name = (
                 latest_run.steps["deploy_hf_to_sagemaker"]
