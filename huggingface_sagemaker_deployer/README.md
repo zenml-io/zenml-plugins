@@ -42,7 +42,7 @@ The username should be `default` and password empty.
 
 Here is an overview of the entire process:
 
-<img alt="Pipelines Overview" src="_assets/train_prediction_example.png" alt="Logo" width="800">
+<img alt="Pipelines Overview" src="assets/pipelines_overview.png" alt="Logo" width="800">
 
 ## Train the model
 
