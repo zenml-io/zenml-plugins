@@ -3,7 +3,7 @@
 While almost every Huggingface model can be easily deployed to AWS Sagemaker endpoints, it is often desirous to automate
 this flow. This project showcases one way of using ZenML pipelines to achieve this:
 
-- Train/Finetune a NLP model and push to Huggingface Hub
+- Train/Finetune a Sentiment Analysis NLP model and push to Huggingface Hub
 - Promote this model from staging to production
 - Deploy the model at the `Production` Stage to a Sagemaker endpoint
 
@@ -125,7 +125,8 @@ cd gradio
 python app.py
 ```
 
-<img src="assets/gradio.png" alt="Model versions" width="600">
+<img src="assets/nlp_zenml_demo.png" alt="Demo Sentiment Analysis" width="600">
 
+The demo has two modes: `sagemaker` and `local`. If sagemaker is selected, the client pings ZenML, finds the latest Production model, and uses the associated sagemaker endpoint to make the prediction. Otherwise, it just downloads the model and runs it locally. Naturally, the Sagemaker endpoint will usually be faster!
 
 And there you go, you have successfully trained and pushed a model to Huggingface, and deplyoed it to AWS Sagemaker, in a ZenML pipeline. Read more on the [ZenML docs](https://docs.zenml.io)
