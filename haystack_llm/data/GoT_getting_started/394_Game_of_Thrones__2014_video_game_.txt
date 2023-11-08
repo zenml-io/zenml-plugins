@@ -1,0 +1,138 @@
+
+
+
+
+'''''Game of Thrones''''' is an episodic graphic adventure video game based on the TV series of the same name, which in turn, is based on George R. R. Martin's ''A Song of Ice and Fire'' fantasy series, released in December 2014 for Android, iOS, Microsoft Windows, OS X, PlayStation 3, PlayStation 4, Xbox 360 and Xbox One.
+
+The game was developed by Telltale Games and follows the episodic format found in other Telltale titles, such as ''The Walking Dead'', ''The Wolf Among Us'' and ''Tales from the Borderlands'', where player choices and actions influence later events across the six-episode arc. The story revolves around the northern House Forrester, rulers of Ironrath, whose members, including the five playable characters, attempt to save their family and themselves after ending up on the losing side of the War of the Five Kings. The game includes settings, characters, and voice actors from the novels and TV series.
+
+A second season had been planned but was placed on hold in 2017, amid restructuring issues at Telltale Games, and ultimately was cancelled following Telltale's majority studio closure in September 2018.
+
+==Development==
+Martin's personal assistant, acted as a story consultant for the game
+
+After previous video games based on his works received negative or mediocre critical responses, George R. R. Martin opined that he wanted "a Game of Thrones game to be made by a studio that knows how to create a thrilling and interesting story". Telltale Games has found critical success in several licensed adventure games, including their ''The Wolf Among Us'' and ''The Walking Dead'' episodic video game series. ''Game of Thrones'' arose from internal discussions within Telltale of what other popular franchises they wanted to write games around, with much support given for ''Game of Thrones'', considering its emotional equivalence to ''The Walking Dead''. They approached HBO with the concept, and after a year of negotiations, were able to secure the license.
+
+In December 2013, Telltale announced ''Game of Thrones'' at the 2013 Spike VGX video game awards program. George R. R. Martin stated that his personal assistant, Ty Corey Franck, is working with Telltale Games as a "story consultant". Telltale's CEO Dan Connors explained that the game will not be a prequel to the television series, that the established world and timeline of ''Game of Thrones'' is allowing Telltale to explore fixed stories in more depth, to appeal to players.
+
+==Gameplay==
+''Game of Thrones'' is an episodic point-and-click graphic adventure fantasy drama video game, released as 6 episodes following the model of Telltale's previous adventure games. The player is able to move their character around some scenes, interacting with objects and initiating conversation trees with non-player characters. Choices made by the player influence events in future episodes. The game switches between the viewpoints of five different characters.
+
+Each episode contains five points where the player must make a significant decision, choosing from one of two available options. Through Telltale's servers, the game tracks how many players selected which option and lets the player compare their choices to the rest of the player base. The game can be completed regardless of what choices are made in these situations; the main events of the story, as described below, continue regardless of what choices are made, but the presence and behavior of the non-player characters in later scenes is affected by the choices. The game allows the player to make multiple saves, and includes a "rewind" feature where the player can back up and alter a previous decision, thus facilitating the exploration of alternative choices.
+
+Some scenes are more action-oriented, requiring the player to respond to a series of quick time events. Failure to do these correctly may end the scene with the death of the playable character or another character, but the game will restart at a checkpoint just before that scene to allow the player to try again. In some instances, failure at particular quick time events results in minor game decisions.
+
+==Synopsis==
+Promotion at IgroMir 2016, featuring a cosplayer dressed as Margaery Tyrell.
+
+===Setting===
+The game takes place concurrently with the television series, from the end of the third season until just prior to the start of the fifth season. The story focuses on House Forrester, a family not yet introduced in the television series, but mentioned briefly in the novel ''A Dance with Dragons''. House Forrester hails from Ironrath, a fortress within the Wolfswood forest in the North of Westeros, where they control the valuable Ironwood groves, coveted by many because of the wood's military importance. The game primarily takes place near Ironrath, but also in other locations on the continents of Westeros and Essos.
+
+===Characters===
+Throughout the game, the player controls one of 5 family members or servants of the Forresters, with decisions made by one character affecting the others, and the ultimate fate of the house. Thirteen original playable and non-playable characters were created for the game.
+
+===Playable characters===
+* Rodrik Forrester (Russ Bain), the first-born son of the House and its heir, with a prominent military background.
+* Asher Forrester (Alex Jordan), the second-born son of the House who has been exiled to Essos, now working as a mercenary.
+* Mira Forrester (Martha Mackintosh), the eldest daughter of the House, who serves as a handmaiden to Margaery Tyrell.
+* Ethan Forrester (Christopher Nelson), the third-born son and a scholarly boy serving as the incumbent Lord of Ironrath.
+* Gared Tuttle (Daniel Kendrick), squire to Lord Forrester and nephew to Duncan, exiled to serve in the Night's Watch as a ranger.
+
+===Non-playable characters===
+* Lord Gregor Forrester (Robin Atkin Downes), the head of  House Forrester and loyal to the Starks.
+* Lady Elissa Forrester (Lara Pulver), the matriarch of House Forrester that vows to prevent the destruction of her family as had fallen to her birth family, House Branfield.
+* Talia Forrester (Molly Stone), Ethan's twin, the second-eldest daughter, who is gifted with a talented voice.
+* Ryon Forrester (Louis Suc), the youngest son of the House.
+* Maester Ortengryn (David Franklin), a Maester of the Citadel serving House Forrester.
+* Ser Royland Degore (Brian George), an experienced military leader that serves as the master-at-arms for the House.
+* Lord Ludd Whitehill (Geoff Leesley), the Lord of Highpoint and longtime rival of House Forrester.
+* Gryff Whitehill (Sacha Dhawan), the cruel youngest son of Ludd Whitehill.
+* Duncan Tuttle (Robin Atkin Downes), a good friend of Lord Forrester whom he now serves as castellan.
+* Malcolm Branfield (JB Blanc), brother of Elissa and, with her, the only surviving members of House Branfield.
+* Elaena Glenmore (Amy Pemberton), a maiden of Rillwater Crossing and Rodrik's betrothed.
+* Sera Flowers (Natasha Loring), handmaiden to Margaery Tyrell and a close friend to Mira.
+* Beskha (Toks Olagundoye), a sellsword from Meereen and associate of Asher.
+* Croft (Adam Leadbeater), a member of the Second Sons and Asher's friend
+* Cotter (Joseph Baiderrema), a Wildling posing as a ranger for the Night's Watch and Gared's friend.
+* Finn (Yuri Lowenthal), a ranger of the Night's Watch and Gared's friend.
+* Frostfinger (Jeremy Crutchley), a grizzled mentor of the Night's Watch.
+* Britt Warrick (Alistar James), a mercenary working for House Whitehill.
+* Gwyn Whitehill (Laura Bailey), a maiden of Highpoint and Asher's former lover.
+* Tom (Yuri Lowenthal), a coalboy working in King's Landing and friend of Mira Forrester.
+* Rickard Morgryn (Nick Afka Thomas), a merchant operating from King's Landing and confident of Lord Whitehill.
+* Arthur "Quiver" Glenmore (Matt Littler), Elaena's brother and a skilled archer.
+* Andros (Robin Atkin Downes), a merchant and Morgryn's rival.
+* Tazal (Brian George), leader of the Lost Legion and Asher's enemy
+
+===Series reprisals===
+* Jon Snow (Kit Harington), a member of the Night's Watch and bastard son of Ned Stark.
+* Cersei Lannister (Lena Headey), the Queen Regent of the Seven Kingdoms serving in King's Landing and mother to King Joffrey Baratheon.
+* Tyrion Lannister (Peter Dinklage), the Master of Coin serving in King's Landing and Queen Cersei's brother.
+* Ramsay Snow (Iwan Rheon), a sadistic and ruthless bastard son of Roose Bolton, the Warden of the North.
+* Daenerys Targaryen (Emilia Clarke), the Mother of Dragons and the potential future queen of the Seven Kingdoms, operating in Meereen.
+* Margaery Tyrell  (Natalie Dormer), a lady of Highgarden, betrothed to King Joffrey (who is not seen in the game, but is mentioned frequently).
+
+==Episodes==
+The game is separated into six episodes, released in intervals.
+
+
+==Reception==
+
+
+''Game of Thrones'' received mixed reviews from critics praising the narrative, choice driven gameplay, and faithfulness to the source material while criticism was directed towards the graphical glitches and the lack of context for players unfamiliar with the ''Game of Thrones'' franchise.
+
+===Episode One – Iron from Ice===
+''Episode One – Iron from Ice'' received "generally positive" reviews. Aggregating review website Metacritic gave and the Microsoft Windows version 75/100 based on 44 reviews, the PlayStation 4 version 77/100 based on 18 reviews, and the Xbox One version 80/100 based on 14 reviews.
+
+===Episode Two – The Lost Lords===
+''Episode Two – The Lost Lords'' received "mixed or average" reviews. Metacritic gave the Microsoft Windows version 73/100 based on 35 reviews, the PlayStation 4 version 69/100 based on 16 reviews, and the Xbox One version 76/100 based on 11 reviews.
+
+Gamezebo's reviewer noted that Episode 2, in particular, exhibited poor performance on iOS devices, with glitches and stuttering affecting the player's ability to succeed at timed events.
+
+===Episode Three – The Sword in the Darkness===
+''Episode Three – The Sword in the Darkness'' received "generally positive" reviews. Metacritic gave the Microsoft Windows version 77/100 based on 30 reviews, the PlayStation 4 version 70/100 based on 16 reviews, and the Xbox One version 80/100 based on 9 reviews.
+
+===Episode Four – Sons of Winter===
+''Episode Four – Sons of Winter'' received "generally positive" reviews. Metacritic gave the Microsoft Windows version 77/100 based on 27 reviews, the PlayStation 4 version 73/100 based on 15 reviews, and the Xbox One version 80/100 based on 8 reviews.
+
+===Episode Five – A Nest of Vipers===
+''Episode Five – A Nest of Vipers'' received "mixed or average" reviews. Metacritic gave the Microsoft Windows version 74/100 based on 25 reviews, the PlayStation 4 version 77/100 based on 11 reviews, and the Xbox One version 72/100 based on 10 reviews.
+
+===Episode Six – The Ice Dragon===
+''Episode Six – The Ice Dragon'' received "generally positive" reviews. Metacritic gave the Microsoft Windows version 70/100 based on 24 reviews, the PlayStation 4 version 75/100 based on 13 reviews, and the Xbox One version 80/100 based on 7 reviews.
+
+==Cancelled sequel==
+The first series proved successful, leading Telltale to begin development of a second episodic season. In November 2015, Telltale's Kevin Bruner affirmed that a second season was currently in development. Telltale's Job Stauffer said in an August 2017 interview that while they were still planning on Season 2, the series was on hold as focus on their other current projects for release in 2017 and 2018, as well as to see the direction the current television show (at the time, nearing the end of its run) goes.  However, on September 21, 2018, the studio had a majority studio closure, laying off most of its staff and cancelling its in-development projects, including the second season of ''Game of Thrones''.
+
+==References==
+
+
+==External links==
+* 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

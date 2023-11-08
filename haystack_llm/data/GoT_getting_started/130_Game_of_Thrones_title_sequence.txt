@@ -1,0 +1,694 @@
+
+
+
+The title sequence of the HBO fantasy television series ''Game of Thrones'' that introduces every episode serves as a guide to the physical landscape of the world of the series. It changes depending on the locations visited in the particular episode it introduces.  The title sequence was created by Elastic for HBO, and is accompanied by a theme tune composed by Ramin Djawadi.
+
+The sequence depicts a three-dimensional map of the series' fictional world, projected onto a concave earth, and lit by a small sun contained within an armilla (or spherical astrolabe) that metaphorically depicts major events in the history of the fictional world at the sphere's center. As the camera swoops across the map and focuses on the locations in which the episode's events take place, complicated clockwork mechanisms cause buildings and other structures to emerge from the map and unfold. Meanwhile, the names of the principal cast (with the symbols of the characters' families next to the names) and creative staff are displayed. The sequence concludes after about one-and-a-half minutes with the title card and brief opening credits indicating the episode's writers and directors.
+
+Creative director Angus Wall, art director Robert Feng, animator Kirk Shintani and designer Hameed Shaukat received the 2011 Primetime Emmy Award for Outstanding Main Title Design for their work on the sequence. The title sequence has been ranked one of the best TV title sequences of all time.
+
+==Description==
+The title sequence consists of a three-dimensional map of the world, with the continents of Westeros and Essos located on the inner surface of a sphere, which is rendered in the style of a fantasy role-playing map used as a game board by participants for their battle plans. The maps used are those of Westeros and Essos that precede the novels in the book series. At the center of the sphere is a heliocentric armillary sphere. The title sequence serves as a guide to the physical landscape of the world of ''Game of Thrones'', and details of the title sequence change each week depending on the locations visited, and new locations may be added in each season.
+
+The sequence of every episode opens with a close-up of the sun and the sphere surrounding it. Relief depictions of the fictional's world's history are visible on the sphere, such as the Doom of Valyria, Aegon's Conquest and the rise of House Baratheon, which appear at varying points in the sequence.  The camera then pans to different parts of the map, on which different locations in the fictional world are shown.  Many of the cities and buildings on these locations appear out of the ground using clockwork mechanisms. Other elements, such as the weirwood tree at Winterfell and the Horse Gate at Vaes Dothrak, are also added at the various locations. The locations shown vary depending on the locations visited in that particular episode, and three or four variations of the title sequence are shown in each season.  However, due to the limitation on time for the title sequence, no more than six locations may be shown in any episode. Also, because of their importance in the show, every episode features King's Landing, Winterfell, The Wall, and wherever Daenerys may be regardless of whether or not any of these locations is featured in that episode.
+
+The sigils of the reigning families are added to each location; for example, the Baratheon stag sigil on King's Landing and the Stark dire wolf at Winterfell. The names of the cast are also shown together with the corresponding sigil of the character they portray. The sigil may change depending on the storyline, for example the flayed man sigil is displayed over Winterfell when it is taken by the Boltons, but it reverts to the dire wolf sigil after it is recaptured by the Starks. Other events in the show are also reflected in the title sequence. For example, after Winterfell is burned, smoke is depicted billowing out from it. The ''Game of Thrones'' logo appears over the armilla at the end.
+
+HBO released an interactive 360-degree video of the title sequence in season 6.
+
+While the locations featured change from episode to episode, the general design and route of the sequence remain roughly similar. However, in the final season, the title sequence received a major revamp to denote the change in season and shift in storyline. In this new version, the first location shown is the breached wall instead of King's Landing, and moves down to the cities south of the wall following the path of the army of the dead. The interiors of two major locations are shown for the first time: the crypts of Winterfell and the Red Keep at King's Landing, as well as the latter's throne room. The appearance of the armilla and the events depicted on it also change to reflect event of the season 7 finale, such as the fall of the Wall.
+
+==Conception and production==
+The title sequence was created by three teams: its design, which forms the bulk of the project, was done by Elastic, the computer graphics by a52, and the title sequence editing by Rock Paper Scissors. Elastic had previously created the title sequences for ''Rome'', ''Big Love'', and ''Carnivale'' for HBO, and they were approached by Carolyn Strauss of HBO, with whom they had worked on these shows, to create the title sequence for ''Game of Thrones''.  Angus Wall, the head of title design firm Elastic, met with Strauss, the showrunners David Benioff and Dan Weiss, and producer Greg Spence to discuss the project around a year before the show debut.
+
+When the pilot was first made, it was felt that the geography of the imaginary world of Westeros and Essos might confuse the viewers, and that maps could be useful as navigational guides for the viewers. An early suggestion was to use animated maps as a transition between scenes to orient viewers, but that idea was dropped as it would interrupt the narrative flow. The idea of the map was therefore moved into the title sequence.  For the original pilot, the showrunners Benioff and Weiss initially wrote the title sequence as a crow's flight from King's Landing to Winterfell;  however, the production team at Elastic thought the idea was too flat and devised the idea of using 3-D models within a sphere that represents the world of the show. The sphere was used to obviate the question of what might lie beyond the horizon of the map, and the whole sphere is lit by the sun in the middle. According to Angus Wall, the title sequence had "a concrete function in the world of the show, in that it serves as a legend the way the map at the beginning of a fantasy book orients you." The title sequence informs the viewers of the locations of the show relevant to each episode, and changes to reflect the storylines of the show and changes within this world.
+
+On the use of an armillary and models with moving parts, producer Greg Spence explained that Angus Wall at Elastic came up with "a vision of a mad monk, in a tower somewhere," who was somehow keeping track of all this action "and creating as he went. He would then fashion little automatons out of the materials that would be available in his world. They would be stone, or tin, or wood, and everything would feel very hand-crafted." The idea is, therefore, that everything in the title sequence could be created with hammer, saw, and chisel, and operated with gears and cogs. The turning gears and cogs were meant to be reminiscent of Leonardo da Vinci's inventions.
+
+The design team were given a list of the locations where the action may take place in each episode after the shooting had completed, and they had around 3 months to create title sequences. The concepts, including details such as the machinery used, were first sketched by hand, and the models were then created with computer graphics.
+
+==''Game of Thrones'' theme==
+
+The theme music that accompanies the title sequence was composed by Ramin Djawadi. The production team showed the title sequence they were working on to Djawadi, who was then inspired to create the music for the "''Game of Thrones'' Theme" and finished the theme music three days later. Djawadi said the showrunners Benioff and Weiss wanted the theme music to be about a journey that reflects the variety of locations and characters in the show.
+
+==List of elements==
+The following table lists the locations shown in each episode's title sequence, in the order of their appearance in the sequence as determined by the first episode in which they are shown. The locations King's Landing, Winterfell, and The Wall are featured in every title sequence, as well as the most recent location in Essos (in the first 6 seasons), even if they are not present in that particular episode. It is also noteworthy that the appearance of Winterfell has changed over the seasons: in Seasons 3 and 4 Winterfell was covered in smoke, referencing its burning at the end of Season 2, and in Season 5 the smoke was removed but the Bolton sigil replaced the Stark sigil, reflecting how the Boltons moved to Winterfell during that season. In episode 6.10, the Stark sigil returned, the result of Jon Snow and Sansa Stark's reclaiming Winterfell from the Boltons at the end of the previous episode.
+
+===Summary===
+
+
+
+
+
+
+
+ 
+
+ S. 1 
+
+ S. 2 
+
+ S. 3 
+
+ S. 4 
+
+ S. 5 
+
+ S. 6 
+
+ S. 7 
+
+ S. 8 
+
+ Total Count
+
+
+
+
+
+ '''Locations'''
+
+
+
+
+
+ King's Landing
+
+
+ 10 
+
+ 10 
+
+ 10 
+
+ 10 
+
+ 10 
+
+ 10 
+
+ 7 
+
+ 6 
+
+ 73
+
+
+
+
+
+ Winterfell
+
+
+ 10 
+
+ 10 
+
+ 10 
+
+ 10 
+
+ 10 
+
+ 10 
+
+ 7 
+
+ 6 
+
+ 73
+
+
+
+
+
+ The Wall
+
+
+ 10 
+
+ 10 
+
+ 10 
+
+ 10 
+
+ 10 
+
+ 10 
+
+ 7 
+
+ 6 
+
+ 73
+
+
+
+
+
+ Meereen
+
+
+  
+
+ 
+
+  
+
+ 10 
+
+ 10 
+
+ 10 
+
+  
+
+  
+
+ 30
+
+
+
+
+
+ Braavos
+
+
+  
+
+  
+
+  
+
+ 5 
+
+ 9 
+
+ 7 
+
+  
+
+  
+
+ 21
+
+
+
+
+
+ Dragonstone
+
+
+  
+
+ 3 
+
+ 4 
+
+ 5 
+
+  
+
+  
+
+ 7 
+
+  
+
+ 19
+
+
+
+
+
+ Pyke
+
+
+  
+
+ 9 
+
+  
+
+  
+
+  
+
+ 3 
+
+ 3 
+
+  
+
+ 15
+
+
+
+
+
+ Vaes Dothrak
+
+
+ 9 
+
+ 3 
+
+  
+
+  
+
+  
+
+ 3 
+
+  
+
+  
+
+ 15
+
+
+
+
+
+ Harrenhal
+
+
+  
+
+ 7 
+
+ 8 
+
+  
+
+  
+
+  
+
+  
+
+  
+
+ 15
+
+
+
+
+
+ Riverrun
+
+
+  
+
+ 
+
+ 6 
+
+  
+
+  
+
+ 3 
+
+  
+
+  
+
+ 9
+
+
+
+
+
+ Dorne
+
+
+  
+
+  
+
+  
+
+  
+
+ 7 
+
+ 2 
+
+  
+
+  
+
+ 9
+
+
+
+
+
+ The Eyrie
+
+
+ 4 
+
+  
+
+  
+
+  
+
+ 2 
+
+ 1 
+
+  
+
+  
+
+ 7
+
+
+
+
+
+ The Dreadfort
+
+
+  
+
+  
+
+  
+
+ 7 
+
+  
+
+  
+
+  
+
+  
+
+ 7
+
+
+
+
+
+ Qarth
+
+
+  
+
+ 7 
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+ 7
+
+
+
+
+
+ Oldtown
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+ 7 
+
+  
+
+ 7
+
+
+
+
+
+ Yunkai
+
+
+  
+
+  
+
+ 6 
+
+  
+
+  
+
+  
+
+  
+
+  
+
+ 6
+
+
+
+
+
+ Last Hearth
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+ 6 
+
+ 6
+
+
+
+
+
+ The Twins
+
+
+ 1 
+
+  
+
+ 2 
+
+  
+
+  
+
+ 1 
+
+ 1 
+
+  
+
+ 5
+
+
+
+
+
+ Moat Cailin
+
+
+  
+
+  
+
+  
+
+ 3 
+
+ 1 
+
+  
+
+  
+
+  
+
+ 4
+
+
+
+
+
+ Astapor
+
+
+  
+
+  
+
+ 4 
+
+  
+
+  
+
+  
+
+  
+
+  
+
+ 4
+
+
+
+
+
+ Eastwatch
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+ 3 
+
+  
+
+ 3
+
+
+
+
+
+ Pentos
+
+
+ 1 
+
+  
+
+  
+
+  
+
+ 1 
+
+  
+
+  
+
+  
+
+ 2
+
+
+
+
+
+
+
+==Homage==
+''The Simpsons'' episode "Exit Through the Kwik-E-Mart" features a homage to the ''Game of Thrones'' title sequence, with famous buildings in the town of Springfield rising through the ground as characters watch on, dressed in ''Game of Thrones''-style costumes. The Wall is replaced by the monolithic "Couch" at the end of the sequence.  A version of the title sequence has also been recreated with Oreo cookies.
+
+==Awards==
+The design team behind the title sequence, Angus Wall, art director Rob Feng, designer Hameed Shaukat, and C.G. supervisor Kirk Shintani, won a Creative Arts Emmy Award on September 10, 2011.
+
+=== Awards and nominations ===
+
+
+
+
+
+ Year
+
+ Award
+
+ Category
+
+ Nominee(s)
+
+ Result
+
+ 
+
+
+
+ 2011
+
+ 63rd Primetime Creative Arts Emmy Awards
+
+ Outstanding Main Title Design
+
+ Angus Wall, Hameed Shaukat, Kirk Shintani and Robert Feng
+
+ 
+
+ 
+
+
+
+ 2016
+
+ 68th Primetime Creative Arts Emmy Awards
+
+ Outstanding Interactive Program
+
+ Game of Thrones Main Titles 360 Experience
+
+ 
+
+ 
+
+
+
+
+
+==References==
+
+
+== External links ==
+* Perkins, Will; Albinson, Ian (June 29, 2011).  "Game of Thrones (2011)". Art of the Title. May 11, 2011.
+* Appelo, Tim (April 19, 2011).  "Secrets Behind 'Game of Thrones' Opening Credits (Video)". ''The Hollywood Reporter''.
+
+
+
+
+
+

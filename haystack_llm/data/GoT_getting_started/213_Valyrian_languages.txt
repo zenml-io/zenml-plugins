@@ -1,0 +1,1615 @@
+
+
+
+The '''Valyrian languages''' are a fictional language family in the ''A Song of Ice and Fire'' series of fantasy novels by George R. R. Martin, and in their television adaptation ''Game of Thrones''.
+
+In the novels, High Valyrian and its descendant languages are often mentioned but not developed beyond a few words. For the TV series, linguist David J. Peterson created the High Valyrian language, as well as the derivative languages Astapori and Meereenese Valyrian, based on the fragments given in the novels. Valyrian and Dothraki have been described as "the most convincing fictional tongues since Elvish".
+
+==High Valyrian==
+
+In the world of ''A Song of Ice and Fire'', High Valyrian occupies a cultural niche similar to that of Latin in medieval Europe.  The novels describe it as no longer being used as a language of everyday communication, but rather as a language of learning and education among the nobility of Essos and Westeros, with much literature and song composed in Valyrian.
+
+===Creation===
+David J. Peterson, creator of the spoken Valyrian languages for ''Game of Thrones''
+To create the Dothraki and Valyrian languages to be spoken in ''Game of Thrones'', HBO selected the linguist David J. Peterson through a competition among conlangers. The producers gave Peterson a largely free hand in developing the languages, as, according to Peterson, George R. R. Martin himself was not very interested in the linguistic aspect of his works. The already published novels include only a few words of High Valyrian, including ''valar morghulis'' ("all men must die"), ''valar dohaeris'' ("all men must serve") and ''dracarys'' ("dragonfire"). For the forthcoming novel ''The Winds of Winter'', Peterson has supplied Martin with additional Valyrian translations.
+
+Peterson commented that he considered Martin's choice of ''dracarys'' unfortunate because of its (presumably intended) similarity to the Latin word for dragon, ''''. Because the Latin language does not exist in the fictional world of ''A Song of Ice and Fire'', Peterson chose to treat the similarity as coincidental and made ''dracarys'' an independent lexeme; his High Valyrian term for dragon is ''zaldrīzes''. The phrases ''valar morghulis'' and ''valar dohaeris'', on the other hand, became the foundation of the language's conjugation system. Another word, ''trēsy'', meaning "son", was coined in honour of Peterson's 3000th Twitter follower.
+
+Peterson did not create a High Valyrian writing system at the time, but he commented that he "was thinking something more like Egyptian's system of hieroglyphs—not in style, necessarily, but in their functionality. Egyptians had an alphabet, of sorts, a couple of phonetically-based systems, and a logography all layered on top of one another." In the third season's episode "The Bear and the Maiden Fair", Talisa is seen writing a Valyrian letter in the Latin alphabet, because according to Peterson, "it didn't seem worthwhile to create an entire writing system for what ultimately is kind of a throwaway shot".
+
+At the start of June 2013, there were 667 High Valyrian words.
+
+===Phonology===
+
+
+
++ Consonants
+
+
+
+ Labial
+
+ Dental
+
+ Alveolar
+
+ Palatal
+
+ Velar
+
+ Uvular
+
+ Glottal
+
+
+
+ Nasal
+
+ m /m/
+
+
+
+ n /n/
+
+ ñ /ɲ/
+
+
+
+
+
+
+
+
+
+ Plosive
+
+ p /p/
+
+ b /b/
+
+
+
+ t /t/
+
+ d /d/
+
+ j /j/
+
+ k /k/
+
+ g /ɡ/
+
+ q /q/
+
+
+
+
+
+ Fricative
+
+ v /v/
+
+ (th /θ/)
+
+ s /s/
+
+ z /z/
+
+ (kh /x/)
+
+ gh /ɣ/
+
+ h /h/
+
+
+
+
+
+ Approximant
+
+
+
+
+
+
+
+
+
+
+
+
+
+ Trill
+
+
+
+
+
+ rh /r̥/
+
+ r /r/
+
+
+
+
+
+
+
+
+
+
+
+ Lateral
+
+
+
+
+
+ l /l/
+
+ lj /ʎ/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Notes:
+:a.  and  are not native to High Valyrian but are present in some loanwords, such as the Dothraki ''arakh''.
+:b.  varies between  ~ .
+:c.  varies between  ~  ~ .
+:d.  varies between  ~ .
+
+
+
+
+
++ Vowels
+
+
+
+ Front
+
+ Central
+
+ Back
+
+
+
+ Close / High
+
+ ī, i (iː, i)ȳ, y (yː, y)
+
+ 
+
+ ū, u (uː, u)
+
+
+
+ Mid
+
+ ē, e (eː, e)
+
+ 
+
+ ō, o (oː, o)
+
+
+
+ Open / Low
+
+ 
+
+ ā, a (aː, a)
+
+
+
+Vowels with a macron over them (ī, ȳ, ū, ē, ō and ā) are long, held for twice as long as short vowels. Some words are distinguished simply by their vowel length in High Valyrian. The rounded vowels  and  may not be pronounced in modern High Valyrian, as a non-native or prestige language and did not survive into the descendant languages. As a result, while Daenerys Targaryen's first name may generally be pronounced  by characters in ''Game of Thrones'', in High Valyrian it would have been closer to , with a diphthong in the first syllable and a rounded vowel in the last. The long vowels have also been lost in some derived languages; in season 3 of ''Game of Thrones'', we hear Astapori Valyrian, from which all long vowels have been lost.
+
+Syllable stress is penultimate unless the penultimate syllable is light and the antepenultimate syllable is heavy, in which case stress is on the antepenultimate. As a highly inflected language, word order is flexible (a feature lost in derived languages), but sentences with relative clauses are head-final.
+
+===Grammar===
+
+====Nouns====
+There are four grammatical numbers in High Valyrian—singular, plural, paucal and collective. For example, ''vala'' "man" (nom. sing.); ''vali'' "men" (nom. pl.); ''valun'' "some men" (nom. pau.); ''valar'' "all men" (nom. coll.). The collective can itself be modified by number as a new noun declension, for example ''azantys'' "knight, soldier" (nom. sing.) → ''azantyr'' "army" (nom. coll.); ''azantyr'' "army" (nom. sing.) → ''azantyri'' "armies" (nom. pl.).
+
+Nouns have eight cases—nominative, accusative, genitive, dative, locative, instrumental, comitative and vocative, though the instrumental and comitative are not distinguished in all declensions, nor are the genitive, dative and locative always distinguished in the plural. Both prepositions and postpositions are used to form other cases; for example, the ablative is formed with the preposition ''hen'' + the locative (e.g. ''hen lentot'', "from a house") while the superessive is formed with the postposition ''bē'' following the genitive (e.g. ''lento bē'', "on top of a house").
+
+There are four grammatical genders, which do not align with biological sex. The Valyrian names for the genders are:
+
+: ''hūrenkon qogror''—"lunar class",
+: ''vēzenkon qogror''—"solar class",
+: ''tegōñor qogror''—"terrestrial class",
+: ''embōñor qogror''—"aquatic class".
+
+Animate and individuatable nouns are generally in the lunar or solar classes, while other nouns are generally classified as terrestrial or aquatic. The names of the classes derive from the nouns themselves, which are prototypical members of each gender. Peterson describes Valyrian gender as being inherent but more predictable from phonology than gender in French, with some of the derivational properties of the noun classes of Bantu languages. As a result of the phonological predictability, many words for humans (which tend to end ''-a'' or ''-ys'') are lunar or solar; many foods and plants (often ending ''-on'') are terrestrial.
+
+According to Peterson, "what defines declension classes in High Valyrian" can be divined by paying "close attention to the singular and plural numbers" and noting "where cases are conflated and where they aren't". In the following tables, adjacent case conflations are merged into the same table cell; other cases that share a form with another are underlined.
+
+
+
+
+
+
+ 
+
+ First declension(Lunar: ''vala'', "man")
+
+ 
+
+ Second declension(Solar: ''loktys'', "sailor")
+
+ 
+
+
+
+
+
+ Singular
+
+ Plural
+
+ Paucal
+
+ Collective
+
+
+ Singular
+
+ Plural
+
+ Paucal
+
+ Collective
+
+
+
+ Nominative
+
+ vala
+
+ vali
+
+ valun
+
+ valar
+
+ loktys
+
+ loktyssy
+
+ loktyn
+
+ loktyr
+
+ Nom.
+
+
+
+ Accusative
+
+ vale
+
+ valī
+
+ valuni
+
+ valari
+
+ lokti
+
+ loktī
+
+ loktyni
+
+ loktyri
+
+ Acc.
+
+
+
+ Genitive
+
+ valo
+
+ valoti
+
+ valuno
+
+ valaro
+
+ lokto
+
+ loktoti
+
+ loktyno
+
+ loktyro
+
+ Gen.
+
+
+
+ Dative
+
+ valot
+
+
+ valunta
+
+ valarta
+
+ loktot
+
+
+ loktynty
+
+ loktyrty
+
+ Dat.
+
+
+
+ Locative
+
+ valā
+
+
+ valunna
+
+ valarra
+
+ loktȳ
+
+ loktī
+
+ loktynny
+
+ loktyrry
+
+ Loc.
+
+
+
+ Instrumental
+
+ valosa
+
+ valossi
+
+ valussa
+
+ valarza
+
+ loktomy
+
+ loktommi
+
+ loktyssy
+
+ loktyrzy
+
+ Instr.
+
+
+
+ Comitative
+
+ valoma
+
+ valommi
+
+ valumma
+
+ valarma
+
+
+
+ loktymmy
+
+ loktyrmy
+
+ Com.
+
+
+
+ Vocative
+
+ valus
+
+ valis
+
+ valussa
+
+ valarza
+
+ loktys
+
+ loktyssys
+
+ loktyssy
+
+ loktyrzy
+
+ Voc.
+
+
+
+ 
+
+
+ Singular
+
+ Plural
+
+ Paucal
+
+ Collective
+
+
+ Singular
+
+ Plural
+
+ Paucal
+
+ Collective
+
+ 
+
+
+
+
+ First declension
+
+ Second declension
+
+
+
+====Verbs====
+Nouns have four grammatical numbers, but verb conjugations have only been described in the singular and the plural; paucals trigger plural agreement and collectives trigger singular agreement. There are two paradigms of verbs, those with a stem ending with a consonant and those with a stem ending with a vowel; the tables below show examples of three tenses in the active voice. It is possible to tell which paradigm is in use from the first person plural indicative—consonant stems will always end in ''-i'', whereas vowels stems will end in ''-ī''. Verbs with stems ending in a vowel follow a pattern where that stem-terminal vowel might change—''-a'' and ''-i'' do not change, ''-e'' becomes ''-i'', but ''-o'' and ''-u'' both become ''-v''. Verb stems may never end in a long vowel or a diphthong. There is a subjunctive mood that is not only used in subordinate clauses, but also in all negative statements.
+
+
+
+
+ Consonantal verbs(''manaeragon'', "to raise" or "to lift")
+
+
+
+ 
+
+ Present tense
+
+ 
+
+ Perfect tense
+
+ 
+
+ Imperfect tense
+
+
+
+
+ Indicative mood
+
+ Subjunctive mood
+
+
+ Indicative mood
+
+ Subjunctive mood
+
+
+ Indicative mood
+
+ Subjunctive mood
+
+
+
+
+ Singular
+
+ Plural
+
+ Singular
+
+ Plural
+
+
+ Singular
+
+ Plural
+
+ Singular
+
+ Plural
+
+
+ Singular
+
+ Plural
+
+ Singular
+
+ Plural
+
+
+
+ First person
+
+ manaeran
+
+ manaeri
+
+ manaeron
+
+ manaeroty
+
+
+
+ manaertan
+
+ manaerti
+
+ manaerton
+
+ manaertoty
+
+
+
+ manaerilen
+
+ manaerilin
+
+ manaerilon
+
+ manaeriloty
+
+
+
+ Second person
+
+ manaerā
+
+ manaerāt
+
+ manaerō
+
+ manaerōt
+
+
+
+ manaertā
+
+ manaertāt
+
+ manaertō
+
+ manaertōt
+
+
+
+ manaerilē
+
+ manaerilēt
+
+ manaerilō
+
+ manaerilōt
+
+
+
+ Third person
+
+ manaerza
+
+ manaerzi
+
+ manaeros
+
+ manaerosy
+
+
+
+ manaertas
+
+ manaertis
+
+ manaertos
+
+ manertosy
+
+
+
+ manaeriles
+
+ manaerilis
+
+ manaerilos
+
+ manaerilosy
+
+
+
+ Imperative
+
+ manaerās
+
+ manaerātās
+
+ 
+
+
+ 
+
+
+ 
+
+
+
+ Infinitive
+
+ manaeragon
+
+ 
+
+
+ manaertagon
+
+ 
+
+
+ 
+
+
+
+ Participle
+
+ manaerare, manaerarior
+
+ 
+
+
+ 
+
+
+ 
+
+
+
+
+
+
+ Vowel verbs (stem ending -a)(''limagon'', "to cry")
+
+
+
+ 
+
+ Present tense
+
+ 
+
+ Perfect tense
+
+ 
+
+ Imperfect tense
+
+
+
+
+ Indicative mood
+
+ Subjunctive mood
+
+
+ Indicative mood
+
+ Subjunctive mood
+
+
+ Indicative mood
+
+ Subjunctive mood
+
+
+
+
+ Singular
+
+ Plural
+
+ Singular
+
+ Plural
+
+
+ Singular
+
+ Plural
+
+ Singular
+
+ Plural
+
+
+ Singular
+
+ Plural
+
+ Singular
+
+ Plural
+
+
+
+ First person
+
+ liman
+
+ limī
+
+ limaon
+
+ limaoty
+
+
+
+ limatan
+
+ limati
+
+ limaton
+
+ limatoty
+
+
+
+ limēlen
+
+ limēlin
+
+ limēlon
+
+ limēloty
+
+
+
+ Second person
+
+ limā
+
+ limāt
+
+ limaō
+
+ limaōt
+
+
+
+ limatā
+
+ limatāt
+
+ limatō
+
+ limatōt
+
+
+
+ limēlē
+
+ limēlēt
+
+ limēlō
+
+ limēlōt
+
+
+
+ Third person
+
+ limas
+
+ limasi
+
+ limaos
+
+ limaosy
+
+
+
+ limatas
+
+ limatasi
+
+ limatos
+
+ limatosy
+
+
+
+ limēles
+
+ limēlis
+
+ limēlos
+
+ limēlosy
+
+
+
+ Imperative
+
+ limās
+
+ limātās
+
+ 
+
+
+ 
+
+
+ 
+
+
+
+ Infinitive
+
+ limagon
+
+ 
+
+
+ limatagon
+
+ 
+
+
+ 
+
+
+
+ Participle
+
+ limare, limarior
+
+ 
+
+
+ 
+
+
+ 
+
+
+
+
+
+
+ Vowel verbs (stem ending -e)(''sōvegon'', "to fly")
+
+
+
+ 
+
+ Present tense
+
+ 
+
+ Perfect tense
+
+ 
+
+ Imperfect tense
+
+
+
+
+ Indicative mood
+
+ Subjunctive mood
+
+
+ Indicative mood
+
+ Subjunctive mood
+
+
+ Indicative mood
+
+ Subjunctive mood
+
+
+
+
+ Singular
+
+ Plural
+
+ Singular
+
+ Plural
+
+
+ Singular
+
+ Plural
+
+ Singular
+
+ Plural
+
+
+ Singular
+
+ Plural
+
+ Singular
+
+ Plural
+
+
+
+ First person
+
+ sōven
+
+ sōvī
+
+ sōvion
+
+ sōvioty
+
+
+
+ sōvetan
+
+ sōveti
+
+ sōveton
+
+ sōvetoty
+
+
+
+ sovīlen
+
+ sovīlin
+
+ sovīlon
+
+ sovīloty
+
+
+
+ Second person
+
+ sōvē
+
+ sōvēt
+
+ sōviō
+
+ sōviōt
+
+
+
+ sōvetā
+
+ sōvetāt
+
+ sōvetō
+
+ sōvetōt
+
+
+
+ sovīlē
+
+ sovīlēt
+
+ sovīlō
+
+ sovīlōt
+
+
+
+ Third person
+
+ sōves
+
+ sōvesi
+
+ sōvios
+
+ sōviosy
+
+
+
+ sōvetas
+
+ sōvetis
+
+ sōvetos
+
+ sōvetosy
+
+
+
+ sovīles
+
+ sovīli
+
+ sovīlos
+
+ sovīlosy
+
+
+
+ Imperative
+
+ sōvēs
+
+ sōvētēs
+
+ 
+
+
+ 
+
+
+ 
+
+
+
+ Infinitive
+
+ sōvegon
+
+ 
+
+
+ sōvetagon
+
+ 
+
+
+ 
+
+
+
+ Participle
+
+ sōvere, sōverior
+
+ 
+
+
+ 
+
+
+ 
+
+
+
+====Adjectives====
+Adjectives have three declension classes. Like verbs, adjectives only have two number forms—a singular, which is also used for the collective, and a plural, also used for paucal numbers. Adjectives may be both prepositive (e.g. "the ''white'' shoe") or post-positive (e.g. "the body ''politic''"); when prepositive some further rules apply.
+
+Several forms of elision and consonant assimilation occur with prepositive adjectives:
+
+* With inflections of two syllables (such as ''kast'''oti''''' in several class  plurals), the second syllable is often lost to elision; word-final ''-t'' is also lost before consonants—compare ''ader'''ot''' ābrot'' ("to the quick woman") with ''ader'''o''' Dovaogēdot'' ("to the quick Unsullied").
+* When such elision causes a word-final ''-z'' (such as with the class  ''kasta'' becoming ''kastyzy'' (nom.) and ''kastyzys'' (voc.) in the lunar plurals, below), the final ''-z'' is devoiced to ''-s'' when it precedes a voiceless consonant—compare ''kast'''ys''' hobresse'' ("blue goats") with ''kast'''yz''' dāryssy'' ("blue kings"), both forms from ''kastyzy'', the lunar nominative plural.
+* If the syllable in question is vowel–consonant–vowel, then only the final vowel is elided—compare ''ānogro ēl'''ȳro''''' ("of the first blood") to ''ēl'''ȳr''' ānogro'' ("of the first blood").
+* Whereas instrumental forms are generally listed as containing ''-s-'' or ''-ss-'' and comitative forms generally contain ''-m-'' or ''-mm-'', some nouns use only the ''s''-forms in both cases and some nouns use the ''m''-forms for both. When this occurs, the consonant in question experiences consonant harmony, causing the use of what might otherwise be a comitative form for an instrumental and vice versa,  where the forms appear to be instrumental ("by means of the ... men", "by means of the ... rains"), despite being comitative ("accompanying the ... man", "accompanying the ... rains").
+* Finally, word-final ''-m'' is decreasingly common in High Valyrian. Contracted inflections that end in ''-m'' will often assimilate to ''-n'' unless the next word begins with a vowel or a labial consonant.
+
+=====Class I adjectives=====
+Class  adjectives decline differently for each of the four noun classes. The exemplar is ''kasta'', meaning "blue and green". As before, in the following tables, adjacent case conflations are merged into the same table cell; other cases that share a form with another are underlined.
+
+
+
+
+ Class  adjectives(''kasta'', "blue and green")
+
+
+
+ 
+
+ Singular
+
+ 
+
+ Plural
+
+ 
+
+
+
+
+ Lunar
+
+ Solar
+
+ Terrestrial
+
+ Aquatic
+
+
+ Lunar
+
+ Solar
+
+ Terrestrial
+
+ Aquatic
+
+
+
+
+ Nominative
+
+ kasta
+
+ kastys
+
+ kaston
+
+ kastor
+
+
+ kasti
+
+ kastyzy
+
+ kasta
+
+ kastra
+
+ Nom.
+
+
+
+ Accusative
+
+ kaste
+
+ kasti
+
+
+
+
+ kastī
+
+
+
+ Acc.
+
+
+
+ Genitive
+
+ kasto
+
+ kastro
+
+
+ kastoti
+
+ kastroti
+
+ Gen.
+
+
+
+ Dative
+
+ kastot
+
+ kastrot
+
+
+
+
+
+
+ Dat.
+
+
+
+ Locative
+
+ kastā
+
+ kastȳ
+
+ kastot
+
+
+
+ kastoti
+
+ kastī
+
+ kastoti
+
+
+ Loc.
+
+
+
+ Instrumental
+
+ kastosa
+
+ kastosy
+
+ kastoso
+
+ kastroso
+
+
+ kastossi
+
+ kastrossi
+
+ Instr.
+
+
+
+ Comitative
+
+ kastoma
+
+ kastomy
+
+ kastomo
+
+ kastromo
+
+
+ kastommi
+
+ kastrommi
+
+ Com.
+
+
+
+ Vocative
+
+ kastus
+
+ kastys
+
+ kastos
+
+
+ kastis
+
+ kastyzys
+
+ kastas
+
+ Voc.
+
+
+
+ 
+
+ Lunar
+
+ Solar
+
+ Terrestrial
+
+ Aquatic
+
+
+ Lunar
+
+ Solar
+
+ Terrestrial
+
+ Aquatic
+
+ 
+
+
+
+
+ Singular
+
+
+ Plural
+
+
+
+
+Notes:
+:a. See note about consonant harmony assimilation above.
+
+
+=====Class II and III adjectives=====
+Adjective classes  and  both conflate rather more forms, failing to distinguish between solar and lunar nouns and failing to distinguish between terrestrial and aquatic nouns. Class  also has some subclasses, that have not yet been detailed. The exemplars used here are the class  adjective ''adere'' ("sleek, smooth, slippery, fast, quick") and the class  adjective ''ēlie'' ("first").
+
+Class  adjectives also experience vowel changes when subject to the elision described above. When a lunar or solar form is elided to a syllable containing ''-ȳ-'' (such forms are highlighted in the table below), this ''-ȳ-'' mutates to ''-io-''; this does not occur with terrestrial or aquatic forms. Compare:
+
+: ''valosa ēl'''ȳse'''''—"with the first man" (''vala'' is a lunar noun of the first declension)
+: ''ēl'''ios''' valosa''—"with the first man"
+: ''daomȳssi ēl'''ȳssi'''''—"with the first rains" 
+: ''ēl'''ȳs''' daomȳssi''—"with the first rains"
+
+
+
+
+
+ Class  adjectives(''adere'', "sleek, smooth, slippery, fast, quick")
+
+
+
+ 
+
+ Solar / Lunar
+
+ Terrestrial / Aquatic
+
+
+
+
+ Singular
+
+ Plural
+
+ Singular
+
+ Plural
+
+
+
+ Nominative
+
+ adere
+
+ aderi
+
+ aderior
+
+ aderiar
+
+
+
+ Accusative
+
+
+
+
+ Genitive
+
+ adero
+
+ aderoti
+
+ aderȳro
+
+ aderȳti
+
+
+
+ Dative
+
+ aderot
+
+
+
+
+ Locative
+
+ aderē
+
+
+
+
+ Instrumental
+
+ aderose
+
+ aderossi
+
+ aderȳso
+
+ aderȳssi
+
+
+
+ Comitative
+
+ aderome
+
+ aderommi
+
+ aderȳmo
+
+ aderȳmmi
+
+
+
+ Vocative
+
+ aderes
+
+ aderis
+
+ aderios
+
+ aderīs
+
+
+
+
+
+
+
+ Class  adjectives(''ēlie'', "first")
+
+
+
+ 
+
+ Solar / Lunar
+
+ Terrestrial / Aquatic
+
+
+
+
+ Singular
+
+ Plural
+
+ Singular
+
+ Plural
+
+
+
+ Nominative
+
+ ēlie
+
+ ēlī
+
+ ēlior
+
+ ēliar
+
+
+
+ Accusative
+
+
+
+
+ Genitive
+
+ ēlio
+
+ ēlȳti
+
+ ēlȳro
+
+ ēlȳti
+
+
+
+ Dative
+
+ ēliot
+
+
+ ēlȳrot
+
+
+
+
+ Locative
+
+ ēliē
+
+
+
+
+ Instrumental
+
+ ēlȳse
+
+ ēlȳssi
+
+ ēlȳso
+
+ ēlȳssi
+
+
+
+ Comitative
+
+ ēlȳme
+
+ ēlȳmmi
+
+ ēlȳmo
+
+ ēlȳmmi
+
+
+
+ Vocative
+
+ ēlies
+
+ ēlīs
+
+ ēlios
+
+ ēlīs
+
+
+
+
+
+Notes:
+:a. See note about consonant harmony assimilation above.
+:b. See note about vowel changes in elision above.
+
+
+=== Duolingo course ===
+
+On  a course in High Valyrian for English speakers began to be constructed in the Duolingo Language Incubator. David J. Peterson is one of the contributors to the course. The beta version was released on July 12, 2017. In April of 2019, the course was updated in anticipation of Game of Thrones' eighth and final season. As a part of this update, Peterson created audio for the course's lessons and exercises.
+
+==Derivative languages==
+In the world of the novel and TV series, the Nine Free Cities of Essos speak variants of High Valyrian, described by the character Tyrion in ''A Dance with Dragons'' as "not so much a dialect as nine dialects on the way to becoming separate tongues". The cities of Slaver's Bay speak related languages, descended from High Valyrian with the substrate of the local Ghiscari languages. Peterson noted that with regard to the vocabulary of the derived languages, "If it’s got a j in an odd place, it’s probably Ghiscari in origin."
+
+Peterson described the relationship between High Valyrian and the Free Cities languages as being similar to that between classical Latin and the Romance languages, or more accurately between Classical Arabic and the modern varieties of Arabic, in that High Valyrian is intelligible, with some difficulty, to a speaker of a local Essoan language.
+
+===Astapori Valyrian===
+
+The first derivative Valyrian language to be featured in the series was Astapori Valyrian, a variety from the city of Astapor in Slaver's Bay. It appeared in the third-season premiere episode "Valar Dohaeris".  Peterson created the Astapori dialogue by first writing the text in High Valyrian, then applying a series of regular grammar and sound changes to simulate the changes in natural languages over a long period of time.
+
+For example, Astapori Valyrian has lost all long vowels (designated with a macron) and most diphthongs. Between vowels, b, d, g have become v, ð, ɣ; subsequently, p, t, k have become b, d, g in the same environment.
+As a result, an "Unsullied" is rendered as ''Dovaogēdy''  in High Valyrian, but as ''Dovoghedhy''  in Astapori. Similarly, Astapori Valyrian has lost the case system of High Valyrian, so the word order is more reliably subject–verb–object (SVO) and the four genders of High Valyrian have been reduced to two, with three definite articles: ''ji''  (animate singular, derived from High Valyrian ''ziry''  "him/her (accusative)"), ''vi''  (inanimate singular, derived from High Valyrian ''ūī''  "it (accusative)"), and ''po''  (plural, derived from High Valyrian ''pōnte''  "them (accusative)"). There is also an indefinite article, ''me'' , derived from High Valyrian ''mēre''  ("one"). Word stress is less predictable than in High Valyrian, but commands are stressed word-finally (for example: ''ivetrá'').
+
+=== Meereenese Valyrian ===
+
+
+Meereenese Valyrian appears in Seasons 4 and 6 of ''Game of Thrones''. Like Astapori Valyrian, it lacked long vowels as well as the sound /y/. However, its phonology departs considerably more from High Valyrian; for example, "Unsullied" is ''Thowoá'' θo.woˈa, whereas in High Valyrian it is ''Dovaogēdy'' do.vao.ˈɡeː.dy and in Astapori Valyrian it is ''Dovoghedhy'' do.vo.ˈɣe.ði.
+
+==References==
+
+
+==External links==
+*  www.dothraki.com—A site managed by David J. Peterson, where he blogs about the languages he's constructed for ''Game of Thrones''
+*  Tongues of Ice and Fire wiki—fan wiki collating information about the constructed languages in ''Game of Thrones''
+**  Learning High Valyrian on the Tongues of Ice and Fire wiki
+**  Learning Astapori Valyrian on the Tongues of Ice and Fire wiki
+*  Tongues of Ice and Fire forums, including Valyrian-specific discussion threads (for  beginners and about  language updates).
+
+
+
+
+
+
+
+
+
