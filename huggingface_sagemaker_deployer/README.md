@@ -44,7 +44,7 @@ You also need to have your local AWS CLI configured to have Sagemaker endpoint a
 
 Here is an overview of the entire process:
 
-<img alt="Pipelines Overview" src="assets/pipelines_overview.png" alt="Logo" width="800">
+<img src="assets/pipelines_overview.png" alt="Pipelines Overview" width="800">
 
 There are three pipelines at play, which all use the ZenML Model Control Plane to communicate with each other.
 
@@ -58,26 +58,74 @@ Let's run these one by one:
 
 Next, you should look at the CLI help to see what you can do with the project:
   
-```bash
+```shell
 python run.py --help
 
 python run.py --training-pipeline --num-epochs 1 --train-batch-size 128 --eval-batch-size 12
 ```
 
-This will create a new model on your Model Control Plane
+This will train a model from Huggingface and register a new ZenML model on the Model Control Plane:
 
-<img alt="Pipelines Overview" src="assets/mcp_1.png" alt="ZenML Model Control Plane" width="600">
-
+<img src="assets/mcp_1.png" alt="ZenML Model Control Plane" width="600">
 
 Please note the above screens are a cloud-only feature in [ZenML Cloud](https://zenml.io/cloud), and
 the CLI `zenml models list` should be used instead for OSS users.
 
-### Show that ZenML control plane
+At the end of the pipeline, the model will also be pushed the Huggingface, and a link estabilished between the ZenML Control Plane and the Huggingface model repository.
+
+<img src="assets/hf_repo_commit.png" alt="Huggingface Repo" width="600">
+
+<img src="assets/training_pipeline_with_hf.png" alt="Training Pipeline with HF" width="600">
+
+Notice the linkage of the revision made on Huggingface to the metadata tracked on the ZenML pipeline. This estabilishes lineage.
 
 ## Promote the model 
 
-Run the promotion pipeline to promote the pipeline to staging or do it manually via CLI.
+You can run the training pipeline a few times to produce many versions of the model. Feel free to edit the parameters accordingly.
+When the time is right, you now run the promotion pipeline:
+
+```shell
+python run.py --help
+
+python run.py --promoting-pipeline
+```
+
+This pipeline finds the best model from the last pipelines that were run, and promotes it to production. That simply means its marked as production in the Model Control Plane:
+
+<img src="assets/mcp_2.png" alt="Model versions" width="600">
 
 ## Deploy the model
 
-## Run inference
+Finally, when the time is right, its time to deploy the latest `Production` model!
+
+```shell
+python run.py --deploying-pipeline
+```
+
+This uses the latest Huggingface revision, and deploys it on Sagemaker:
+
+```shell
+Creating model with name: huggingface-pytorch-inference-2023-11-08-10-33-02-272
+Creating endpoint-config with name huggingface-pytorch-inference-2023-11-08-10-33-03-291
+Creating endpoint with name huggingface-pytorch-inference-2023-11-08-10-33-03-291```
+```
+
+Verify that the endpoint is up:
+
+```shell
+aws sagemaker list-endpoints
+```
+
+You should see a deployed endpoint to sagemaker.
+
+## Run the demo app
+
+```shell
+cd gradio
+python app.py
+```
+
+<img src="assets/gradio.png" alt="Model versions" width="600">
+
+
+And there you go, you have successfully trained and pushed a model to Huggingface, and deplyoed it to AWS Sagemaker, in a ZenML pipeline. Read more on the [ZenML docs](https://docs.zenml.io)
