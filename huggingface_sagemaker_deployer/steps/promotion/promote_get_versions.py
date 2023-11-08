@@ -29,7 +29,7 @@ logger = get_logger(__name__)
 model_registry = Client().active_stack.model_registry
 
 
-@step
+@step(enable_cache=False)
 def promote_get_versions() -> (
     Tuple[Annotated[str, "latest_version"], Annotated[str, "current_version"]]
 ):
