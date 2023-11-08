@@ -1,0 +1,349 @@
+
+
+The '''Dothraki language''' is a constructed fictional language in George R. R. Martin's fantasy novel series ''A Song of Ice and Fire'' and its television adaptation ''Game of Thrones''. It is spoken by the Dothraki, a nomadic people in the series's fictional world. The language was developed for the TV series by the linguist David J. Peterson, working off the Dothraki words and phrases in Martin's novels.
+
+, the language comprised 3163 words, not all of which have been made public. In 2012, 146 newborn girls in the United States were named "Khaleesi", the Dothraki term for the wife of a ''khal'' or ruler, and the title adopted in the series by Daenerys Targaryen. Dothraki and Valyrian have been described as "the most convincing fictional tongues since Elvish".
+
+==Development==
+David J. Peterson, creator of the Dothraki spoken language for ''Game of Thrones''
+
+The Dothraki vocabulary was created by David J. Peterson well in advance of the adaptation. HBO hired the Language Creation Society to create the language, and after an application process involving over 30 conlangers, Peterson was chosen to develop the Dothraki language. He delivered over 1700 words to HBO before the initial shooting. Peterson drew inspiration from George R. R. Martin’s description of the language, as well as from such languages as Estonian, Inuktitut, Turkish, Russian, and Swahili.
+
+David J. Peterson and his development of the Dothraki language were featured on an April 8, 2012 episode of CNN's ''The Next List''. He went on to create the Valyrian languages for season 3 of ''Game of Thrones''.  Peterson and his development of Dothraki were also featured on the January 8, 2017 episode of ''To Tell the Truth''.
+
+===Language constraints===
+The Dothraki language was developed under two significant constraints.  First, the language had to match the uses already put down in the books. Secondly, it had to be easily pronounceable or learnable by the actors. These two constraints influenced the grammar and phonology of the language: for instance, as in English, there is no contrast between aspirated and unaspirated stops.
+
+==Phonology and romanization==
+David Peterson has said, "You know, most people probably don't really know what Arabic actually sounds like, so to an untrained ear, it might sound like Arabic. To someone who knows Arabic, it doesn't. I tend to think of the sound as a mix between Arabic (minus the distinctive pharyngeals) and Spanish, due to the dental consonants."
+
+Regarding the orthography, the Dothraki themselves do not have a writing system—nor do many of the surrounding peoples (e.g., the Lhazareen). If there were to be any written examples of Dothraki in the ''A Song of Ice and Fire'' universe, it would be in a writing system developed in the Free Cities and adapted to Dothraki, or in some place like Ghis or Qarth, which do have writing systems.
+
+=== Consonants ===
+There are 23 consonant phonemes in the Dothraki language. Here the romanized form is given on the left, and the IPA in brackets.
+
+
+
+
+
+
+ 
+
+ Labial
+
+ Dental
+
+ Alveolar
+
+ Postalveolar
+
+ Velar
+
+ Uvular
+
+ Glottal
+
+
+
+ Plosive
+
+ voiceless
+
+ 
+
+ t t
+
+
+
+ 
+
+ k k
+
+ q q
+
+
+
+
+
+ voiced
+
+ 
+
+ d d
+
+ 
+
+ 
+
+ g ɡ
+
+
+
+
+
+
+
+ Affricate
+
+ voiceless
+
+
+
+ 
+
+
+
+ ch tʃ
+
+
+
+
+
+
+
+
+
+ voiced
+
+ 
+
+ 
+
+
+
+ j dʒ
+
+
+
+
+
+
+
+
+
+ Fricative
+
+ voiceless
+
+ f f
+
+ th θ
+
+ s s
+
+ sh ʃ
+
+ kh x
+
+
+
+ h h
+
+
+
+ voiced
+
+ v v
+
+
+
+ z z
+
+ zh ʒ
+
+
+
+
+
+
+
+
+
+ Nasal
+
+ m m
+
+ n n
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+ Trill
+
+
+
+
+
+ r r
+
+
+
+
+
+
+
+
+
+
+
+ Tap
+
+
+
+
+
+ r ɾ
+
+
+
+
+
+
+
+
+
+
+
+ Approximant
+
+ central
+
+ 
+
+
+
+
+
+ y j
+
+ w w
+
+
+
+
+
+
+
+ lateral
+
+ 
+
+ l l
+
+
+
+
+
+
+
+
+
+
+
+
+
+The letters  and  do not appear in Dothraki, although  appears in the digraph . 
+
+ and  seem to appear only in names, as in ''Pono'' and ''Bharbo''. These consonants were used in the past but have since developed into  and . They can still be used as variants of  and .
+
+Voiceless stops may be aspirated. This does not change word meaning.
+
+The geminates of consonants marked with digraphs have a reduced orthography:
+*  represents  (not )
+*  represents  (not )
+*  represents  (not )
+*  represents  (not )
+*  represents  (not )
+
+=== Vowels ===
+Dothraki has a four vowel system shown below:
+
+
+
+
+
+
+ Vowels
+
+
+
+ '''i''' /i/
+
+
+
+ '''e''' /e/
+
+
+
+ '''o''' /o/
+
+
+
+ '''a''' /a/
+
+
+
+There are no diphthongs.
+
+In the ''A Song of Ice and Fire'' books,  never occurs as a vowel, appearing only after , and only in names, as in ''Jhiqui'' and ''Quaro''.
+
+In sequence of multiple vowels, each such vowel represents a separate syllable.  Examples: ''shierak''  ('star'), ''rhaesh''  ('country'), ''khaleesi''  ('queen').
+
+The vowels  are realized as  after .  turns into  after dental consonants.  can be pronounced as  after .
+
+==Grammar==
+
+===Parts of speech===
+Though prepositions are also sometimes employed, the language is foremost inflectional. Prefixes, suffixes and circumfixes are all used. Verbs conjugate in infinitive, past, present, future, two imperatives and (archaic) participle; they also agree with person, number and polarity. Nouns divide into two classes, inanimate and animate. They decline in five cases, nominative, accusative, genitive, allative and ablative. Animate nouns also decline according to number.
+
+===Word order===
+The basic word order is SVO (subject–verb–object). In a basic sentence, the order of these elements (when all three are present) is as in English: first comes the subject (S), followed by the verb (V), and then the object (O).
+:'''Khal ahhas arakh.''' ''The Khal (S) sharpened (V) the arakh (O).''
+
+When only a subject is present, the subject precedes the verb, as it does in English:
+:'''Arakh hasa.'''
+:''The arakh (S) is sharp (V).''
+
+In noun phrases there is a specific order as well. The order is as follows: demonstrative, noun, adverb, adjective, genitive noun, prepositional phrase. Prepositions always precede their noun complements. but adjectives, possessor and prepositional phrases all follow the noun:
+:'''jin ave sekke verven anni m'orvikoon'''
+:this father very violent of.mine with.a.whip
+:''this very violent father of mine with a whip''
+
+Adverbs normally are sentence final, but they can also immediately follow the verb. Modal particles precede the verb.
+
+In the episode "Andy's Ancestry" from the United States television show ''The Office'', Dwight Schrute created the Dothraki phrase "throat rip" by placing "throat" in front to make it the accusative. Peterson adapted that language technique and called it the "Schrutean compound".
+
+==Sample==
+: '''Nevakhi vekha ha maan: Rekke, m'aresakea norethi fitte.'''
+: 
+: seat. exist. for  there. with.coward. hair. short
+: ''There is a place for him: There, with the short-haired cowards.''
+
+==Notes==
+
+
+==References==
+
+
+==External links==
+*  The official Dothraki blog at dothraki.com
+*  The Dothraki Language Wiki at wiki.dothraki.org
+*  The LCS blog about the language at dothraki.conlang.org
+
+
+
+
+
+
+
+
+

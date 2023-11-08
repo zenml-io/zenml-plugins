@@ -1,0 +1,35 @@
+
+
+
+'''''Game of Thrones: Seven Kingdoms''''' was a fantasy massively multiplayer online role-playing game (MMORPG) under development by Bigpoint and Artplant, in collaboration with HBO. The game was based on the HBO TV series ''Game of Thrones'', which is itself an adaptation of the ''A Song of Ice and Fire'' book series by George R. R. Martin.
+
+The game was being built using the Unity platform, and will be playable in the browser using the Unity Web Player plugin.
+
+==Gameplay==
+''Game of Thrones: Seven Kingdoms'' was to be set within the fictional realm of Westeros, and will use a third-person viewpoint. Gameplay was planned to be mainly based around player vs player (PvP) combat, which would involve small group combat, one on one duels and siege battles, large scale battles in which players must capture keeps, forts and castles. Player vs Environment (PvE) combat was planned to be available at launch, although this was not a major priority. Combat would be realtime, with movement controlled using the WASD keys.
+
+Players would be able to come together to form guilds, known as lesser houses. Lesser houses align themselves with one of the three major houses in-game: Baratheon, Stark or Lannister. Solo play will be possible, although group play will be encouraged.
+
+Players would be able to customize their characters by changing features such as hair and clothing.
+
+==Development==
+''Game of Thrones: Seven Kingdoms'' was announced in February 2012, with the first look being unveiled at the Game Developers Conference in March 2012. The first gameplay footage was shown in a trailer released on July 12, 2012.
+
+The game was under development by German videogame developer Bigpoint, and Norwegian developer Artplant. The studios have previously worked together on Battlestar Galactica Online, another browser based multiplayer game.
+
+The game was being made in collaboration with HBO. Everything put in game is reviewed by HBO in advance, and Bigpoint is working with the HBO design teams. The look and feel of the weapons and armour, for example, are straight from the show.
+
+The game was being built on the Unity platform.
+
+==References==
+
+
+==External links==
+* Official page
+
+
+
+
+
+
+

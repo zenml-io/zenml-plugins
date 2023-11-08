@@ -1,0 +1,1734 @@
+
+
+
+
+'''''A Game of Thrones: The Card Game''''' (or '''''AGoT''''', for short) is an out-of-print collectible card game produced by Fantasy Flight Games. It is based on ''A Song of Ice and Fire'',  a series of novels written by George R. R. Martin. The first set was Westeros Edition and was released in August 2002. It has since won two Origins Awards. The game's primary designer is Eric Lang, the lead developer is Nate French, with Damon Stone serving as associate designer.
+
+In the game, players assume the leadership of one of the great houses of Westeros vying for control of King's Landing and the Iron Throne. To accomplish this, players launch military attacks against their opponents, undermine their opponents’ plans with intrigues of their own, and make power plays to win the support of the realm.
+
+==Factions==
+Each house represents one of the main factions involved in the struggle for the Iron Throne emulated by the AGoT LCG. Each house provides different strengths and weaknesses, allowing for various play styles to interact within the same game. Certain cards are restricted to one or two houses, giving each house a unique flavor. Currently, there are eight playable factions in the AGoT LCG. Each is identified by a shield bearing the arms of the house, located in the upper right corner of the card.
+
+===Great houses===
+* House Stark, the honorable rulers of the cold North. The Stark shield is a grey direwolf on an ice-white field. Prominent Stark characters include Lord Eddard Stark and his wife Catelyn, their son Robb, as well as Maester Luwin, Ser Rodrik Cassel, and Brynden "The Blackfish" Tully. Common game mechanics include direct kill, deck searching, and improved defense. Many Stark effects are themed around military challenges.
+* House Lannister, the rich and treacherous residents of Casterly Rock. The Lannister shield is a gold lion on a crimson field. Prominent Lannister characters include Jaime, Cersei, and Tyrion Lannister, as well as Ser Gregor Clegane, Ser Addam Marbrand, and Grand Maester Pycelle. Common game mechanics include card draw, kneeling effects, and trait manipulation. Many Lannister effects are themed around intrigue challenges.
+* House Baratheon, the royal blood of King Robert, rulers of Dragonstone and Storm's End. The Baratheon shield is a black crowned stag on a gold field. Prominent Baratheon characters include Robert, his brothers Stannis and Renly, as well as Melisandre, Ser Davos Seaworth, and the Loras Tyrell, the Knight of Flowers. Common game mechanics include power manipulation, standing effects, and retrieval of cards from the dead and discard piles. Many House Baratheon effects are themed around power challenges.
+* House Greyjoy, the rulers of the Iron Islands and the Ironborn raiders who prey on the rest of Westeros. The Greyjoy shield is a gold kraken on a black field. Prominent Greyjoy characters include Theon, Asha, and their father Balon Greyjoy, as well Balon's brothers Euron Crow's Eye and Aeron Damphair. Common game mechanics include location control, the ability to save characters, event cancels, and boosting the strength of attacking characters. Many house Greyjoy effects are themed around winning unopposed challenges.
+* House Targaryen, the exiled descendants of Aegon the Conqueror and their exotic followers. The Targaryen shield is a red on black, three-headed dragon representing Aegon and his sisters. Prominent Targaryen characters include Daenerys Targaryen and her three dragons, Khal Drogo, Ser Jorah Mormont, and Grey Worm. Common game mechanics include attachment manipulation, strength reducers and kill effects on strength 0 characters (frequently referred to as "burn" effects), and playing characters outside of the marshalling phase. Many Targaryen effects are themed around winning or losing challenges by 4 or more strength.
+* House Martell, rulers of the desert realm of Dorne, the southernmost region of Westeros. The Martell shield is a red sun pierced by a golden spear, on an orange field. Prominent Martell characters include Doran Martell, Oberyn Martell the Red Viper, his daughters the Sand Snakes, and his niece Arianne Martell. Common game mechanics include icon manipulation, discard effects, stealth, and card draw. Many Martell effects are themed around losing challenges, leading to such effects being referred to as "revenge" effects.
+
+===Other factions===
+Some great houses featured in ''A Song of Ice and Fire'' are not represented as individual Houses in the ''AGoT'' LCG, but still appear in the game. House Tully is present in the game as a subset of their allies, House Stark. House Lannister and House Baratheon both feature numerous House Tyrell cards, and several significant House Tyrell characters were featured as promotional cards. House Tyrell also features prominently in the ''A House of Thorns'' expansion, as does House Bolton to a smaller extent. Other lesser houses also appear in the game, in service to the Great Houses to which they are sworn. Several House Frey cards also make an appearance, primarily as neutral cards. House Arryn is a prominent theme in ''A House of Talons''.
+
+In addition to the noble houses, the ''AGoT'' LCG also features many other factions present in ''A Song of Ice and Fire'' as part of a particular theme. Example: The Wildlings are featured in ''Winter Block'', while the Asshai'i have been a sub theme over many expansions.
+
+==Cards==
+Each player supplies his or her own deck to play the game. A deck consists of a ''House Card'' or ''Alliance'' to represent the player's faction, an optional ''Agenda'' that modifies his faction, a plot deck that consists of exactly seven ''Plot'' cards, and then a main draw deck of at least 60 cards consisting of ''Characters'', ''Attachments'', ''Locations'', and ''Events''.
+
+===House cards===
+Each House card represents one of the main factions involved in the War of the Five Kings. Each House provides different strengths and weaknesses, allowing for various playstyles to interact within the same game. The House card selected will often restrict cards allowed in the remainder of the deck, by limiting cards that are marked as being allowed solely for another House.
+
+Characters, Locations, and Attachments often have a House affiliation, and often are used in decks running a matching House card. Some cards have no House affiliation, and such neutral cards may be used freely in any deck. Cards with House affiliations other than the chosen House card may be used, providing the card itself has no restriction, but require an extra expenditure of resources to bring them into play.
+
+===Agenda cards (optional)===
+Introduced in Valyrian Block, any deck using a House card (but not an Alliance card) may use one Agenda card. Agenda cards either modify the rules for building the player's deck, or grant an in-game advantage, typically at the cost of some other disadvantage such as requiring extra power to win, reduced card draw, or limiting claimed power.
+
+===Plot cards===
+Plot cards are generally regarded as the defining feature of ''A Game of Thrones: The Card Game''. Unlike the shuffled and randomly drawn resource deck, at the beginning of each round, each player chooses a new plot card to be revealed, which will have an effect on the round to be played, allowing for a strategic element to an otherwise random game.
+
+Plot cards indicate the base amount of gold available for the player to use to bring new cards into play during his ''Marshalling'' phase (indicated by a number within a gold coin), a base initiative value to determine the order of play for the round (indicated by a number within a diamond), a base claim value to determine the scope of the effect that player winning a challenge (indicated by a number in a silver disk), and a text box detailing any other effects or restrictions on the plot card, including any ''traits'' that it might have.
+
+Most plot cards are designed with built-in trade-offs, sacrificing high claim for low income, or some other game mechanic drawback.
+
+===Character cards===
+Character cards represent the unique characters from the ''A Song of Ice and Fire'' novels, such as Eddard Stark, as well as generic individuals and massed groupings (such as armies) that can be found there. Generally, characters are the main focus of a deck as they are the principle card type used to participate in challenges, and thus collect the power tokens necessary to win.
+
+Attributes of a Character card consist of a gold cost (generally represented by a number overlaid on a gold coin in the upper left corner), a name across the top that may be preceded by a black flag if the character is unique and/or an infinity symbol if the character is ''endless'', a House affiliation (represented by one or more House shields in the upper right corner, although neutral characters will have a blank shield), artwork depicting the character in the top half of the card, a strength value (represented by a number on a stylized tapestry or a nondescript shield in the middle of the left side), zero to three challenge icons (a red axe represents Military, a green eye represents Intrigue, and a blue crown represents Power) arrayed in the bottom half of the left side, and a text box in the lower half of the card.
+
+Within the textbox may be ''traits'', ''keywords'', other game effects or icons, and flavour text from the novels. Traits are bold and italicized words at the top of the textbox, and usually represent roles or groups within the world of ''A Song of Ice and Fire'', such as Lords or Dothraki. They have no game function themselves, but instead are used to group characters together in order for other game effects to be used by or against varied groups of characters. Keywords are game mechanics defined in the rules that affect that character, such as No Attachments, which prevents any attachments from being placed on that character.
+
+===Attachment cards===
+Attachments are cards that are used exclusively to modify other cards. An attachment may not be in play unless it is attached to the proper type of card, typically a character card unless the attachment itself says otherwise.
+
+Attributes of an Attachment card consist of a gold cost (generally represented by a number overlaid on a gold coin in the upper left corner), a name across the top that may be proceeded by a black flag if the attachment is unique and/or an infinity symbol if the attachment is ''endless'', a House affiliation (represented by one or more House shields in the upper right corner, although neutral attachments will have no shield), artwork depicting the attachment in the top half of the card, and a text box in the lower half of the card. Throughout the Winter block, some cards were printed with a black crow icon in the bottom left corner to indicate the attachment is ''Doomed''. It is unknown if such attachments will appear again.
+
+Within the textbox may be ''traits'', ''keywords'', other game effects or icons, and flavour text from the novels. Traits are bold and italicized words at the top of the textbox, and usually represent types of enhancements, such as skills or titles. They have no game function themselves, but instead are used to group attachments together in order for other game effects to be used by or against varied groups of attachments. Keywords are game mechanics defined in the rules that affect that attachment such as Setup, which allows the attachment to be played at the beginning of the game unlike normal attachments.
+
+Occasionally, game effects can cause cards to become face-down attachments attached to specific other cards. These function the same as normal attachments, except they are treated as having no names, no text, no gold costs, no House affiliations, and are discarded if they are ever forced to leave play.
+
+===Location cards===
+Location cards represent the unique places in the setting of the ''A Song of Ice and Fire'' novels, such as King's Landing, generic regions such as fiefdoms, and even mobile locations such as sailing vessels and warships. Many locations are used to supply additional ''income'', ''influence'', but a wide variety of effects are present.
+
+Attributes of a Location card consist of a gold cost (generally represented by a number overlaid on a gold coin in the upper left corner), a name across the top that may be preceded by a black flag if the location is unique, a House affiliation (represented by one or more House shields in the upper right corner, although neutral locations will have no shield), artwork depicting the location in the top half of the card, and a text box in the lower half of the card.
+
+Within the textbox may be ''traits'', ''keywords'', other game effects or icons, and flavour text from the novels. Traits are bold and italicized words at the top of the textbox, and usually represent regions within the world of A Song of Ice and Fire, such as Westeros or Dorne. They have no game function themselves, but instead are used to group locations together in order for other game effects to be used by or against varied groups of locations. Keywords are game mechanics defined in the rules that affect that location, such as Limited which restricts the player to playing one such card per round.
+
+===Event cards===
+Event cards represent special actions or happenings from the ''A Song of Ice and Fire'' novels that can be used in the course of the game. Certain events may be restricted so that they may only be played by a specific House, and some may only affect cards of a particular House affiliation. Event cards generally have a play restriction or a cost of some type which may be paid in influence, gold, or possibly by modifying the game state of one or more characters, locations, attachments or house card.
+
+Attributes of an Event card consist of a name across the top that may be preceded by a black flag if the event is unique and/or an infinity symbol if the event is ''endless'', artwork depicting the event in the top half of the card, and a text box in the lower half of the card.
+
+Within the textbox may be ''traits'', ''keywords'', but primarily will be one or more game effects, and flavour text from the novels. Traits are bold and italicized words at the top of the textbox, and usually represent specific types of events such as ''Small Council''. They have no game function themselves, but instead are used to group events together in order for other game effects to be used by or against varied groups of events. Keywords are game mechanics defined in the rules that affect that event, such as Deathbound directing a used event to the dead pile instead of the normal discard pile.
+
+==Rules==
+
+===Deck building===
+Each player participating in an A Game of Thrones game uses two decks: 1) a 7 card ''plot'' deck and 2) a 60+ (40+ for draft) card ''draw'' deck of ''characters'', ''attachments'', ''locations'', and ''events''. During play the ''draw'' deck cards will often end up in other game play areas including the ''discard pile'' (cards discarded from play) and the ''dead pile'' (cards that were killed or are marked with the Deathbound keyword). Typically, players are only allowed three copies of any particular card (as determined by the card name, regardless of card type or game text similarity) in their ''draw'' deck, and only one copy of any particular card, by name, in their ''plot'' deck, but these restrictions can be modified by some other cards, such as the Twins agenda.
+
+===Winning conditions===
+A player must earn 15 power tokens between their House card and characters in play to win A Game of Thrones. Numerous cards in the game can change the amount a player or his opponent are required to earn in order to win. Generally, power tokens are earned by winning challenges against an opponent, but some cards allow a player to directly claim power for his House card or characters in other ways.
+
+===Setup===
+At the beginning of the game, each player shuffles their ''draw'' deck, and draws the top 7 cards, with an option for a ''mulligan'' given to each player to shuffle and draw a new hand. From this initial hand, each player is able to select up to 5 gold worth of characters, locations, and attachments with the Setup keyword, but no more than 1 card of any type with the Limited keyword, from their hand; these cards are placed face-down until all players are ready to reveal their initial cards in play. Once all cards are revealed, players draw cards again until they each have 7 cards in their hand again.
+
+===Rounds and phases===
+The game is played through repeated rounds until one or more players meets the winning condition, or all but one player has met the elimination condition. Rounds are divided into 7 phases, with each phase allowing players to alternate actions that affect the game state in some way.
+
+The first phase every round is the ''Plot'' phase. Each player selects one unused plot from his ''plot'' deck, and all players reveal their chosen plots simultaneously. Initiative values from plot cards and other resources are tallied, and the player with the highest initiative chooses which player will go first in each phase of the current round. The textbox effects of plots are then resolved in the order chosen by the first player.
+
+In the second phase, the ''Draw'' phase, each player is allowed to draw two cards from their ''draw'' deck.
+
+Although divided into turns for each player, the ''Marshalling'' phase is a single phase for all players. At the beginning of each player's turn in the Marshalling phase, the player counts all income from plot card and any other resources available. The player is then able to bring new resources in the form of characters, locations, and attachments into play by spending the gold. Some events and other triggered effects also require the payment of gold, and unused income is not carried over into other rounds, so resource management is important.
+
+The fourth phase is the ''Challenge'' phase. As with the ''Marshalling'' phase, each player has a turn to initiate challenges against other players. Generally, players may initiate one each of ''Military'', ''Intrigue'', and ''Power'' challenges each round, but several cards can allow exta challenges to be initiated or deny certain challenges at all. Also, in a multiplayer game, he can either use all his challenges on one opponent or divide them among his adversaries. He doesn't have to use all of them. Challenges can be initiated in any order, and require a player to ''kneel'' one or more characters with an icon matching the challenge type to begin the challenge. Then, the player being attacked may kneel one or more characters to attempt to oppose the challenge. Once all player actions are taken, the player with the highest total strength in the challenge wins. If the defending player wins, nothing special occurs, but if the attacker wins, then the defender suffers losses depending on the type of challenge initiated.
+* Military - if the defending player loses, he must ''kill'' a number of characters he controls equal to the claim value on the attacker's plot.
+* Intrigue - if the defending player loses, he must randomly discard a number of cards from hand equal to the claim value on the attacker's plot.
+* Power - if the defending player loses, he must remove a number of power tokens from his House card equal to the claim value on the attacker's plot, and place them on the attacker's House card.
+
+In the fifth phase, the ''Dominance'' phase, each player counts the total strength of all controlled characters that are still ''standing'', plus the amount of gold still remaining in his possession (unspent). The player with the highest total wins dominance that round, and claims 1 power token for his House, taken from the power common pool.
+
+In the ''Standing'' phase each player changes each ''kneeling'' card to ''standing''.
+
+With the LCG format came a new phase, the ''Taxation'' phase, in which each player returns unspent gold to the common pool (in the CCG format, players could not use gold outside of their turn in the Marshalling phase).
+
+===Common game terms and rules===
+''Kneeling'' and ''standing'' are the two possible game states for each card in the game, although there is a special ''moribund'' state that's further explained in the faq on FFG website. ''Standing'' cards are upright, and are ready for use to pay for effects, or to initiate or defend challenges. ''Kneeling'' cards are rotated 90 degrees to the side, to indicate that they've been used to pay for an effect, or to initiate or defend a challenge. Some game effects are able to ''kneel'' cards (changing them from ''standing'' to ''kneeling'') or ''stand'' cards (changing them from ''kneeling'' to ''standing'') in order to manipulate the resources a player has available.
+
+''Unique'' cards represent the special individuals, places, items, and happenings in the world of A Song of Ice and Fire. Unique cards may not be played if the player already has a copy of that card in play, or if a copy of that card can be found in the player's dead pile. Unique characters, locations, and attachments may be placed with copies that are already in play to serve as ''duplicates''. Duplicates may be discarded to save the unique card from being killed or discard.
+
+''Triggered Effects'' are a type of game effect that a player chooses to use in order to change the game state in some way. Triggered effects are indicated by a bold name of a phase (one of ''Plot'', ''Draw'', ''Marshalling'', ''Challenges'', ''Dominance'', or ''Standing'') or ''Any phase'' to indicate when the effect may be used. Another timing word that may precede a triggered effect is a bold ''Response'', which indicates that the effect may only be used in response to another occurrence in the game. ''Triggered abilities'' are a subset of triggered effects, and are specifically triggered effects that are written on cards currently in play.
+
+''Passive Effects'' are game effects that have no bold timing restriction indicated, but instead happen whenever certain prerequisites are met, such as a character coming into play.
+
+''Constant Abilities'' are game effects written on cards in play that have an ongoing effect on the game state.
+
+''Influence'' is indicated on various characters, locations, and attachments in the game by a number on a scroll in the textbox of the card. In the Valyrian block, influence was introduced as an additional resource to manage, requiring players to kneel one or more cards with a specific total amount of influence to pay for an effect.
+
+Normally, once a game effect has been initiated, it fully resolves without an interruption. However, once an effect is begun, there is a chance for specific effects to ''Cancel'' the initial effect. If the effect is cancelled, all costs stay paid, use limitations remain, but the effects do not occur.
+
+''Kill'' means removing a character from play, and placing that character in the ''dead pile''. Kill effects only work on characters, including other cards that are currently functioning as characters, but other cards can be placed in the dead pile through various game effects, such as the Deathbound keyword.
+
+''Discard'', when occurring without the modifier ''from hand'', means to take a card that is in play, and place it in the ''discard pile''.
+
+Generally, whenever an effect targets a card to be killed or discarded, players are given a chance to ''Save'' the card from the effect, either by discarding a duplicate of the targeted card or by using another game effect. If a card is saved, it is not removed from play, and it is not considered killed or discarded.
+
+==Organized play==
+
+===Night's Watch===
+Fantasy Flight Games has an official group of volunteers that organize sanctioned tournaments for A Game of Thrones. The Night's Watch are named after the guardians of The Wall in northern Westeros in the fictional setting of ''A Song of Ice and Fire''. These volunteers organize tournaments, arrange demonstration games for new and interested players, and hand out promotional materials provided by FFG.
+
+===Prizes===
+* '''Gold dragons''' are a form of loyalty points that were awarded for purchases and playing in tournaments. The packaging for booster packs, starter decks, and premium starter decks all have an image of a gold coin with a number representing the number of gold dragons earned, being one, two, and five respectively. Players could also earn certificates of eighty, forty, and twenty gold dragons for placing first, second, or third (respectively) in a sanctioned tournament. Gold dragons were redeemable to FFG for older promotional cards, booster packs, and other specialized AGoT products, such as card binders, stone house cards, and house-specific power tokens.  The Gold Dragon redemption program officially ended on June 30, 2008.
+* '''Promotional cards''' were frequently provided to Night's Watch volunteers by FFG to be given to participants of sanctioned tournaments. Sometimes these cards follow a special theme for the tournament, but that is not always the case. Usually the cards can legally be included in any deck, but some are marked with a skull icon to indicate they cannot be included unless special rules are in effect for that tournament.
+
+===Tournaments===
+There are several different official tournament types sanctioned by FFG. In the ''Classic'' format, players bring their own decks, which may include cards from any set, as long as the card is not on the banned list. In ''Standard'' format, players bring their own decks, which may only include cards from the most recent blocks. , only cards released since Valyrian block are legal in Standard format. In ''Limited'' format, players instead build their decks at the tournament, using provided draft packs (in ''Limited - Draft'') or starter decks (in ''Limited - Sealed Deck'') and booster packs.
+
+Aside from the restrictions on usable card pool, FFG places no limits on how Night's Watch volunteers organize the tournaments.
+
+ Thrones-Tournaments.com tries to provide a central list of all international and local store tournaments, to help gamers find play to compete in.
+
+===World and Continental Championships===
+The A Game of Thrones World Championships were held yearly at Gen Con Indy until 2012, when they moved to Fantasy Flight's Event Centre in Minneapolis, with Gencon being redesignated North American Championships. Part of the winner's prize is the opportunity to design their own card.
+
+
+
+
++ '''Previous world champions and cards designed'''
+
+ Year
+
+ World champion
+
+ Card designed
+
+ Set card was included in (CCG)
+
+ Set card was included in (1E)
+
+ Set card was included in (2E)
+
+
+
+ 2003 
+
+ Casey Galvan 
+
+ Bandit Lord 
+
+ A Crown of Suns 
+
+ Tourney for the Hand 
+
+ The King's Peace
+
+
+
+ 2004 
+
+ Greg Atkinson 
+
+ Flea Bottom 
+
+ A Reign of Kings 
+
+ The Grand Melee 
+
+ Oberyn's Revenge
+
+
+
+ 2005 
+
+ John Bruno 
+
+ The First Snow of Winter 
+
+ A Song of Night 
+
+ On Dangerous Grounds 
+
+ No Middle Ground
+
+
+
+ 2006 
+
+ Matthew Ley 
+
+ Ghost of High Heart 
+
+ A House of Talons 
+
+ Where Loyalty Lies 
+
+ City of Secrets
+
+
+
+ 2007 
+
+ Samuel Tham 
+
+ Den of the Wolf 
+
+ 
+
+  A Change of Seasons 
+
+ 
+
+
+
+ 2008 
+
+ Tzu-Mainn Chen (Melee) 
+
+ When I Woke... 
+
+  
+
+ Princes of the Sun 
+
+ Kings of the Isles
+
+
+
+ 2008 
+
+ Lucas Reed (Joust) 
+
+ A Pinch of Powder 
+
+  
+
+ Princes of the Sun 
+
+ In Daznak's Pit
+
+
+
+ 2008 
+
+ Tzu-Mainn Chen (Overall) 
+
+ Former Champion 
+
+  
+
+ Princes of the Sun 
+
+ 
+
+
+
+ 2009 
+
+ Jonathan Benton (Melee) 
+
+ Qhorin Halfhand 
+
+  
+
+ Lords of Winter 
+
+ Tyrion's Chain
+
+
+
+ 2009 
+
+ Greg Atkinson (Joust) 
+
+ Knights of the Hollow Hill
+
+  
+
+ Mountains of the Moon 
+
+ City of Secrets
+
+
+
+ 2009 
+
+ Erick Butzlaff (Overall) 
+
+ The Blackfish 
+
+  
+
+ Lords of Winter 
+
+ Wolves of the North 
+
+
+
+ 2010 
+
+ Brett Zeiler (Melee) 
+
+ Arrogant Contender  
+
+ 
+
+ Lions of the Rock 
+
+ City of Secrets
+
+
+
+ 2010 
+
+ Alec Irwin (Joust) 
+
+ The Laughing Storm 
+
+ 
+
+  Secrets of Oldtown 
+
+ 
+
+
+
+ 2010 
+
+ Erick Butzlaff (Overall) 
+
+ Not yet released 
+
+  
+
+  
+
+ 
+
+
+
+ 2010 
+
+ Andrea Gualdoni (European Joust) 
+
+ Meera Reed 
+
+  
+
+ Tourney for the Hand 
+
+ Music of Dragons
+
+
+
+ 2011 
+
+ Corey Faherty (Melee) 
+
+ Dark Wings, Dark Words 
+
+  
+
+ Ancestral Home 
+
+ 
+
+
+
+ 2011 
+
+ Brett Zeiler (Joust) 
+
+ Coldhands 
+
+  
+
+ The Horn that Wakes 
+
+ The Faith Militant
+
+
+
+ 2011 
+
+ Corey Faherty (Overall) 
+
+ House of Dreams (1E)/The House with the Red Door 
+
+  
+
+ A Roll of the Dice 
+
+ Journey to Oldtown
+
+
+
+ 2011 
+
+ Martí Foz Hernandez (European Joust) 
+
+ The Reader 
+
+  
+
+ The Great Fleet 
+
+ The Road to Winterfell
+
+
+
+ 2011 
+
+ Grégoire Lefebvre (European Melee) 
+
+ Margaery Tyrell 
+
+  
+
+ A Turn of the Tide 
+
+ House of Thorns
+
+
+
+ 2012 
+
+ Dan Seefeldt (North American Overall) 
+
+ A Time for Wolves 
+
+  
+
+ A Time for Wolves 
+
+ Wolves of the North
+
+
+
+ 2012 
+
+ Michael Pandorf (North American Melee) 
+
+ Not yet released 
+
+  
+
+  
+
+ 
+
+
+
+ 2012 
+
+ Mathieu Hosatte (Melee) 
+
+ Not yet released 
+
+  
+
+  
+
+ 
+
+
+
+ 2012 
+
+ John Bruno (Joust) 
+
+ Mad King Aerys 
+
+  
+
+ A Dire Message 
+
+ 
+
+
+
+ 2012 
+
+ Derek Shoemaker (Overall) 
+
+ Northern Patriarch 
+
+  
+
+ The Blue is Calling 
+
+ 
+
+
+
+ 2012 
+
+ Stefano Montanari (European Joust) 
+
+ Theon Greyjoy 
+
+  
+
+ Spoils of War 
+
+ 
+
+
+
+ 2012 
+
+ Istvan Cserdi (European Melee) 
+
+ Desert Raider 
+
+  
+
+ The Champion's Purse 
+
+ Kings of the Isles
+
+
+
+ 2013 
+
+ Steven Simoni (North American Overall) 
+
+ The Withering Cold 
+
+  
+
+ The Valemen 
+
+ Kingsmoot
+
+
+
+ 2013 
+
+ Ryan Jones (Melee) 
+
+ Faceless Man 
+
+  
+
+  
+
+ House of Thorns
+
+
+
+ 2013 
+
+ Álvaro Rodríguez (Joust) 
+
+ "The Rains of Castamere" 
+
+  
+
+  
+
+ Lions of Casterly Rock
+
+
+
+ 2013 
+
+ Ryan Jones (Overall) 
+
+ The Iron Bank Will Have Its Due 
+
+  
+
+  
+
+ Oberyn's Revenge
+
+
+
+ 2013 
+
+ Miguel Tarin (European Joust) 
+
+ Not yet released 
+
+ 
+
+  
+
+ 
+
+
+
+ 2013 
+
+ Vincent Teulé (European Melee) 
+
+ Drowned God Fanatic 
+
+ 
+
+  
+
+  Streets of King's Landing
+
+
+
+ 2014 
+
+ Jonathan Andrews (North American Overall) 
+
+ Duel 
+
+  
+
+  
+
+ The Fall of Astapor
+
+
+
+ 2014 
+
+ Dan Seefeldt (Melee) 
+
+ Not yet released 
+
+ 
+
+  
+
+ 
+
+
+
+ 2014 
+
+ Sam Braatz (Joust) 
+
+ The Crow is a Tricksy Bird 
+
+  
+
+  
+
+ Someone Always Tells
+
+
+
+ 2014 
+
+ Alexander Hynes (Overall) 
+
+ The Annals of Castle Black 
+
+  
+
+  
+
+ Guarding the Realm
+
+
+
+ 2014 
+
+ Jakob Hultman (European Melee) 
+
+ Beric Dondarrion 
+
+  
+
+  
+
+ The Brotherhood Without Banners
+
+
+
+ 2014 
+
+ Donovan van Beek (European Joust) 
+
+ The Wars to Come 
+
+  
+
+  
+
+ Sands of Dorne
+
+
+
+ 2015 
+
+ Patrick Reynolds (North American Joust) 
+
+ Not yet released 
+
+ 
+
+  
+
+ 
+
+
+
+ 2015 
+
+ Brian Aurelio (North American Melee) 
+
+ Winterfell Archery Range 
+
+  
+
+  
+
+ The Red Wedding
+
+
+
+ 2015 
+
+ Ryan Jones (Draft) 
+
+ Not yet released 
+
+ 
+
+  
+
+ 
+
+
+
+ 2015 
+
+ Jakob Hultman (Joust) 
+
+ The King in the North 
+
+  
+
+  
+
+ Favor of the Old Gods
+
+
+
+ 2015 
+
+ Corey Faherty (Melee) 
+
+ Valyrian Steel 
+
+ 
+
+  
+
+ Long May he Reign
+
+
+
+ 2015 
+
+ Sam Braatz (War of the Five Kings 2E) 
+
+ Not yet released 
+
+ 
+
+  
+
+ 
+
+
+
+ 2015 
+
+ Jesus Valdez Gaspar (European Joust) 
+
+ Assault from the Shadows 
+
+  
+
+  
+
+ Daggers in the Dark
+
+
+
+ 2016 
+
+ Chris Schoenthal (North American Joust 2E) 
+
+ Not yet released 
+
+  
+
+  
+
+ 
+
+
+
+ 2016 
+
+ Joe Mirando (Joust 2E) 
+
+ Not yet released 
+
+  
+
+  
+
+ 
+
+
+
+ 2016 
+
+ Luiz Bretas (European Melee 2E) 
+
+ Breaking Ties 
+
+  
+
+  
+
+ Sands of Dorne
+
+
+
+ 2016 
+
+ Florian Maas (European Joust 2E) 
+
+ Trading with Qohor 
+
+  
+
+  
+
+ The March on Winterfell
+
+
+
+2017
+
+Reinhard Schefcik (European Joust 2E)
+
+Not yet released
+
+  
+
+  
+
+ 
+
+
+
+2017
+
+Alex Black (North American Joust 2E)
+
+Not yet released
+
+  
+
+  
+
+ 
+
+
+
+2017
+
+Reinhard Schefcik (Joust 2E)
+
+Not yet released
+
+ 
+
+  
+
+ 
+
+
+
+2018
+
+Lennart Paga (Joust 2E)
+
+Not yet released
+
+ 
+
+  
+
+ 
+
+
+
+
+
+The 2003 world champion Casey Galvan was later hired by FFG to serve as lead developer, a position he occupied until fall of 2005. He now has a consulting role at FFG.  The runner up in that tournament, Nate French, came on as lead developer in Spring of 2006 and continues to this day.
+
+==Podcasts==
+
+There are a number of podcasts focused on the ''A Game of Thrones: The Living Card Game'', such as the weekly  Beyond The Wall,  2 Champs and a Chump,  Great Beards of Westeros and the Spanish language  2 Maestros 1 Pupilo.
+
+==Sets and expansions==
+When it was released, A Game of Thrones was introduced as a CCG. The cards for the AGoT CCG were organized into numerous sets and expansions that could be mixed together and used interchangeably. A ''block'' consisted of a ''base set'', up to two ''expansion sets'', a ''premium starter'', and often one or more promotional cards.
+
+Typically, a base set consisted of 240 cards available in either starter decks, consisting of a mix of fixed cards and a random assortment of other cards, or booster packs, consisting of 11 randomly sorted cards, of which 1 is rare, 3 are uncommon, and 7 are common. Booster packs were generally shipped in groups of 36, creating booster boxes. Expansion sets typically contained 150 cards, and were only distributed as booster packs similar to those of a base set. Premium Starters consisted of two or three pre-built decks of fixed cards, typically reprints from earlier sets, but also introducing 10 new cards as well.
+
+Within a base set and expansion set, the cards were divided into groups based on their frequency of appearance, with rare cards being included the least frequent, uncommon cards slightly more frequent, and common cards being the most frequent. Also available in regular and premium starters were a specific number of fixed cards that always appeared in that packaging. Also available were ''draft packs'' which consisted of 1 ''draft'' card, 5 ''plot'' cards, 6 ''house'' cards and 8 ''locations'' that are generally useful to any deck, and allow for a more level competitive field during ''draft'' tournaments.
+
+In late 2007, the A Game of Thrones CCG was converted to the A Game of Thrones LCG (Living Card Game), which ended the random booster packs in favor of fixed packs, called Chapter Packs, released on a roughly monthly basis. Chapter packs consist of 60 fixed cards - 3 copies of 20 cards. The Core Set consists of 4 preconstructed decks consisting of Stark, Lannister, Baratheon, and Targaryen, and is marketed as a starting point for a new player. It will also include a game board, power tokens, gold tokens, as well as game pieces to use for the multiplayer titles.  Along with the switch to the LCG, there has also been more of a focus on the multiplayer aspect of the game, now referred to as Melee, rather than the head to head play, now referred to as Joust.
+
+
+
+
++ '''A Game of Thrones CCG card sets'''
+
+ Block
+
+ Set
+
+ Notes
+
+
+
+Westeros Block 
+
+ Westeros Edition 
+
+ Introduced House Stark, House Lannister, and House Baratheon
+
+
+
+ Sea of Storms 
+
+Introduced House Greyjoy
+
+
+
+ Premium Starter 
+
+ Included three pre-built decks for House Stark, Lannister, and Baratheon
+
+
+
+ A Flight of Dragons 
+
+ Introduced House Targaryen
+
+
+
+Ice and Fire Block 
+
+ Ice & Fire Edition
+
+ 
+
+
+
+ A Throne of Blades 
+
+ 
+
+
+
+ Ice and Fire Premium Starters 
+
+ Included two pre-built decks for House Greyjoy and Targaryen
+
+
+
+ A Crown of Suns 
+
+ Introduced House Martell
+
+
+
+Valyrian Block 
+
+ Valyrian Edition 
+
+ Introduced Influence and Agendas.
+
+
+
+ A Tourney of Swords 
+
+
+
+
+
+ Valyrian Premium Starters 
+
+ Included two pre-built decks for Houses Stark\Baratheon and Lannister\Martell
+
+
+
+ A Reign of Kings 
+
+
+
+
+
+Winter Block 
+
+ Winter Edition 
+
+
+
+
+
+ A Song of Twilight 
+
+ 
+
+
+
+ Winter Premium Starters 
+
+ Included two pre-built decks for House Greyjoy and Targaryen
+
+
+
+ A Song of Night 
+
+
+
+
+
+Iron Throne Block 
+
+ Iron Throne Edition 
+
+ Introduced new card templates and multiplayer titles. New mechanics include crests, and dual house cards.
+
+
+
+ A House of Thorns 
+
+ Themed around House Tyrell and Bolton.
+
+
+
+ Iron Throne Edition Legacy Pack 
+
+ Pack of 55 Fixed Cards, 45 reprints and 10 new cards.
+
+
+
+ A House of Talons 
+
+ Themed around House Arryn and the Clansmen.
+
+
+
+ Five Kings Block 
+
+ Five Kings Edition 
+
+ The final set in CCG format.
+
+
+
+
+
+
++ '''A Game of Thrones LCG Core Set and Expansions'''
+
+ Set
+
+ Expansion Symbol
+
+ Featured House
+
+ Note
+
+
+
+A Game of Thrones (Core Set)
+
+ 
+
+ Stark 
+
+
+
+
+
+ 
+
+Baratheon 
+
+
+
+
+
+ 
+
+Lannister 
+
+
+
+
+
+ 
+
+Targaryen 
+
+
+
+
+
+ Kings of the Sea (Out Of Print) 
+
+ 
+
+Greyjoy 
+
+Set contains 60 cards and Greyjoy Resin House Card. Introduces the rules for the "Kingsmoot" multiplayer variant.
+
+
+
+ Princes of the Sun (Out Of Print) 
+
+ 
+
+Martell 
+
+Set contains 120 cards, two copies of 60 different cards. Introduces the rules for the "Civil War" joust variant.
+
+
+
+ Lords of Winter 
+
+ 
+
+Stark 
+
+Set contains 165 cards, three copies each of 55 different cards. Two deck building themes, the "Wolves of the North" and the "Tullys of Riverrun".
+
+
+
+ Kings of the Storm 
+
+ 
+
+Baratheon 
+
+Set contains 165 cards, three copies each of 55 different cards. Two deck building themes, "Power Rush" and the "Knights of the Realm".
+
+
+
+ Kings of the Sea (Revised Edition) 
+
+ 
+
+Greyjoy 
+
+Set contains 180 cards, three copies each of 60 different cards. The Greyjoy Resin House Card is no longer included.
+
+
+
+ Princes of the Sun (Revised Edition) 
+
+ 
+
+Martell 
+
+Set contains 180 cards, three copies of 60 different cards. Includes the rules for the "Civil War" joust variant.
+
+
+
+ Queen of Dragons 
+
+ 
+
+Targaryen 
+
+Set contains 165 cards, three copies each of 55 different cards. Two deck building themes, "Fire and Blood” and “Hosts of the True-Queen".
+
+
+
+ Lions of the Rock 
+
+ 
+
+Lannister
+
+Set contains 165 cards, three copies each of 55 different cards.
+
+
+
+
+
+
++ '''A Game of Thrones LCG chapter packs'''
+
+ Set
+
+ Expansion Symbol
+
+ Chapter Pack
+
+ Notes
+
+
+
+A Clash of Arms 
+
+  
+
+ War of the Five Kings 
+
+
+
+
+
+ Ancient Enemies 
+
+
+
+
+
+ Sacred Bonds 
+
+
+
+
+
+ Epic Battles 
+
+ Introduced the Epic Phase
+
+
+
+ Battle of the Ruby Ford 
+
+ 
+
+
+
+ Calling the Banners 
+
+ last chapter pack with black bordered cards
+
+
+
+A Time for Ravens 
+
+ 
+
+ A Song of Summer 
+
+ Introduced the Seasons mechanic
+
+
+
+ The Winds of Winter 
+
+ 
+
+
+
+ A Change of Seasons 
+
+
+
+
+
+ The Raven's Song 
+
+
+
+
+
+ Refugees of War 
+
+
+
+
+
+ Scattered Armies 
+
+
+
+
+
+King's Landing 
+
+ 
+
+ City of Secrets 
+
+ Introduced the Shadows mechanic
+
+
+
+ A Time of Trials 
+
+
+
+
+
+ Tower of the Hand 
+
+
+
+
+
+ Tales of the Red Keep 
+
+
+
+
+
+ Secrets and Spies
+
+
+
+
+
+ The Battle of Blackwater Bay 
+
+ 
+
+
+
+Defenders of the North 
+
+ 
+
+ Wolves of the North 
+
+ 
+
+
+
+ Beyond the Wall 
+
+
+
+
+
+ A Sword in the Darkness 
+
+
+
+
+
+ The Wildling Horde 
+
+
+
+
+
+ A King in the North 
+
+
+
+
+
+ Return of the Others
+
+ last of the 40 card chapter packs
+
+
+
+Brotherhood Without Banners 
+
+ 
+
+ Illyrio’s Gift 
+
+ start of the 60 card chapter packs
+
+
+
+ Rituals of R’hllor 
+
+
+
+
+
+ Mountains of the Moon 
+
+
+
+
+
+ A Song of Silence 
+
+
+
+
+
+ Of Snakes And Sand 
+
+
+
+
+
+ Dreadfort Betrayal 
+
+
+
+
+
+Secrets of Oldtown 
+
+ 
+
+ Gates of the Citadel 
+
+
+
+
+
+ Forging the Chain 
+
+
+
+
+
+ Called by the Conclave 
+
+
+
+
+
+ The Isle of Ravens 
+
+
+
+
+
+ Mask of the Archmaester 
+
+
+
+
+
+ Here to Serve 
+
+
+
+
+
+A Tale of Champions 
+
+ 
+
+ Tourney for the Hand 
+
+Introduced the "Joust" and "Melee" keywords
+
+
+
+ The Grand Melee 
+
+
+
+
+
+ On Dangerous Grounds 
+
+
+
+
+
+ Where Loyalty Lies 
+
+
+
+
+
+ Trial by Combat 
+
+
+
+
+
+ A Poisoned Spear 
+
+
+
+
+
+Beyond the Narrow Sea 
+
+ 
+
+ Valar Morghulis 
+
+
+
+
+
+ Valar Dohaeris 
+
+
+
+
+
+ Chasing Dragons 
+
+
+
+
+
+ A Harsh Mistress 
+
+
+
+
+
+ The House of Black and White 
+
+
+
+
+
+ A Roll of the Dice 
+
+
+
+
+
+A Song of the Sea 
+
+ 
+
+ Reach of the Kraken 
+
+ Introduced the naval enhancement
+
+
+
+ The Great Fleet 
+
+
+
+
+
+ The Pirates of Lys 
+
+
+
+
+
+ A Turn of the Tide 
+
+
+
+
+
+ The Captain's Command 
+
+
+
+
+
+ A Journey's End 
+
+
+
+
+
+Kingsroad 
+
+ 
+
+ The Banners Gather 
+
+
+
+
+
+ Fire and Ice 
+
+
+
+
+
+ The Kingsguard 
+
+
+
+
+
+ The Horn that Wakes 
+
+
+
+
+
+ Forgotten Fellowship 
+
+
+
+
+
+ A Hidden Agenda 
+
+
+
+
+
+Conquest and Defiance 
+
+ 
+
+ Spoils of War 
+
+ Introduced the "Prized X" keyword
+
+
+
+ The Champion's Purse 
+
+
+
+
+
+ Fire Made Flesh 
+
+
+
+
+
+ Ancestral Home 
+
+
+
+
+
+ The Prize of The North 
+
+ 
+
+
+
+ A Dire Message 
+
+ 
+
+
+
+Wardens 
+
+ 
+
+ Secrets and Schemes 
+
+ 
+
+
+
+ A Deadly Game 
+
+ 
+
+
+
+ The Valemen 
+
+
+
+
+
+ A Time for Wolves 
+
+
+
+
+
+ House of Talons 
+
+ 
+
+
+
+ The Blue is Calling 
+
+ 
+
+
+
+Promotional cards are usually provided as prizes for participating in FFG registered tournaments, by attending certain conventions, or buying other A Game of Thrones promotional packages.
+
+==Industry awards==
+
+The game's first base set - ''Westeros Edition'' - won the 2002 Origins Award for ''Best Trading Card Game of 2002''. The second base set - ''Ice and Fire Edition'' - followed next year and won the 2003 Origins Award for ''Best Card Game Expansion or Supplement of 2003''.
+
+==References==
+* 
+* 
+
+
+==External links==
+* agameofthrones.com - Official website
+
+
+
+
+
+
+
+
+
+
+

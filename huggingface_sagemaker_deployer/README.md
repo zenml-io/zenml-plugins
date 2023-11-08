@@ -1,11 +1,11 @@
 # Huggingface Model to Sagemaker Endpoint: Automating training and deployment with ZenML
 
 While almost every Huggingface model can be easily deployed to AWS Sagemaker endpoints, it is often desirous to automate
-this flow. This project showcases one way of using ZenML pipelines to achieve the following flow:
+this flow. This project showcases one way of using ZenML pipelines to achieve this:
 
 - Train/Finetune a NLP model and push to Huggingface Hub
 - Promote this model from staging to production
-- Deploy the model at the Production Stage to a Sagemaker endpoint
+- Deploy the model at the `Production` Stage to a Sagemaker endpoint
 
 The above flow is achieved in a repeatable, fully tracked pipeline that is observable across the organization. Let's
 see how this works.
@@ -27,16 +27,18 @@ source .venv/bin/activate
 make setup
 # Optionally, provision default local stack
 make install-stack
-# Start the ZenML UI locally (recommended, but optional);
-# the default username is "admin" with an empty password
-zenml up
 ```
 
-When the pipelines are done running, you can check out the results in the ZenML
-UI by following the link printed in the terminal (or you can go straight to
-the [ZenML UI pipelines run page](http://127.0.0.1:8237/workspaces/default/all-runs?page=1).
+This will open up the ZenML dashboard on your browser. The username should be `default` and password empty.
 
-The username should be `default` and password empty.
+You should now register your huggingface token, which can be found in your [settings](https://huggingface.co/settings/tokens)
+page, as a ZenML secret:
+
+```shell
+zenml secret create huggingface_creds --username=HUGGINGFACE_USERNAME --token=HUGGINGFACE_TOKEN
+```
+
+You also need to have your local AWS CLI configured to have Sagemaker endpoint access.
 
 ## A process overview
 
@@ -44,16 +46,31 @@ Here is an overview of the entire process:
 
 <img alt="Pipelines Overview" src="assets/pipelines_overview.png" alt="Logo" width="800">
 
+There are three pipelines at play, which all use the ZenML Model Control Plane to communicate with each other.
+
+* The training pipeline, which is responsible for training the model and pushing to Huggingface.
+* The promotion pipeline, which is responsible for promoting the model to `Production` if it is better than the last best version.
+* The deployment pipeline, which deploys the latest `Production` pipeline
+
+Let's run these one by one:
+
 ## Train the model
 
-Next, you should:
-
-* look at the CLI help to see what you can do with the project:
+Next, you should look at the CLI help to see what you can do with the project:
+  
 ```bash
 python run.py --help
+
+python run.py --training-pipeline --num-epochs 1 --train-batch-size 128 --eval-batch-size 12
 ```
 
-Write about training the model
+This will create a new model on your Model Control Plane
+
+<img alt="Pipelines Overview" src="assets/mcp_1.png" alt="ZenML Model Control Plane" width="600">
+
+
+Please note the above screens are a cloud-only feature in [ZenML Cloud](https://zenml.io/cloud), and
+the CLI `zenml models list` should be used instead for OSS users.
 
 ### Show that ZenML control plane
 
