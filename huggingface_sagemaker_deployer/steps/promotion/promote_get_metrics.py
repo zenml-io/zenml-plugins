@@ -32,7 +32,7 @@ model_registry = Client().active_stack.model_registry
 def promote_get_metrics() -> (
     Tuple[
         Annotated[Dict[str, Any], "latest_metrics"],
-        Annotated[Dict[str, Any], "current_metrics`"],
+        Annotated[Dict[str, Any], "current_metrics"],
     ]
 ):
     """Get metrics for comparison for promoting a model.
