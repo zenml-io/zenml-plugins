@@ -23,12 +23,17 @@ from zenml import log_artifact_metadata, step
 from zenml.client import Client
 from zenml.logger import get_logger
 
+from steps import (
+    save_model_to_deploy,
+)
+
 # Initialize logger
 logger = get_logger(__name__)
 
 
 @step(enable_cache=False)
 def deploy_to_huggingface(
+    mlflow_model_name: str,
     repo_name: str,
 ) -> Annotated[str, "huggingface_url"]:
     """
@@ -37,8 +42,13 @@ def deploy_to_huggingface(
     Args:
         repo_name: The name of the repo to create/use on huggingface.
     """
-    ### ADD YOUR OWN CODE HERE - THIS IS JUST AN EXAMPLE ###
     secret = Client().get_secret("huggingface_creds")
+
+    ########## Save Model locally ##########
+    save_model_to_deploy.entrypoint(
+        mlflow_model_name=mlflow_model_name,
+        after=["register_model"],
+    )
 
     assert (
         secret

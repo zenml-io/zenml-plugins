@@ -16,11 +16,10 @@
 #
 
 import os
-from zenml.client import Client
 
 import click
+from zenml.client import Client
 from zenml.logger import get_logger
-
 
 logger = get_logger(__name__)
 
@@ -73,7 +72,9 @@ def main(
     logger.info(f"Deleting endpoint with name: {endpoint_name}")
     # Do a `aws sagemaker delete-endpoint --endpoint-name <endpoint_name>` on the CLI
     # Throw an error if error code is not 0
-    return_code = os.system(f"aws sagemaker delete-endpoint --endpoint-name {endpoint_name}")
+    return_code = os.system(
+        f"aws sagemaker delete-endpoint --endpoint-name {endpoint_name}"
+    )
     if return_code != 0:
         raise RuntimeError("Endpoint could not be deleted!")
     logger.info("Endpoint deleted successfully!")

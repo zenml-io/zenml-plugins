@@ -25,7 +25,6 @@ from steps import (
     notify_on_failure,
     notify_on_success,
     register_model,
-    save_model_to_deploy,
     tokenization_step,
     tokenizer_loader,
 )
@@ -99,20 +98,18 @@ def sentinment_analysis_training_pipeline(
     )
 
     ########## Log and Register stage ##########
-    register_model(
+    # We get the mlflow model name from register_model method
+    #  again. This is redundant in this pipeline but estabilishes
+    #  a link between register_model and deploy_to_huggingface
+    mlflow_model_name_artifact = register_model(
         model=model,
         tokenizer=tokenizer,
         mlflow_model_name=pipeline_extra["mlflow_model_name"],
     )
 
-    ########## Save Model locally ##########
-    save_model_to_deploy(
-        mlflow_model_name=pipeline_extra["mlflow_model_name"],
-        after=["register_model"],
-    )
-
     ########## Deploy to HuggingFace ##########
     deploy_to_huggingface(
+        mlflow_model_name=mlflow_model_name_artifact,
         repo_name=hf_repo_name,
         after=["save_model_to_deploy"],
     )
