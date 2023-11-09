@@ -15,6 +15,8 @@
 # limitations under the License.
 #
 
+from typing import Optional
+
 from sagemaker.huggingface import HuggingFaceModel
 from typing_extensions import Annotated
 from zenml import get_step_context, step
@@ -28,6 +30,8 @@ logger = get_logger(__name__)
 
 @step
 def deploy_hf_to_sagemaker(
+    repo_id: Optional[str] = None,
+    revision: Optional[str] = None,
     transformers_version: str = "4.26.0",
     pytorch_version: str = "1.13.1",
     py_version: str = "py39",
@@ -41,11 +45,14 @@ def deploy_hf_to_sagemaker(
     Args:
         repo_name: The name of the repo to create/use on huggingface.
     """
-    context = get_step_context()
-    mv = context.model_config.get_or_create_model_version()
-    deployment_metadata = mv.get_artifact_object(name="huggingface_url").metadata
-    repo_id = deployment_metadata["repo_id"].value
-    revision = deployment_metadata["revision"].value
+    # If repo_id and revision are not provided, get them from the model version
+    #  Otherwise, use the provided values.
+    if repo_id is None or revision is None:
+        context = get_step_context()
+        mv = context.model_config.get_or_create_model_version()
+        deployment_metadata = mv.get_artifact_object(name="huggingface_url").metadata
+        repo_id = deployment_metadata["repo_id"].value
+        revision = deployment_metadata["revision"].value
 
     # Sagemaker
     role = get_sagemaker_role()
