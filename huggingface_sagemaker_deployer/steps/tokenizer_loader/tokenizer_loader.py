@@ -28,7 +28,7 @@ logger = get_logger(__name__)
 def tokenizer_loader(
     lower_case: bool,
 ) -> Annotated[
-    PreTrainedTokenizerBase, "tokenizer", ModelArtifactConfig(overwrite=True)
+    PreTrainedTokenizerBase, "base_tokenizer", ModelArtifactConfig(overwrite=True)
 ]:
     """Tokenizer selection step.
 
