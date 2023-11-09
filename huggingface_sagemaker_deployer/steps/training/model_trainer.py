@@ -28,7 +28,7 @@ from transformers import (
     TrainingArguments,
 )
 from typing_extensions import Annotated
-from zenml import step
+from zenml import log_artifact_metadata, step
 from zenml.client import Client
 from zenml.integrations.mlflow.experiment_trackers import (
     MLFlowExperimentTracker,
@@ -150,7 +150,9 @@ def model_trainer(
 
     # Train and evaluate the model
     trainer.train()
-    trainer.evaluate()
-    ### YOUR CODE ENDS HERE ###
+    eval_results = trainer.evaluate(metric_key_prefix="")
+
+    # Log the evaluation results in model control plane
+    log_artifact_metadata(output_name="model", metrics=eval_results)
 
     return model, tokenizer

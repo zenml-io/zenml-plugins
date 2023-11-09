@@ -16,14 +16,13 @@
 #
 
 
-from zenml import get_pipeline_context, pipeline
+from zenml import pipeline
 from zenml.logger import get_logger
 
 from steps import (
     notify_on_failure,
     notify_on_success,
-    promote_get_metric,
-    promote_get_versions,
+    promote_get_metrics,
     promote_metric_compare_promoter,
 )
 
@@ -42,29 +41,15 @@ def sentinment_analysis_promote_pipeline():
     between the latest and the currently promoted model version,
     or just the latest model version.
     """
-    ### ADD YOUR OWN CODE HERE - THIS IS JUST AN EXAMPLE ###
     # Link all the steps together by calling them and passing the output
     # of one step as the input of the next step.
-    pipeline_extra = get_pipeline_context().extra
 
     ########## Promotion stage ##########
-    latest_version, current_version = promote_get_versions()
-    latest_metric = promote_get_metric(
-        name=pipeline_extra["mlflow_model_name"],
-        metric="eval_loss",
-        version=latest_version,
-    )
-    current_metric = promote_get_metric(
-        name=pipeline_extra["mlflow_model_name"],
-        metric="eval_loss",
-        version=current_version,
-    )
+    latest_metrics, current_metrics = promote_get_metrics()
 
     promote_metric_compare_promoter(
-        latest_metric=latest_metric,
-        current_metric=current_metric,
-        latest_version=latest_version,
-        current_version=current_version,
+        latest_metrics=latest_metrics,
+        current_metrics=current_metrics,
     )
     last_step_name = "promote_metric_compare_promoter"
 

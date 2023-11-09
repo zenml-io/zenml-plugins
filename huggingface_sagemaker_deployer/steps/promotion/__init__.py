@@ -14,8 +14,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-
-
-from .promote_get_metric import promote_get_metric
-from .promote_get_versions import promote_get_versions
+from .promote_get_metrics import promote_get_metrics
 from .promote_metric_compare_promoter import promote_metric_compare_promoter
