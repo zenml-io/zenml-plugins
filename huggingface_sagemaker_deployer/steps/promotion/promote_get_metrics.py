@@ -57,7 +57,7 @@ def promote_get_metrics() -> (
     model_config = get_step_context().model_config
     current_version = model_config._get_model_version()
     current_metrics = (
-        current_version.get_artifact_object(name="model").metadata["metrics"].value
+        current_version.get_model_object(name="model").metadata["metrics"].value
     )
     logger.info(f"Current model version metrics are {current_metrics}")
 
@@ -73,7 +73,7 @@ def promote_get_metrics() -> (
         latest_version = None
     if latest_version:
         latest_metrics = (
-            current_version.get_artifact_object(name="model").metadata["metrics"].value
+            current_version.get_model_object(name="model").metadata["metrics"].value
         )
         logger.info(f"Current model version metrics are {latest_metrics}")
     else:

@@ -132,7 +132,7 @@ def model_trainer(
 
     # Load the model
     model = AutoModelForSequenceClassification.from_pretrained(
-        "roberta-base", num_labels=num_labels
+        "distilbert-base-uncased", num_labels=num_labels
     )
 
     # Enable autologging

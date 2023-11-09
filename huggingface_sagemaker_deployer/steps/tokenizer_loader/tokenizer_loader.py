@@ -55,7 +55,7 @@ def tokenizer_loader(
         The initialized tokenizer.
     """
     ### ADD YOUR OWN CODE HERE - THIS IS JUST AN EXAMPLE ###
-    tokenizer = AutoTokenizer.from_pretrained("roberta-base", do_lower_case=lower_case)
+    tokenizer = AutoTokenizer.from_pretrained("distilbert-base-cased", do_lower_case=lower_case)
     ### YOUR CODE ENDS HERE ###
 
     return tokenizer

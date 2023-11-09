@@ -59,8 +59,6 @@ def promote_metric_compare_promoter(
     pipeline_extra = get_step_context().pipeline_run.config.extra
     should_promote = True
 
-    breakpoint()
-
     if latest_metrics == current_metrics:
         logger.info("No current model version found - promoting latest")
     else:
