@@ -17,7 +17,7 @@
 
 import os
 from datetime import datetime as dt
-from typing import Optional
+
 
 import click
 from zenml.client import Client

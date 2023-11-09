@@ -17,7 +17,6 @@
 
 
 from zenml import pipeline
-from zenml.logger import get_logger
 
 from steps import (
     notify_on_failure,
