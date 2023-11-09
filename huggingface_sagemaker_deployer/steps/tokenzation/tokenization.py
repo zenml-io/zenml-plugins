@@ -34,7 +34,7 @@ def tokenization_step(
     max_seq_length: int = 512,
     text_column: str = "text",
     label_column: str = "label",
-) -> Annotated[DatasetDict, "tokenized_data"]:
+) -> Annotated[DatasetDict, "tokenized_dataset"]:
     """
     Tokenization step.
 

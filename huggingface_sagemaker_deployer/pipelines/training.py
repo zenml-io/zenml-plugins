@@ -15,21 +15,20 @@
 # limitations under the License.
 #
 
-
 from typing import Optional
+from uuid import UUID
 
 from zenml import get_pipeline_context, pipeline
+from zenml.artifacts.external_artifact import ExternalArtifact
 from zenml.logger import get_logger
 
+from pipelines import sentinment_analysis_feature_engineering_pipeline
 from steps import (
-    data_loader,
     deploy_to_huggingface,
     model_trainer,
     notify_on_failure,
     notify_on_success,
     register_model,
-    tokenization_step,
-    tokenizer_loader,
 )
 
 logger = get_logger(__name__)
@@ -37,6 +36,8 @@ logger = get_logger(__name__)
 
 @pipeline(on_failure=notify_on_failure)
 def sentinment_analysis_training_pipeline(
+    dataset_artifact_id: Optional[UUID] = None,
+    tokenizer_artifact_id: Optional[UUID] = None,
     hf_repo_name: str = "hf-repo",
     lower_case: Optional[bool] = True,
     padding: Optional[str] = "max_length",
@@ -73,19 +74,19 @@ def sentinment_analysis_training_pipeline(
     # of one step as the input of the next step.
     pipeline_extra = get_pipeline_context().extra
 
-    ########## Load Dataset stage ##########
-    dataset = data_loader()
-
-    ########## Tokenization stage ##########
-    tokenizer = tokenizer_loader(lower_case=lower_case)
-    tokenized_data = tokenization_step(
-        dataset=dataset,
-        tokenizer=tokenizer,
-        padding=padding,
-        max_seq_length=max_seq_length,
-        text_column=text_column,
-        label_column=label_column,
-    )
+    # Execute Feature Engineering Pipeline
+    if dataset_artifact_id is None:
+        tokenizer, tokenized_data = sentinment_analysis_feature_engineering_pipeline(
+            lower_case=lower_case,
+            padding=padding,
+            max_seq_length=max_seq_length,
+            text_column=text_column,
+            label_column=label_column,
+        )
+        logger.info("Feature Engineering pipeline finished successfully!")
+    else:
+        tokenized_data = ExternalArtifact(id=dataset_artifact_id)
+        tokenizer = ExternalArtifact(id=tokenizer_artifact_id)
 
     ########## Training stage ##########
     model, tokenizer = model_trainer(

@@ -17,14 +17,17 @@
 
 import os
 from datetime import datetime as dt
+from typing import Optional
 
 import click
+from zenml.client import Client
 from zenml.enums import ModelStages
 from zenml.logger import get_logger
 from zenml.model import ModelConfig
 
 from pipelines import (
     sentinment_analysis_deploy_pipeline,
+    sentinment_analysis_feature_engineering_pipeline,
     sentinment_analysis_promote_pipeline,
     sentinment_analysis_training_pipeline,
 )
@@ -101,6 +104,31 @@ Examples:
     help="Weight decay for training the model.",
 )
 @click.option(
+    "--max-seq-length",
+    default=512,
+    type=click.INT,
+    help="The maximum total input sequence length after tokenization.",
+)
+@click.option(
+    "--dataset-name",
+    default="tokenized_dataset",
+    type=click.STRING,
+    help="The name of the dataset produced by feature engineering.",
+)
+@click.option(
+    "--dataset-version-name",
+    default=None,
+    type=click.STRING,
+    help="Version of the dataset produced by feature engineering. "
+    "If not specified, the a new version will be used.",
+)
+@click.option(
+    "--feature-pipeline",
+    is_flag=True,
+    default=False,
+    help="Whether to run the pipeline that creates the dataset.",
+)
+@click.option(
     "--training-pipeline",
     is_flag=True,
     default=False,
@@ -131,6 +159,10 @@ def main(
     eval_batch_size: int = 8,
     learning_rate: float = 2e-5,
     weight_decay: float = 0.01,
+    max_seq_length: int = 512,
+    dataset_name: str = "tokenized_dataset",
+    dataset_version_name: Optional[str] = None,
+    feature_pipeline: bool = False,
     training_pipeline: bool = False,
     promoting_pipeline: bool = False,
     deploying_pipeline: bool = False,
@@ -143,9 +175,6 @@ def main(
       * configuring pipeline with the required parameters
         (some of which may come from command line arguments)
       * launching the pipeline
-
-    Args:
-        no_cache: If `True` cache will be disabled.
     """
 
     # Run a pipeline with the required parameters. This executes
@@ -161,6 +190,19 @@ def main(
     if no_cache:
         pipeline_args["enable_cache"] = False
 
+    # Execute Feature Engineering Pipeline
+    if feature_pipeline:
+        run_args_feature = {
+            "max_seq_length": max_seq_length,
+        }
+        pipeline_args[
+            "run_name"
+        ] = f"sentinment_analysis_feature_engineering_pipeline_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
+        sentinment_analysis_feature_engineering_pipeline.with_options(**pipeline_args)(
+            **run_args_feature
+        )
+        logger.info("Feature Engineering pipeline finished successfully!")
+
     # Execute Training Pipeline
     if training_pipeline:
         run_args_train = {
@@ -169,7 +211,23 @@ def main(
             "eval_batch_size": eval_batch_size,
             "learning_rate": learning_rate,
             "weight_decay": weight_decay,
+            "max_seq_length": max_seq_length,
         }
+
+        # If dataset_version_name is specified, use versioned artifacts
+        if dataset_version_name:
+            client = Client()
+            tokenized_dataset_artifact = client.get_artifact(
+                dataset_name, dataset_version_name
+            )
+            # base tokenizer is always the same version
+            # as the dataset version
+            tokenized_tokenizer_artifact = client.get_artifact(
+                "base_tokenizer", dataset_version_name
+            )
+            # Use versioned artifacts
+            run_args_train["dataset_artifact_id"] = tokenized_dataset_artifact.id
+            run_args_train["tokenizer_artifact_id"] = tokenized_tokenizer_artifact.id
 
         model_config = ModelConfig(
             name=zenml_model_name,
@@ -184,7 +242,7 @@ def main(
 
         pipeline_args[
             "run_name"
-        ] = f"sentinment_analysis_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
+        ] = f"sentinment_analysis_training_run_{dt.now().strftime('%Y_%m_%d_%H_%M_%S')}"
 
         sentinment_analysis_training_pipeline.with_options(**pipeline_args)(
             **run_args_train
