@@ -17,7 +17,7 @@
 
 import os
 from datetime import datetime as dt
-
+from typing import Optional
 
 import click
 from zenml.client import Client
@@ -58,12 +58,6 @@ Examples:
   # but dropping columns [A,B,C] and keeping 10% of dataset 
   # as test set.
   python run.py --num-epochs 3 --train-batch-size 8 --eval-batch-size 8
-
-  \b
-  # Run the pipeline with Quality Gate for accuracy set at 90% for train set 
-  # and 85% for test set. If any of accuracies will be lower - pipeline will fail.
-  python run.py --min-train-accuracy 0.9 --min-test-accuracy 0.85 --fail-on-accuracy-quality-gates
-
 
 """
 )
