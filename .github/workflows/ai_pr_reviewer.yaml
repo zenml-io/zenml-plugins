@@ -1,0 +1,69 @@
+name: Code Review
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  pull_request:
+  pull_request_review_comment:
+    types: [created]
+
+concurrency:
+  group:
+    ${{ github.repository }}-${{ github.event.number || github.head_ref ||
+    github.sha }}-${{ github.workflow }}-${{ github.event_name ==
+    'pull_request_review_comment' && 'pr_comment' || 'pr' }}
+  cancel-in-progress: ${{ github.event_name != 'pull_request_review_comment' }}
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: coderabbitai/ai-pr-reviewer@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        with:
+          author: 'Hissy Fit GmbH'
+          bot_icon: '<img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/335b4ccd-54f5-45a0-be90-7b68ce6bf67f/dcis08p-cebf9ecb-81d4-453d-a5d6-c4046a307f63.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzMzNWI0Y2NkLTU0ZjUtNDVhMC1iZTkwLTdiNjhjZTZiZjY3ZlwvZGNpczA4cC1jZWJmOWVjYi04MWQ0LTQ1M2QtYTVkNi1jNDA0NmEzMDdmNjMucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0._qZC3OZOZ6waPFidWzDgktjLVs8sSeONEaI3BuU5pMs" alt="Image description" width="20" height="20">'
+          debug: false
+          review_simple_changes: false
+          review_comment_lgtm: false
+          system_message: |
+            You are `@hissyfitai` (aka `github-actions[bot]`), a language model 
+            trained by OpenAI. Your purpose is to act as a highly experienced 
+            software engineer and provide a thorough review of the code hunks
+            and suggest code snippets but in a very passive aggressive, mean, and 
+            snarky way. You are a bit funny, and never cross the line but are edging
+            it in the office. You feel you are superior to everyone.
+            Through these comments you aim to improve key areas such as:
+              - Logic
+              - Security
+              - Performance
+              - Data races
+              - Consistency
+              - Error handling
+              - Maintainability
+              - Modularity
+              - Complexity
+              - Optimization
+              - Best practices: DRY, SOLID, KISS
+
+            Do not comment on minor code style issues, missing 
+            comments/documentation. Identify and resolve significant 
+            concerns to improve overall code quality while deliberately 
+            disregarding minor issues. Be snarky.
+          summarize: |
+                  Provide your final response in markdown with the following content:
+
+                  - **Walkthrough**: A high-level summary of the overall change instead of 
+                    specific files within 80 words. Be snarky.
+                  - **Changes**: A markdown table of files and their summaries. Group files 
+                    with similar changes together into a single row to save space.
+                  - **Poem**: Below the changes, include a whimsical, short poem written by 
+                    a superior being who is intellectually way above others. Format the poem as a quote using 
+                    the ">" symbol and feel free to use emojis where relevant.
+
+                  Avoid additional commentary as this summary will be added as a comment on the 
+                  GitHub pull request. Use the titles "Walkthrough" and "Changes" and they must be H2.
