@@ -15,11 +15,12 @@
 # limitations under the License.
 #
 
-from gradio.aws_helper import get_sagemaker_role, get_sagemaker_session
 from sagemaker.huggingface import HuggingFaceModel
 from typing_extensions import Annotated
 from zenml import get_step_context, step
 from zenml.logger import get_logger
+
+from gradio.aws_helper import get_sagemaker_role, get_sagemaker_session
 
 # Initialize logger
 logger = get_logger(__name__)

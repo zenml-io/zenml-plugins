@@ -23,10 +23,6 @@ from zenml import log_artifact_metadata, step
 from zenml.client import Client
 from zenml.logger import get_logger
 
-from steps import (
-    save_model_to_deploy,
-)
-
 # Initialize logger
 logger = get_logger(__name__)
 
@@ -45,9 +41,12 @@ def deploy_to_huggingface(
     secret = Client().get_secret("huggingface_creds")
 
     ########## Save Model locally ##########
+    from steps import (
+        save_model_to_deploy,
+    )
+
     save_model_to_deploy.entrypoint(
         mlflow_model_name=mlflow_model_name,
-        after=["register_model"],
     )
 
     assert (

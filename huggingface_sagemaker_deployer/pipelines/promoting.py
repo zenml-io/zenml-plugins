@@ -16,6 +16,9 @@
 #
 
 
+from zenml import get_pipeline_context, pipeline
+from zenml.logger import get_logger
+
 from steps import (
     notify_on_failure,
     notify_on_success,
@@ -23,8 +26,6 @@ from steps import (
     promote_get_versions,
     promote_metric_compare_promoter,
 )
-from zenml import get_pipeline_context, pipeline
-from zenml.logger import get_logger
 
 logger = get_logger(__name__)
 

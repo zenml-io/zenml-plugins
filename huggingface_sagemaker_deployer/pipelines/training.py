@@ -18,6 +18,9 @@
 
 from typing import Optional
 
+from zenml import get_pipeline_context, pipeline
+from zenml.logger import get_logger
+
 from steps import (
     data_loader,
     deploy_to_huggingface,
@@ -28,8 +31,6 @@ from steps import (
     tokenization_step,
     tokenizer_loader,
 )
-from zenml import get_pipeline_context, pipeline
-from zenml.logger import get_logger
 
 logger = get_logger(__name__)
 
@@ -111,7 +112,6 @@ def sentinment_analysis_training_pipeline(
     deploy_to_huggingface(
         mlflow_model_name=mlflow_model_name_artifact,
         repo_name=hf_repo_name,
-        after=["save_model_to_deploy"],
     )
 
     notify_on_success(after=["deploy_to_huggingface"])

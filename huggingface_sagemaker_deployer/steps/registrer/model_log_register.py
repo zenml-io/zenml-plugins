@@ -78,4 +78,4 @@ def register_model(
         registered_model_name=mlflow_model_name,
         task="text-classification",
     )
-    return str
+    return mlflow_model_name
