@@ -30,6 +30,6 @@ settings:
 
 extra:
   mlflow_model_name: sentinment_analysis_model
-  target_env: Production
+  target_env: production
   notify_on_success: False
   notify_on_failure: True
