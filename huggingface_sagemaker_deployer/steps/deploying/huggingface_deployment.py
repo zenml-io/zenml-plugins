@@ -29,7 +29,6 @@ logger = get_logger(__name__)
 
 @step(enable_cache=False)
 def deploy_to_huggingface(
-    mlflow_model_name: str,
     repo_name: str,
 ) -> Annotated[str, "huggingface_url"]:
     """
@@ -45,9 +44,7 @@ def deploy_to_huggingface(
         save_model_to_deploy,
     )
 
-    save_model_to_deploy.entrypoint(
-        mlflow_model_name=mlflow_model_name,
-    )
+    save_model_to_deploy.entrypoint()
 
     assert (
         secret

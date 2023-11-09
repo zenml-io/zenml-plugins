@@ -99,10 +99,7 @@ def sentinment_analysis_training_pipeline(
     )
 
     ########## Log and Register stage ##########
-    # We get the mlflow model name from register_model method
-    #  again. This is redundant in this pipeline but estabilishes
-    #  a link between register_model and deploy_to_huggingface
-    mlflow_model_name_artifact = register_model(
+    register_model(
         model=model,
         tokenizer=tokenizer,
         mlflow_model_name=pipeline_extra["mlflow_model_name"],
@@ -110,8 +107,8 @@ def sentinment_analysis_training_pipeline(
 
     ########## Deploy to HuggingFace ##########
     deploy_to_huggingface(
-        mlflow_model_name=mlflow_model_name_artifact,
         repo_name=hf_repo_name,
+        after=["register_model"],
     )
 
     notify_on_success(after=["deploy_to_huggingface"])

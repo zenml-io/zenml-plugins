@@ -22,7 +22,6 @@ from transformers import (
     PreTrainedModel,
     PreTrainedTokenizerBase,
 )
-from typing_extensions import Annotated
 from zenml import step
 from zenml.client import Client
 from zenml.integrations.mlflow.experiment_trackers import MLFlowExperimentTracker
@@ -49,7 +48,7 @@ def register_model(
     model: PreTrainedModel,
     tokenizer: PreTrainedTokenizerBase,
     mlflow_model_name: Optional[str] = "model",
-) -> Annotated[str, "mlflow_model_name"]:
+) -> bool:
     """
     Register model to MLFlow.
 
@@ -78,4 +77,4 @@ def register_model(
         registered_model_name=mlflow_model_name,
         task="text-classification",
     )
-    return mlflow_model_name
+    return True

@@ -46,12 +46,9 @@ def save_model_to_deploy():
     logger.info(
         f" Loading latest version of the model for stage {pipeline_extra['target_env']}..."
     )
-    # Get latest saved model version in target environment
-    model_config = get_step_context().model_config
-    latest_version = zenml_client.get_model_version(
-        model_name_or_id=model_config.name,
-        model_version_name_or_number_or_id=ModelStages(pipeline_extra["target_env"]),
-    )
+    # Get the current model version
+    latest_version = get_step_context().model_config.get_or_create_model_version()
+
     # Load model and tokenizer from Model Control Plane
     model = latest_version.get_artifact_object(name="model").load()
     tokenizer = latest_version.get_artifact_object(name="tokenizer").load()

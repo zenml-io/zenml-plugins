@@ -17,6 +17,9 @@
 
 settings:
   docker:
+    parent_image: 'huggingface/transformers-pytorch-gpu'
+    build_options: 
+      platform: 'linux/amd64'
     required_integrations:
       - gcp
       - skypilot_gcp
