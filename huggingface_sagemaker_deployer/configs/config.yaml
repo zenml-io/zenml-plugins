@@ -17,12 +17,8 @@
 
 settings:
   docker:
-    parent_image: 'huggingface/transformers-pytorch-gpu'
-    build_options: 
-      platform: 'linux/amd64'
     required_integrations:
       - s3
-      - skypilot_aws
       - kubeflow
       - huggingface
       - pytorch
@@ -36,14 +32,24 @@ settings:
       - gradio
       - torchvision
       - sagemaker
+    environment:
+      AWS_ACCESS_KEY_ID: "Randomstr"
+      AWS_SECRET_ACCESS_KEY: "Randomstr"
+      AWS_SESSION_TOKEN: "Randomstr"
+
+  orchestrator.kubeflow:
+    resources:
+      requests:
+        memory: "24Gi"
+        cpu: "2"
 
 # configuration of steps  
 steps:
   model_trainer:
-    settings: 
+    settings:
       resources:
-        cpu_count: 8
-        memory: "32GB"
+        cpu_count: 6
+        memory: "24GB"
 
 extra:
   mlflow_model_name: sentinment_analysis_model

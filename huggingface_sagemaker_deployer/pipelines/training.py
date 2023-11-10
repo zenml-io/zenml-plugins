@@ -20,8 +20,6 @@ from uuid import UUID
 
 from zenml import get_pipeline_context, pipeline
 from zenml.artifacts.external_artifact import ExternalArtifact
-from zenml.integrations.kubeflow.flavors.kubeflow_orchestrator_flavor import \
-    KubeflowOrchestratorSettings
 from zenml.logger import get_logger
 
 from pipelines import sentinment_analysis_feature_engineering_pipeline
@@ -32,21 +30,11 @@ from steps import (
     notify_on_success,
     register_model,
 )
-kubeflow_settings = KubeflowOrchestratorSettings(
-    pod_settings={
-        "node_selectors": {"demo": "nlp"},
-    },
-)
 
 logger = get_logger(__name__)
 
 
-@pipeline(
-    on_failure=notify_on_failure,
-    settings={
-        "orchestrator.kubeflow": kubeflow_settings
-    }
-)
+@pipeline(on_failure=notify_on_failure)
 def sentinment_analysis_training_pipeline(
     dataset_artifact_id: Optional[UUID] = None,
     tokenizer_artifact_id: Optional[UUID] = None,

@@ -1,4 +1,7 @@
 .venv*
 .requirements*
-gradio
+gradio/*
 .ruff_cache
+
+!gradio/__init__.py
+!gradio/aws_helper.py
