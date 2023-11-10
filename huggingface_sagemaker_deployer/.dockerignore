@@ -1,3 +1,4 @@
 .venv*
 .requirements*
 gradio
+.ruff_cache
