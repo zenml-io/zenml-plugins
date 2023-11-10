@@ -178,3 +178,4 @@ huggingface_sagemaker_deployer/gradio/flagged/
 huggingface_sagemaker_deployer/gradio/model.safetensors
 huggingface_sagemaker_deployer/zenml_artifact/
 huggingface_sagemaker_deployer/gradio/vocab.txt
+.idea
