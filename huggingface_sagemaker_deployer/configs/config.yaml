@@ -37,6 +37,14 @@ settings:
       - torchvision
       - sagemaker
 
+# configuration of steps  
+steps:
+  model_trainer:
+    settings: 
+      resources:
+        cpu_count: 8
+        memory: "32GB"
+
 extra:
   mlflow_model_name: sentinment_analysis_model
   target_env: production
