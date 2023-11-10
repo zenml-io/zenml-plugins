@@ -21,15 +21,21 @@ settings:
     build_options: 
       platform: 'linux/amd64'
     required_integrations:
-      - gcp
-      - skypilot_gcp
+      - s3
+      - skypilot_aws
+      - kubeflow
       - huggingface
       - pytorch
       - mlflow
-      - discord
+      - aws
+      - slack
+      - github
     requirements:
       - accelerate
       - zenml[server]
+      - gradio
+      - torchvision
+      - sagemaker
 
 extra:
   mlflow_model_name: sentinment_analysis_model
