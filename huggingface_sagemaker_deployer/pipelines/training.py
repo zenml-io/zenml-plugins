@@ -20,6 +20,8 @@ from uuid import UUID
 
 from zenml import get_pipeline_context, pipeline
 from zenml.artifacts.external_artifact import ExternalArtifact
+from zenml.integrations.kubeflow.flavors.kubeflow_orchestrator_flavor import \
+    KubeflowOrchestratorSettings
 from zenml.logger import get_logger
 
 from pipelines import sentinment_analysis_feature_engineering_pipeline
