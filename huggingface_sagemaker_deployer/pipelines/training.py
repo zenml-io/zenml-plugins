@@ -30,11 +30,21 @@ from steps import (
     notify_on_success,
     register_model,
 )
+kubeflow_settings = KubeflowOrchestratorSettings(
+    pod_settings={
+        "node_selectors": {"demo": "nlp"},
+    },
+)
 
 logger = get_logger(__name__)
 
 
-@pipeline(on_failure=notify_on_failure)
+@pipeline(
+    on_failure=notify_on_failure,
+    settings={
+        "orchestrator.kubeflow": kubeflow_settings
+    }
+)
 def sentinment_analysis_training_pipeline(
     dataset_artifact_id: Optional[UUID] = None,
     tokenizer_artifact_id: Optional[UUID] = None,
