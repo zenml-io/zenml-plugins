@@ -57,6 +57,12 @@ import gradio as gr
     default="This is an awesome journey, I love it!",
     help="Comma-separated list of examples to show in the Gradio interface.",
 )
+@click.option(
+    "--pipeline_version",
+    default="3",
+    help="Which version of the deploy pipeline should be deployed.",
+    type=int
+)
 def sentiment_analysis(
     tokenizer_name_or_path: Optional[str],
     model_name_or_path: Optional[str],
@@ -64,7 +70,8 @@ def sentiment_analysis(
     title: Optional[str],
     description: Optional[str],
     interpretation: Optional[str],
-    examples: Optional[str],
+    pipeline_version: int,
+    examples: Optional[str]
 ):
     """Launches a Gradio interface for sentiment analysis.
 
@@ -79,6 +86,7 @@ def sentiment_analysis(
         title (str): Title of the Gradio interface.
         description (str): Description of the Gradio interface.
         interpretation (str): Interpretation mode for the Gradio interface.
+        pipeline_version (int): Which pipeline version to user
         examples (str): Comma-separated list of examples to show in the Gradio interface.
     """
     labels = labels.split(",")
@@ -125,7 +133,7 @@ def sentiment_analysis(
         else:
             client = Client()
             latest_run = client.get_pipeline(
-                "sentinment_analysis_deploy_pipeline", version=1
+                "sentinment_analysis_deploy_pipeline", version=pipeline_version
             ).runs[0]
             endpoint_name = (
                 latest_run.steps["deploy_hf_to_sagemaker"]
