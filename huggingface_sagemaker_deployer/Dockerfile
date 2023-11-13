@@ -1,5 +1,5 @@
 # Use the zenmldocker/zenml image as the base image
-FROM zenmldocker/zenml:latest
+FROM zenmldocker/zenml:0.46.0
 
 # Run 'apt update' to update the package list
 RUN apt-get update
