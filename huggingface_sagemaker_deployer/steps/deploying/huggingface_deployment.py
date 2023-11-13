@@ -65,6 +65,9 @@ def deploy_to_huggingface(
         # Otherwise we use the current working directory
         zenml_repo_root = os.getcwd()
 
+    if zenml_repo_root:
+        logger.warning(f"CWD is: {os.getcwd()}")
+        raise Exception(f"ZenML repo root not found: {zenml_repo_root}")
     gradio_folder_path = os.path.join(zenml_repo_root, "gradio")
     url = api.upload_folder(
         folder_path=gradio_folder_path,
