@@ -184,7 +184,15 @@ def main(
             os.path.dirname(os.path.realpath(__file__)),
             "configs",
     )
-    
+    model_config = ModelConfig(
+        name=zenml_model_name,
+        license="Apache 2.0",
+        description="Show case Model Control Plane.",
+        create_new_model_version=True,
+        delete_new_version_on_failure=True,
+        tags=["sentiment_analysis", "huggingface"],
+    )
+
     pipeline_args = {}
 
     if no_cache:
@@ -192,6 +200,7 @@ def main(
 
     # Execute Feature Engineering Pipeline
     if feature_pipeline:
+        pipeline_args["model_config"] = model_config
         pipeline_args["config_path"] = os.path.join(config_folder, "feature_engineering_config.yaml")
         run_args_feature = {
             "max_seq_length": max_seq_length,
@@ -231,15 +240,6 @@ def main(
             # Use versioned artifacts
             run_args_train["dataset_artifact_id"] = tokenized_dataset_artifact.id
             run_args_train["tokenizer_artifact_id"] = tokenized_tokenizer_artifact.id
-
-        model_config = ModelConfig(
-            name=zenml_model_name,
-            license="Apache 2.0",
-            description="Show case Model Control Plane.",
-            create_new_model_version=True,
-            delete_new_version_on_failure=True,
-            tags=["sentiment_analysis", "huggingface"],
-        )
 
         pipeline_args["model_config"] = model_config
 

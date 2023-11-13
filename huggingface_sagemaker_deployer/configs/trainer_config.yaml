@@ -38,13 +38,13 @@ settings:
       AWS_SECRET_ACCESS_KEY: "Randomstr"
       AWS_SESSION_TOKEN: "Randomstr"
       GIT_CURL_VERBOSE: 1
-      GIT_TRACE: 1
+      GIT_TRACE: 1 
 
   orchestrator.kubeflow:
     resources:
       requests:
-        memory: "22Gi"
-        cpu: "2"
+        memory: "14Gi"
+        cpu: "6"
 
 # configuration of steps  
 steps:
@@ -52,7 +52,7 @@ steps:
     settings:
       resources:
         cpu_count: 6
-        memory: "22GB"
+        memory: "14GB"
 
 extra:
   mlflow_model_name: sentinment_analysis_model
