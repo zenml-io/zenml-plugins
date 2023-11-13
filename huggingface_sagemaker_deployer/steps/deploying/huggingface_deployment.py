@@ -61,7 +61,6 @@ def deploy_to_huggingface(
             "Since the deployment step to huggingface is all about pushing the repo to huggingface, "
             "this step will not work outside of a ZenML repo where the gradio folder is present."
         )
-        raise
     gradio_folder_path = os.path.join(zenml_repo_root, "gradio")
     url = api.upload_folder(
         folder_path=gradio_folder_path,
