@@ -83,7 +83,6 @@ def sentinment_analysis_training_pipeline(
             text_column=text_column,
             label_column=label_column,
         )
-        logger.info("Feature Engineering pipeline finished successfully!")
     else:
         tokenized_data = ExternalArtifact(id=dataset_artifact_id)
         tokenizer = ExternalArtifact(id=tokenizer_artifact_id)

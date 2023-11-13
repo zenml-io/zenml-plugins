@@ -32,10 +32,13 @@ settings:
       - gradio
       - torchvision
       - sagemaker
+    dockerfile: Dockerfile
     environment:
       AWS_ACCESS_KEY_ID: "Randomstr"
       AWS_SECRET_ACCESS_KEY: "Randomstr"
       AWS_SESSION_TOKEN: "Randomstr"
+      GIT_CURL_VERBOSE: 1
+      GIT_TRACE: 1
 
   orchestrator.kubeflow:
     resources:

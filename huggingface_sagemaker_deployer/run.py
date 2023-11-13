@@ -180,18 +180,19 @@ def main(
     # Run a pipeline with the required parameters. This executes
     # all steps in the pipeline in the correct order using the orchestrator
     # stack component that is configured in your active ZenML stack.
-    pipeline_args = {
-        "config_path": os.path.join(
+    config_folder = os.path.join(
             os.path.dirname(os.path.realpath(__file__)),
             "configs",
-            "config.yaml",
-        )
-    }
+    )
+    
+    pipeline_args = {}
+
     if no_cache:
         pipeline_args["enable_cache"] = False
 
     # Execute Feature Engineering Pipeline
     if feature_pipeline:
+        pipeline_args["config_path"] = os.path.join(config_folder, "feature_engineering_config.yaml")
         run_args_feature = {
             "max_seq_length": max_seq_length,
         }
@@ -205,6 +206,8 @@ def main(
 
     # Execute Training Pipeline
     if training_pipeline:
+        pipeline_args["config_path"] = os.path.join(config_folder, "trainer_config.yaml")
+
         run_args_train = {
             "num_epochs": num_epochs,
             "train_batch_size": train_batch_size,
@@ -253,6 +256,8 @@ def main(
     if promoting_pipeline:
         run_args_promoting = {}
         model_config = ModelConfig(name=zenml_model_name)
+        pipeline_args["config_path"] = os.path.join(config_folder, "promoting_config.yaml")
+
         pipeline_args["model_config"] = model_config
 
         pipeline_args[
@@ -264,6 +269,8 @@ def main(
         logger.info("Promoting pipeline finished successfully!")
 
     if deploying_pipeline:
+        pipeline_args["config_path"] = os.path.join(config_folder, "deploying_config.yaml")
+
         # Deploying pipeline has new ZenML model config
         model_config = ModelConfig(
             name=zenml_model_name,
