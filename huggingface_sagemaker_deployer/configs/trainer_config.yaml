@@ -43,7 +43,7 @@ settings:
   orchestrator.kubeflow:
     resources:
       requests:
-        memory: "24Gi"
+        memory: "22Gi"
         cpu: "2"
 
 # configuration of steps  
@@ -52,7 +52,7 @@ steps:
     settings:
       resources:
         cpu_count: 6
-        memory: "24GB"
+        memory: "22GB"
 
 extra:
   mlflow_model_name: sentinment_analysis_model
