@@ -34,9 +34,9 @@ settings:
       - sagemaker
     dockerfile: Dockerfile
     environment:
-      AWS_ACCESS_KEY_ID: "Randomstr"
-      AWS_SECRET_ACCESS_KEY: "Randomstr"
-      AWS_SESSION_TOKEN: "Randomstr"
+      AWS_ACCESS_KEY_ID: "Random"
+      AWS_SECRET_ACCESS_KEY: "Random"
+      AWS_SESSION_TOKEN: "Random"
       GIT_CURL_VERBOSE: 1
       GIT_TRACE: 1 
 
