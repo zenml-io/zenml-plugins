@@ -135,6 +135,20 @@ Examples:
     help="Whether to run the pipeline that trains the model.",
 )
 @click.option(
+    "--dataset-artifact-id",
+    default=None,
+    type=click.STRING,
+    help="Dataset artifact id to use for training. If not specified, "
+    "the latest version will be used.",
+)
+@click.option(
+    "--tokenizer-artifact-id",
+    default=None,
+    type=click.STRING,
+    help="Tokenizer artifact id to use for training. If not specified, "
+    "the latest version will be used.",
+)
+@click.option(
     "--promoting-pipeline",
     is_flag=True,
     default=False,
@@ -160,6 +174,8 @@ def main(
     learning_rate: float = 2e-5,
     weight_decay: float = 0.01,
     max_seq_length: int = 512,
+    dataset_artifact_id: Optional[str] = None,
+    tokenizer_artifact_id: Optional[str] = None,
     dataset_name: str = "tokenized_dataset",
     dataset_version_name: Optional[str] = None,
     feature_pipeline: bool = False,
@@ -224,6 +240,8 @@ def main(
             "learning_rate": learning_rate,
             "weight_decay": weight_decay,
             "max_seq_length": max_seq_length,
+            "dataset_artifact_id": dataset_artifact_id,
+            "tokenizer_artifact_id": tokenizer_artifact_id,
         }
 
         # If dataset_version_name is specified, use versioned artifacts
