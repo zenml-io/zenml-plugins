@@ -17,6 +17,7 @@ from sklearn.svm import SVC
 
 from zenml import step
 
+
 @step
 def trainer(
     X_train: np.ndarray,

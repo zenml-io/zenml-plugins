@@ -192,7 +192,7 @@ class MyDockerOrchestrator(ContainerizedOrchestrator):
         run_duration = time.time() - start_time
         # Get the pipeline run directly from the client using the orchestrator run ID
         from zenml.client import Client
-        
+
         # Use the Client to find the pipeline run by filtering on the orchestrator run ID
         run_models = Client().list_pipeline_runs(
             custom_filter={
@@ -201,7 +201,7 @@ class MyDockerOrchestrator(ContainerizedOrchestrator):
                 }
             }
         )
-        
+
         if run_models:
             run_model = run_models[0]
             logger.info(
@@ -244,7 +244,7 @@ class MyDockerOrchestratorConfig(
             True if this config is for a local component, False otherwise.
         """
         return True
-        
+
     @property
     def is_synchronous(self) -> bool:
         """Whether the orchestrator runs synchronous or not.
