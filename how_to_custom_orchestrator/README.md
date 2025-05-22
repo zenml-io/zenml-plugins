@@ -29,7 +29,13 @@ pip install -r requirements.txt
 
 ### 🚀 Registering the Custom Orchestrator
 
-First, you need to register the flavor of the orchestrator:
+First, you have to initialize zenml
+
+```shell
+zenml init
+```
+
+Then, you need to register the flavor of the orchestrator:
 
 ```shell
 # register the flavor of the orchestrator
@@ -57,6 +63,13 @@ Finally, set the stack active. This means every pipeline that runs will use the 
 ```shell
 # set the stack active
 zenml stack set my_stack
+```
+
+You can then run the pipeline:
+
+```shell
+# set the stack active
+python run.py
 ```
 
 ## 📚 Learn More
