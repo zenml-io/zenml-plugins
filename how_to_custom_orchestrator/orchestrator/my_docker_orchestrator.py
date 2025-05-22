@@ -14,17 +14,14 @@
 """Implementation of the a custom Docker orchestrator."""
 
 import copy
-import json
 import os
 import sys
 import time
-from typing import TYPE_CHECKING, Any, Dict, Optional, Type, Union, cast
+from typing import TYPE_CHECKING, Any, Dict, Optional, Type, cast
 from uuid import uuid4
 
 from docker.errors import ContainerError
-from pydantic import validator
 
-from zenml.client import Client
 from zenml.config.base_settings import BaseSettings
 from zenml.config.global_config import GlobalConfiguration
 from zenml.constants import (
@@ -40,12 +37,10 @@ from zenml.orchestrators import (
 )
 from zenml.orchestrators import utils as orchestrator_utils
 from zenml.stack import Stack, StackValidator
-from zenml.utils import string_utils
+from zenml.utils import docker_utils, string_utils
 
 if TYPE_CHECKING:
-    from zenml.models.pipeline_deployment_models import (
-        PipelineDeploymentResponseModel,
-    )
+    from zenml.models import PipelineDeploymentResponse, PipelineRunResponse
 
 logger = get_logger(__name__)
 
@@ -99,9 +94,10 @@ class MyDockerOrchestrator(ContainerizedOrchestrator):
 
     def prepare_or_run_pipeline(
         self,
-        deployment: "PipelineDeploymentResponseModel",
+        deployment: "PipelineDeploymentResponse",
         stack: "Stack",
         environment: Dict[str, str],
+        placeholder_run: Optional["PipelineRunResponse"] = None,
     ) -> Any:
         """Sequentially runs all pipeline steps in local Docker containers.
 
@@ -110,20 +106,19 @@ class MyDockerOrchestrator(ContainerizedOrchestrator):
             stack: The stack the pipeline will run on.
             environment: Environment variables to set in the orchestration
                 environment.
+            placeholder_run: An optional placeholder run for the deployment.
 
         Raises:
             RuntimeError: If a step fails.
         """
         if deployment.schedule:
             logger.warning(
-                "Local Docker Orchestrator currently does not support the"
+                "Local Docker Orchestrator currently does not support the "
                 "use of schedules. The `schedule` will be ignored "
                 "and the pipeline will be run immediately."
             )
 
-        from docker.client import DockerClient
-
-        docker_client = DockerClient.from_env()
+        docker_client = docker_utils._try_get_docker_client_from_env()
         entrypoint = StepEntrypointConfiguration.get_entrypoint_command()
 
         # Add the local stores path as a volume mount
@@ -195,15 +190,30 @@ class MyDockerOrchestrator(ContainerizedOrchestrator):
                 raise RuntimeError(error_message)
 
         run_duration = time.time() - start_time
-        run_id = orchestrator_utils.get_run_id_for_orchestrator_run_id(
-            orchestrator=self, orchestrator_run_id=orchestrator_run_id
+        # Get the pipeline run directly from the client using the orchestrator run ID
+        from zenml.client import Client
+        
+        # Use the Client to find the pipeline run by filtering on the orchestrator run ID
+        run_models = Client().list_pipeline_runs(
+            custom_filter={
+                "environment_attributes": {
+                    "orchestrator_run_id": orchestrator_run_id
+                }
+            }
         )
-        run_model = Client().zen_store.get_run(run_id)
-        logger.info(
-            "Pipeline run `%s` has finished in `%s`.\n",
-            run_model.name,
-            string_utils.get_human_readable_time(run_duration),
-        )
+        
+        if run_models:
+            run_model = run_models[0]
+            logger.info(
+                "Pipeline run `%s` has finished in `%s`.",
+                run_model.name,
+                string_utils.get_human_readable_time(run_duration),
+            )
+        else:
+            logger.info(
+                "Pipeline run has finished in `%s`.",
+                string_utils.get_human_readable_time(run_duration),
+            )
 
 
 class MyDockerOrchestratorSettings(BaseSettings):
@@ -217,42 +227,8 @@ class MyDockerOrchestratorSettings(BaseSettings):
 
     run_args: Dict[str, Any] = {}
 
-    @validator("run_args", pre=True)
-    def _convert_json_string(
-        cls, value: Union[None, str, Dict[str, Any]]
-    ) -> Optional[Dict[str, Any]]:
-        """Converts potential JSON strings passed via the CLI to dictionaries.
 
-        Args:
-            value: The value to convert.
-
-        Returns:
-            The converted value.
-
-        Raises:
-            TypeError: If the value is not a `str`, `Dict` or `None`.
-            ValueError: If the value is an invalid json string or a json string
-                that does not decode into a dictionary.
-        """
-        if isinstance(value, str):
-            try:
-                dict_ = json.loads(value)
-            except json.JSONDecodeError as e:
-                raise ValueError(f"Invalid json string '{value}'") from e
-
-            if not isinstance(dict_, Dict):
-                raise ValueError(
-                    f"Json string '{value}' did not decode into a dictionary."
-                )
-
-            return dict_
-        elif isinstance(value, Dict) or value is None:
-            return value
-        else:
-            raise TypeError(f"{value} is not a json string or a dictionary.")
-
-
-class MyDockerOrchestratorConfig(  # type: ignore[misc] # https://github.com/pydantic/pydantic/issues/4173
+class MyDockerOrchestratorConfig(
     BaseOrchestratorConfig, MyDockerOrchestratorSettings
 ):
     """Local Docker orchestrator config."""
@@ -266,6 +242,15 @@ class MyDockerOrchestratorConfig(  # type: ignore[misc] # https://github.com/pyd
 
         Returns:
             True if this config is for a local component, False otherwise.
+        """
+        return True
+        
+    @property
+    def is_synchronous(self) -> bool:
+        """Whether the orchestrator runs synchronous or not.
+
+        Returns:
+            Whether the orchestrator runs synchronous or not.
         """
         return True
 

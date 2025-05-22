@@ -20,7 +20,7 @@ from typing_extensions import Annotated
 from zenml import step
 
 
-@step
+@step(enable_cache=False)
 def digits_data_loader() -> Tuple[
     Annotated[np.ndarray, "X_train"],
     Annotated[np.ndarray, "X_test"],
