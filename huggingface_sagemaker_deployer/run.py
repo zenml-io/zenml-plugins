@@ -59,12 +59,6 @@ Examples:
   # as test set.
   python run.py --num-epochs 3 --train-batch-size 8 --eval-batch-size 8
 
-  \b
-  # Run the pipeline with Quality Gate for accuracy set at 90% for train set 
-  # and 85% for test set. If any of accuracies will be lower - pipeline will fail.
-  python run.py --min-train-accuracy 0.9 --min-test-accuracy 0.85 --fail-on-accuracy-quality-gates
-
-
 """
 )
 @click.option(
