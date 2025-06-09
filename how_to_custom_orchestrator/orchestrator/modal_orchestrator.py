@@ -201,7 +201,7 @@ def get_or_deploy_persistent_modal_app(
                 return existing_function
             except Exception as func_lookup_error:
                 logger.warning(f"⚠️  Function lookup failed: {func_lookup_error}")
-                logger.info(f"📝 Will deploy new version to ensure function is available")
+                logger.info("📝 Will deploy new version to ensure function is available")
                 # Fall through to deployment
             
         except modal.exception.NotFoundError:
@@ -470,8 +470,6 @@ class ModalOrchestrator(ContainerizedOrchestrator):
         
         logger.info("⚡ Executing steps with DEPLOYED Modal app and warm containers...")
         
-        # Set environment variable for orchestrator run ID
-        environment[ENV_ZENML_MODAL_ORCHESTRATOR_RUN_ID] = orchestrator_run_id
         
         # Execute steps using the deployed app (no ephemeral context manager!)
         for step_name in step_names:
