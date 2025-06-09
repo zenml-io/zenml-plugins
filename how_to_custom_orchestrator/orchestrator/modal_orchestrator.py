@@ -508,8 +508,6 @@ class ModalOrchestratorSettings(BaseSettings):
         timeout: Maximum execution time in seconds (default 24h).
         min_containers: Minimum containers to keep warm (replaces keep_warm).
         max_containers: Maximum concurrent containers (replaces concurrency_limit).
-        max_parallelism: Maximum number of steps to run in parallel.
-        parallel_step_startup_wait: Delay between starting parallel steps.
     """
 
     gpu: Optional[str] = None
@@ -521,8 +519,6 @@ class ModalOrchestratorSettings(BaseSettings):
     timeout: int = 86400  # 24 hours (Modal's maximum)
     min_containers: Optional[int] = 1  # Keep 1 container warm for sequential execution
     max_containers: Optional[int] = 10  # Allow up to 10 concurrent containers
-    max_parallelism: Optional[int] = None  # No limit by default
-    parallel_step_startup_wait: float = 0.0  # No delay by default
 
 
 class ModalOrchestratorConfig(BaseOrchestratorConfig, ModalOrchestratorSettings):
@@ -538,12 +534,6 @@ class ModalOrchestratorConfig(BaseOrchestratorConfig, ModalOrchestratorSettings)
     token: Optional[str] = None
     workspace: Optional[str] = None
     environment: Optional[str] = None
-    
-    # Override defaults for maximum speed
-    cpu_count: Optional[int] = 8        # 8 CPU cores by default
-    memory_mb: Optional[int] = 16384    # 16GB RAM by default  
-    min_containers: Optional[int] = 1   # Keep 1 container warm for sequential execution
-    max_containers: Optional[int] = 10  # Scale up to 10 containers
 
     @property
     def is_remote(self) -> bool:
