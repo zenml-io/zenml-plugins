@@ -28,11 +28,11 @@ from orchestrator.modal_orchestrator import (
 
 __all__ = [
     "MyDockerOrchestrator",
-    "MyDockerOrchestratorConfig", 
+    "MyDockerOrchestratorConfig",
     "MyDockerOrchestratorFlavor",
     "MyDockerOrchestratorSettings",
     "ModalOrchestrator",
     "ModalOrchestratorConfig",
-    "ModalOrchestratorFlavor", 
+    "ModalOrchestratorFlavor",
     "ModalOrchestratorSettings",
 ]

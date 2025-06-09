@@ -70,9 +70,7 @@ class MyDockerOrchestrator(ContainerizedOrchestrator):
         Returns:
             A `StackValidator` instance.
         """
-        return StackValidator(
-            required_components={StackComponentType.IMAGE_BUILDER}
-        )
+        return StackValidator(required_components={StackComponentType.IMAGE_BUILDER})
 
     def get_orchestrator_run_id(self) -> str:
         """Returns the active orchestrator run id.
@@ -196,9 +194,7 @@ class MyDockerOrchestrator(ContainerizedOrchestrator):
         # Use the Client to find the pipeline run by filtering on the orchestrator run ID
         run_models = Client().list_pipeline_runs(
             custom_filter={
-                "environment_attributes": {
-                    "orchestrator_run_id": orchestrator_run_id
-                }
+                "environment_attributes": {"orchestrator_run_id": orchestrator_run_id}
             }
         )
 
@@ -228,9 +224,7 @@ class MyDockerOrchestratorSettings(BaseSettings):
     run_args: Dict[str, Any] = {}
 
 
-class MyDockerOrchestratorConfig(
-    BaseOrchestratorConfig, MyDockerOrchestratorSettings
-):
+class MyDockerOrchestratorConfig(BaseOrchestratorConfig, MyDockerOrchestratorSettings):
     """Local Docker orchestrator config."""
 
     @property

@@ -20,13 +20,13 @@ from zenml.client import Client
 def register_modal_orchestrator():
     """Register the Modal orchestrator flavor and component."""
     client = Client()
-    
+
     print("🔧 Registering Modal orchestrator flavor...")
     try:
         # Register the flavor
         client.create_flavor(
             source="orchestrator.modal_orchestrator.ModalOrchestratorFlavor",
-            component_type="orchestrator"
+            component_type="orchestrator",
         )
         print("✅ Modal orchestrator flavor registered successfully!")
     except Exception as e:
@@ -35,41 +35,38 @@ def register_modal_orchestrator():
         else:
             print(f"❌ Failed to register flavor: {e}")
             return False
-    
+
     print("🎼 Registering Modal orchestrator component...")
     try:
-        # Register the orchestrator with configuration  
+        # Register the orchestrator with configuration
         client.create_stack_component(
             name="modal_orchestrator",
             flavor="modal",
             component_type="orchestrator",
             configuration={
                 # Modal authentication (optional - falls back to ~/.modal.toml)
-                # "token": "mo-your-modal-token-here",  
+                # "token": "mo-your-modal-token-here",
                 # "workspace": "your-workspace",
                 # "environment": "main",
-                
                 # Default resource settings
                 "cpu_count": 2,
                 "memory_mb": 4096,  # 4GB
-                "timeout": 3600,    # 1 hour (instead of 24h default)
-                
+                "timeout": 3600,  # 1 hour (instead of 24h default)
                 # Modal-specific settings
-                "gpu": "T4",        # Default GPU type
+                "gpu": "T4",  # Default GPU type
                 "region": "us-east-1",
                 "cloud": "aws",
-                "min_containers": 1,     # Keep 1 container warm (Modal 1.0)
-                "max_containers": 10,    # Max 10 concurrent containers (Modal 1.0)
-                
+                "min_containers": 1,  # Keep 1 container warm (Modal 1.0)
+                "max_containers": 10,  # Max 10 concurrent containers (Modal 1.0)
                 # Parallelism settings
                 "max_parallelism": 4,  # Run up to 4 steps in parallel
                 "parallel_step_startup_wait": 1.0,  # 1 second delay between parallel starts
-            }
+            },
         )
         print("✅ Modal orchestrator component registered successfully!")
         print("   📝 Configured with:")
         print("   - Default CPU: 2 cores")
-        print("   - Default Memory: 4GB") 
+        print("   - Default Memory: 4GB")
         print("   - Default GPU: T4")
         print("   - Timeout: 1 hour")
         print("   - Min containers: 1 (warm)")
@@ -82,14 +79,14 @@ def register_modal_orchestrator():
         else:
             print(f"❌ Failed to register orchestrator: {e}")
             return False
-    
+
     return True
 
 
 def create_modal_stack():
     """Create a stack with the Modal orchestrator."""
     client = Client()
-    
+
     print("📚 Creating stack with Modal orchestrator...")
     try:
         # Create stack with Modal orchestrator
@@ -97,8 +94,8 @@ def create_modal_stack():
             name="modal_stack",
             components={
                 "orchestrator": client.get_stack_component("modal_orchestrator").id,
-                "artifact_store": client.get_stack_component("default").id
-            }
+                "artifact_store": client.get_stack_component("default").id,
+            },
         )
         print("✅ Modal stack created successfully!")
     except Exception as e:
@@ -107,7 +104,7 @@ def create_modal_stack():
         else:
             print(f"❌ Failed to create stack: {e}")
             return False
-    
+
     return True
 
 
@@ -115,17 +112,17 @@ def test_modal_orchestrator():
     """Test the Modal orchestrator setup."""
     print("🚀 Testing Modal Orchestrator Setup")
     print("=" * 50)
-    
+
     # Register Modal orchestrator
     if not register_modal_orchestrator():
         print("❌ Failed to register Modal orchestrator")
         return
-    
-    # Create Modal stack 
+
+    # Create Modal stack
     if not create_modal_stack():
         print("❌ Failed to create Modal stack")
         return
-    
+
     print("\n🎉 Modal orchestrator setup completed successfully!")
     print("\nNext steps:")
     print("1. Set up Modal authentication: modal setup")
