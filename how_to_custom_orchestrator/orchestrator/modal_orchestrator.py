@@ -94,6 +94,121 @@ def run_step_in_modal(
         raise
 
 
+def run_entire_pipeline_in_modal(
+    step_names: list[str],
+    deployment_id: str,
+    orchestrator_run_id: str,
+) -> None:
+    """Execute ALL pipeline steps in a single Modal function for maximum speed."""
+    import os
+    import subprocess
+    import sys
+    
+    print(f"🚀 Running ENTIRE PIPELINE with {len(step_names)} steps in one Modal function!")
+    print(f"📋 Steps: {step_names}")
+    sys.stdout.flush()
+    
+    # Set the orchestrator run ID in the Modal environment
+    os.environ["ZENML_MODAL_ORCHESTRATOR_RUN_ID"] = orchestrator_run_id
+    
+    try:
+        from zenml.entrypoints import StepEntrypointConfiguration
+        
+        # Execute all steps sequentially in the same process for maximum speed
+        for i, step_name in enumerate(step_names, 1):
+            print(f"🏃‍♂️ [{i}/{len(step_names)}] Executing step '{step_name}'...")
+            sys.stdout.flush()
+            
+            # Get the entrypoint command and arguments
+            entrypoint = StepEntrypointConfiguration.get_entrypoint_command()
+            arguments = StepEntrypointConfiguration.get_entrypoint_arguments(
+                step_name=step_name, deployment_id=deployment_id
+            )
+            
+            # Execute the step
+            command = entrypoint + arguments
+            print(f"🔧 Command: {' '.join(command)}")
+            sys.stdout.flush()
+            
+            # Run the step with real-time output
+            result = subprocess.run(
+                command,
+                env=os.environ.copy(),
+                text=True
+            )
+            
+            if result.returncode != 0:
+                print(f"❌ Step {step_name} failed with return code {result.returncode}")
+                sys.stdout.flush()
+                raise RuntimeError(
+                    f"Step {step_name} failed with return code {result.returncode}"
+                )
+            else:
+                print(f"✅ [{i}/{len(step_names)}] Step '{step_name}' completed successfully")
+                sys.stdout.flush()
+        
+        print(f"🎉 ENTIRE PIPELINE COMPLETED! All {len(step_names)} steps finished in one function!")
+        sys.stdout.flush()
+            
+    except Exception as e:
+        print(f"💥 Error executing pipeline: {e}")
+        sys.stdout.flush()
+        raise
+
+
+def run_entire_pipeline_with_pipeline_entrypoint(
+    deployment_id: str,
+    orchestrator_run_id: str,
+) -> None:
+    """Execute entire pipeline using PipelineEntrypointConfiguration for maximum efficiency."""
+    import os
+    import subprocess
+    import sys
+    
+    print("🚀 Running ENTIRE PIPELINE using PipelineEntrypointConfiguration!")
+    print("⚡ This is the FASTEST mode - entire pipeline in one process!")
+    sys.stdout.flush()
+    
+    # Set the orchestrator run ID in the Modal environment
+    os.environ["ZENML_MODAL_ORCHESTRATOR_RUN_ID"] = orchestrator_run_id
+    
+    try:
+        from zenml.entrypoints import PipelineEntrypointConfiguration
+        
+        # Get the pipeline entrypoint command and arguments
+        entrypoint = PipelineEntrypointConfiguration.get_entrypoint_command()
+        arguments = PipelineEntrypointConfiguration.get_entrypoint_arguments(
+            deployment_id=deployment_id
+        )
+        
+        # Execute the entire pipeline in one command
+        command = entrypoint + arguments
+        print(f"🔧 Pipeline Command: {' '.join(command)}")
+        sys.stdout.flush()
+        
+        # Run the entire pipeline with real-time output
+        result = subprocess.run(
+            command,
+            env=os.environ.copy(),
+            text=True
+        )
+        
+        if result.returncode != 0:
+            print(f"❌ Pipeline failed with return code {result.returncode}")
+            sys.stdout.flush()
+            raise RuntimeError(
+                f"Pipeline failed with return code {result.returncode}"
+            )
+        else:
+            print("🎉 ENTIRE PIPELINE COMPLETED SUCCESSFULLY!")
+            sys.stdout.flush()
+            
+    except Exception as e:
+        print(f"💥 Error executing pipeline: {e}")
+        sys.stdout.flush()
+        raise
+
+
 def get_gpu_values(
     settings: "ModalOrchestratorSettings", resource_settings: ResourceSettings
 ) -> Optional[str]:
@@ -148,14 +263,16 @@ def get_or_deploy_persistent_modal_app(
     min_containers: Optional[int],
     max_containers: Optional[int],
     environment_name: Optional[str] = None,
+    execution_mode: str = "single_function",
 ) -> modal.Function:
     """Get or deploy a persistent Modal app with warm containers.
 
     This function deploys a Modal app that stays alive with warm containers
     for maximum speed between pipeline runs.
     """
-    # Use pipeline name as app name for easy identification and reuse
-    app_name = f"zenml-{pipeline_name.replace('_', '-')}"
+    # Use pipeline name + execution mode as app name for easy identification and reuse
+    mode_suffix = execution_mode.replace('_', '-')
+    app_name = f"zenml-{pipeline_name.replace('_', '-')}-{mode_suffix}"
 
     logger.info(f"🏗️  Getting/deploying persistent Modal app: {app_name}")
 
@@ -166,7 +283,20 @@ def get_or_deploy_persistent_modal_app(
     effective_min_containers = min_containers or 1
     effective_max_containers = max_containers or 10
 
-    # Create the step execution function with warm containers for speed
+    # Create the execution function based on execution mode
+    if execution_mode == "pipeline_entrypoint":
+        logger.info("🚀 Creating pipeline-entrypoint mode for MAXIMUM SPEED!")
+        execution_func = run_entire_pipeline_with_pipeline_entrypoint
+        function_name = "run_entire_pipeline_with_pipeline_entrypoint"
+    elif execution_mode == "single_function":
+        logger.info("⚡ Creating single-function mode for fast execution")
+        execution_func = run_entire_pipeline_in_modal
+        function_name = "run_entire_pipeline_in_modal"
+    else:
+        logger.info("🔧 Creating per-step mode for granular execution")
+        execution_func = run_step_in_modal
+        function_name = "run_step_in_modal"
+    
     execute_step_func = app.function(
         image=zenml_image,
         gpu=gpu_values,
@@ -177,7 +307,7 @@ def get_or_deploy_persistent_modal_app(
         timeout=timeout,
         min_containers=effective_min_containers,  # Keep containers warm for speed
         max_containers=effective_max_containers,  # Allow scaling
-    )(run_step_in_modal)
+    )(execution_func)
 
     # Try to lookup existing deployed app first, only deploy if truly doesn't exist
     try:
@@ -195,7 +325,7 @@ def get_or_deploy_persistent_modal_app(
             try:
                 existing_function = modal.Function.from_name(
                     app_name,
-                    "run_step_in_modal",
+                    function_name,
                     environment_name=environment_name or "main",
                 )
                 logger.info(
@@ -212,16 +342,21 @@ def get_or_deploy_persistent_modal_app(
         except modal.exception.NotFoundError:
             # App doesn't exist, proceed with deployment
             logger.info(f"🆕 App '{app_name}' not found, deploying new app...")
-
-        # Deploy new app only if lookup failed
-        app.deploy(name=app_name, environment_name=environment_name or "main")
-        logger.info(
-            f"✅ App '{app_name}' deployed with {effective_min_containers} warm containers"
-        )
+            app.deploy(name=app_name, environment_name=environment_name or "main")
+            logger.info(
+                f"✅ App '{app_name}' deployed with {effective_min_containers} warm containers"
+            )
+        except Exception as lookup_error:
+            # Other lookup error, proceed with deployment
+            logger.warning(f"⚠️  App lookup issue: {lookup_error}, proceeding with deployment...")
+            app.deploy(name=app_name, environment_name=environment_name or "main")
+            logger.info(
+                f"✅ App '{app_name}' deployed with {effective_min_containers} warm containers"
+            )
 
     except Exception as e:
-        logger.warning(f"⚠️  Deployment issue: {e}")
-        # Continue anyway - function should still work
+        logger.error(f"❌ Major deployment issue: {e}")
+        raise
 
     logger.info(
         f"🔥 Modal app configured for SPEED with min_containers={effective_min_containers}, max_containers={effective_max_containers}"
@@ -354,7 +489,7 @@ class ModalOrchestrator(ContainerizedOrchestrator):
         deployment: "PipelineDeploymentResponse",
         stack: "Stack",
         environment: Dict[str, str],
-    ) -> modal.Image:
+    ) -> Any:
         """Build the Modal image for pipeline execution.
 
         Args:
@@ -419,11 +554,12 @@ class ModalOrchestrator(ContainerizedOrchestrator):
             stack: The stack the pipeline will run on.
             environment: Environment variables to set in the orchestration
                 environment.
-            placeholder_run: An optional placeholder run for the deployment.
+            placeholder_run: An optional placeholder run for the deployment (unused).
 
         Raises:
             RuntimeError: If a step fails.
         """
+        _ = placeholder_run  # Mark as intentionally unused
         if modal is None:
             raise RuntimeError(
                 "Modal is not installed. Please install it with: pip install modal"
@@ -477,22 +613,48 @@ class ModalOrchestrator(ContainerizedOrchestrator):
             max_containers=self.config.max_containers or 10,  # Scale to 10 containers
             environment_name=settings.environment
             or self.config.environment,  # Use environment from config/settings
+            execution_mode=settings.execution_mode or self.config.execution_mode,  # Use execution mode from settings
         )
 
-        logger.info("⚡ Executing steps with DEPLOYED Modal app and warm containers...")
+        logger.info("⚡ Executing with DEPLOYED Modal app and warm containers...")
 
-        # Execute steps using the deployed app (no ephemeral context manager!)
-        for step_name in step_names:
-            logger.info(
-                f"🏃‍♂️ Launching step '{step_name}' using deployed Modal function..."
-            )
+        # Execute based on execution mode
+        execution_mode = settings.execution_mode or self.config.execution_mode
+        
+        if execution_mode == "pipeline_entrypoint":
+            logger.info("🚀 Using pipeline-entrypoint mode for MAXIMUM SPEED!")
             try:
-                # Use the deployed function directly - no app.run() context needed!
-                execute_step.remote(step_name, deployment.id, orchestrator_run_id)
-                logger.info(f"✅ Step '{step_name}' completed successfully")
+                # Single function call for entire pipeline - FASTEST!
+                execute_step.remote(deployment.id, orchestrator_run_id)
+                logger.info("🎉 ENTIRE PIPELINE completed successfully!")
             except Exception as e:
-                logger.error(f"❌ Step '{step_name}' failed: {e}")
+                logger.error(f"❌ Pipeline failed: {e}")
                 raise
+                
+        elif execution_mode == "single_function":
+            logger.info("⚡ Using single-function mode for fast execution!")
+            try:
+                # Single function call with all step names
+                execute_step.remote(step_names, deployment.id, orchestrator_run_id)
+                logger.info("🎉 All steps completed successfully!")
+            except Exception as e:
+                logger.error(f"❌ Pipeline failed: {e}")
+                raise
+                
+        else:  # per_step mode
+            logger.info("🔧 Using per-step mode for granular execution...")
+            # Execute steps individually (original approach)
+            for step_name in step_names:
+                logger.info(
+                    f"🏃‍♂️ Launching step '{step_name}' using deployed Modal function..."
+                )
+                try:
+                    # Use the deployed function directly - no app.run() context needed!
+                    execute_step.remote(step_name, deployment.id, orchestrator_run_id)
+                    logger.info(f"✅ Step '{step_name}' completed successfully")
+                except Exception as e:
+                    logger.error(f"❌ Step '{step_name}' failed: {e}")
+                    raise
 
         run_duration = time.time() - start_time
 
@@ -516,6 +678,7 @@ class ModalOrchestratorSettings(BaseSettings):
         timeout: Maximum execution time in seconds (default 24h).
         min_containers: Minimum containers to keep warm (replaces keep_warm).
         max_containers: Maximum concurrent containers (replaces concurrency_limit).
+        execution_mode: Execution mode - "pipeline_entrypoint" (fastest), "single_function", or "per_step".
     """
 
     gpu: Optional[str] = None
@@ -527,6 +690,7 @@ class ModalOrchestratorSettings(BaseSettings):
     timeout: int = 86400  # 24 hours (Modal's maximum)
     min_containers: Optional[int] = 1  # Keep 1 container warm for sequential execution
     max_containers: Optional[int] = 10  # Allow up to 10 concurrent containers
+    execution_mode: str = "pipeline_entrypoint"  # Default to fastest mode
 
 
 class ModalOrchestratorConfig(BaseOrchestratorConfig, ModalOrchestratorSettings):
