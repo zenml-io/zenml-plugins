@@ -17,8 +17,10 @@ from zenml import pipeline
 from zenml.config import DockerSettings
 from zenml.integrations.constants import SKLEARN
 
-docker_settings = DockerSettings(required_integrations=[SKLEARN])
-
+docker_settings = DockerSettings(
+    required_integrations=[SKLEARN],
+    python_package_installer="uv"
+)
 
 @pipeline(settings={"docker": docker_settings})
 def sklearn_pipeline():
