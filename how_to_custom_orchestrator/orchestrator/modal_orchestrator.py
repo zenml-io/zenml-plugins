@@ -52,7 +52,6 @@ def run_step_in_modal(
 ) -> None:
     """Execute a single ZenML step in Modal."""
     import os
-    import subprocess
     import sys
 
     print(f"🚀 Running step '{step_name}' in Modal")
@@ -62,31 +61,16 @@ def run_step_in_modal(
     os.environ["ZENML_MODAL_ORCHESTRATOR_RUN_ID"] = orchestrator_run_id
 
     try:
-        from zenml.entrypoints import StepEntrypointConfiguration
+        from zenml.entrypoints.step_entrypoint import main as step_main
 
-        # Get the entrypoint command and arguments
-        entrypoint = StepEntrypointConfiguration.get_entrypoint_command()
-        arguments = StepEntrypointConfiguration.get_entrypoint_arguments(
-            step_name=step_name, deployment_id=deployment_id
-        )
-
-        # Execute the step
-        command = entrypoint + arguments
-        print(f"🔧 Executing: {' '.join(command)}")
+        print(f"🔧 Executing step '{step_name}' directly in process for maximum speed")
         sys.stdout.flush()
 
-        # Run the step with real-time output
-        result = subprocess.run(command, env=os.environ.copy(), text=True)
+        # Run the step directly in the same process - NO subprocess overhead!
+        step_main(step_name=step_name, deployment_id=deployment_id)
 
-        if result.returncode != 0:
-            print(f"❌ Step {step_name} failed with return code {result.returncode}")
-            sys.stdout.flush()
-            raise RuntimeError(
-                f"Step {step_name} failed with return code {result.returncode}"
-            )
-        else:
-            print(f"✅ Step {step_name} completed successfully")
-            sys.stdout.flush()
+        print(f"✅ Step {step_name} completed successfully")
+        sys.stdout.flush()
 
     except Exception as e:
         print(f"💥 Error executing step {step_name}: {e}")
@@ -101,55 +85,40 @@ def run_entire_pipeline_in_modal(
 ) -> None:
     """Execute ALL pipeline steps in a single Modal function for maximum speed."""
     import os
-    import subprocess
     import sys
-    
-    print(f"🚀 Running ENTIRE PIPELINE with {len(step_names)} steps in one Modal function!")
+
+    print(
+        f"🚀 Running ENTIRE PIPELINE with {len(step_names)} steps in one Modal function!"
+    )
     print(f"📋 Steps: {step_names}")
     sys.stdout.flush()
-    
+
     # Set the orchestrator run ID in the Modal environment
     os.environ["ZENML_MODAL_ORCHESTRATOR_RUN_ID"] = orchestrator_run_id
-    
+
     try:
-        from zenml.entrypoints import StepEntrypointConfiguration
-        
+        from zenml.entrypoints.step_entrypoint import main as step_main
+
         # Execute all steps sequentially in the same process for maximum speed
         for i, step_name in enumerate(step_names, 1):
-            print(f"🏃‍♂️ [{i}/{len(step_names)}] Executing step '{step_name}'...")
-            sys.stdout.flush()
-            
-            # Get the entrypoint command and arguments
-            entrypoint = StepEntrypointConfiguration.get_entrypoint_command()
-            arguments = StepEntrypointConfiguration.get_entrypoint_arguments(
-                step_name=step_name, deployment_id=deployment_id
+            print(
+                f"🏃‍♂️ [{i}/{len(step_names)}] Executing step '{step_name}' directly in process..."
             )
-            
-            # Execute the step
-            command = entrypoint + arguments
-            print(f"🔧 Command: {' '.join(command)}")
             sys.stdout.flush()
-            
-            # Run the step with real-time output
-            result = subprocess.run(
-                command,
-                env=os.environ.copy(),
-                text=True
+
+            # Run the step directly in the same process - NO subprocess overhead!
+            step_main(step_name=step_name, deployment_id=deployment_id)
+
+            print(
+                f"✅ [{i}/{len(step_names)}] Step '{step_name}' completed successfully"
             )
-            
-            if result.returncode != 0:
-                print(f"❌ Step {step_name} failed with return code {result.returncode}")
-                sys.stdout.flush()
-                raise RuntimeError(
-                    f"Step {step_name} failed with return code {result.returncode}"
-                )
-            else:
-                print(f"✅ [{i}/{len(step_names)}] Step '{step_name}' completed successfully")
-                sys.stdout.flush()
-        
-        print(f"🎉 ENTIRE PIPELINE COMPLETED! All {len(step_names)} steps finished in one function!")
+            sys.stdout.flush()
+
+        print(
+            f"🎉 ENTIRE PIPELINE COMPLETED! All {len(step_names)} steps finished in one function!"
+        )
         sys.stdout.flush()
-            
+
     except Exception as e:
         print(f"💥 Error executing pipeline: {e}")
         sys.stdout.flush()
@@ -162,47 +131,29 @@ def run_entire_pipeline_with_pipeline_entrypoint(
 ) -> None:
     """Execute entire pipeline using PipelineEntrypointConfiguration for maximum efficiency."""
     import os
-    import subprocess
     import sys
-    
+
     print("🚀 Running ENTIRE PIPELINE using PipelineEntrypointConfiguration!")
-    print("⚡ This is the FASTEST mode - entire pipeline in one process!")
+    print("⚡ This is the FASTEST mode - entire pipeline in same process!")
     sys.stdout.flush()
-    
+
     # Set the orchestrator run ID in the Modal environment
     os.environ["ZENML_MODAL_ORCHESTRATOR_RUN_ID"] = orchestrator_run_id
-    
+
     try:
-        from zenml.entrypoints import PipelineEntrypointConfiguration
-        
-        # Get the pipeline entrypoint command and arguments
-        entrypoint = PipelineEntrypointConfiguration.get_entrypoint_command()
-        arguments = PipelineEntrypointConfiguration.get_entrypoint_arguments(
-            deployment_id=deployment_id
-        )
-        
-        # Execute the entire pipeline in one command
-        command = entrypoint + arguments
-        print(f"🔧 Pipeline Command: {' '.join(command)}")
+        from zenml.entrypoints.pipeline_entrypoint import main as pipeline_main
+
+        print(f"🔧 Running pipeline directly in process for MAXIMUM SPEED")
+        print(f"📝 Deployment ID: {deployment_id}")
         sys.stdout.flush()
-        
-        # Run the entire pipeline with real-time output
-        result = subprocess.run(
-            command,
-            env=os.environ.copy(),
-            text=True
-        )
-        
-        if result.returncode != 0:
-            print(f"❌ Pipeline failed with return code {result.returncode}")
-            sys.stdout.flush()
-            raise RuntimeError(
-                f"Pipeline failed with return code {result.returncode}"
-            )
-        else:
-            print("🎉 ENTIRE PIPELINE COMPLETED SUCCESSFULLY!")
-            sys.stdout.flush()
-            
+
+        # Run the entire pipeline directly in the same process - NO subprocess overhead!
+        # This is MUCH faster than subprocess.run()
+        pipeline_main(deployment_id=deployment_id)
+
+        print("🎉 ENTIRE PIPELINE COMPLETED SUCCESSFULLY!")
+        sys.stdout.flush()
+
     except Exception as e:
         print(f"💥 Error executing pipeline: {e}")
         sys.stdout.flush()
@@ -271,7 +222,7 @@ def get_or_deploy_persistent_modal_app(
     for maximum speed between pipeline runs.
     """
     # Use pipeline name + execution mode as app name for easy identification and reuse
-    mode_suffix = execution_mode.replace('_', '-')
+    mode_suffix = execution_mode.replace("_", "-")
     app_name = f"zenml-{pipeline_name.replace('_', '-')}-{mode_suffix}"
 
     logger.info(f"🏗️  Getting/deploying persistent Modal app: {app_name}")
@@ -296,7 +247,7 @@ def get_or_deploy_persistent_modal_app(
         logger.info("🔧 Creating per-step mode for granular execution")
         execution_func = run_step_in_modal
         function_name = "run_step_in_modal"
-    
+
     execute_step_func = app.function(
         image=zenml_image,
         gpu=gpu_values,
@@ -348,7 +299,9 @@ def get_or_deploy_persistent_modal_app(
             )
         except Exception as lookup_error:
             # Other lookup error, proceed with deployment
-            logger.warning(f"⚠️  App lookup issue: {lookup_error}, proceeding with deployment...")
+            logger.warning(
+                f"⚠️  App lookup issue: {lookup_error}, proceeding with deployment..."
+            )
             app.deploy(name=app_name, environment_name=environment_name or "main")
             logger.info(
                 f"✅ App '{app_name}' deployed with {effective_min_containers} warm containers"
@@ -613,14 +566,15 @@ class ModalOrchestrator(ContainerizedOrchestrator):
             max_containers=self.config.max_containers or 10,  # Scale to 10 containers
             environment_name=settings.environment
             or self.config.environment,  # Use environment from config/settings
-            execution_mode=settings.execution_mode or self.config.execution_mode,  # Use execution mode from settings
+            execution_mode=settings.execution_mode
+            or self.config.execution_mode,  # Use execution mode from settings
         )
 
         logger.info("⚡ Executing with DEPLOYED Modal app and warm containers...")
 
         # Execute based on execution mode
         execution_mode = settings.execution_mode or self.config.execution_mode
-        
+
         if execution_mode == "pipeline_entrypoint":
             logger.info("🚀 Using pipeline-entrypoint mode for MAXIMUM SPEED!")
             try:
@@ -630,7 +584,7 @@ class ModalOrchestrator(ContainerizedOrchestrator):
             except Exception as e:
                 logger.error(f"❌ Pipeline failed: {e}")
                 raise
-                
+
         elif execution_mode == "single_function":
             logger.info("⚡ Using single-function mode for fast execution!")
             try:
@@ -640,7 +594,7 @@ class ModalOrchestrator(ContainerizedOrchestrator):
             except Exception as e:
                 logger.error(f"❌ Pipeline failed: {e}")
                 raise
-                
+
         else:  # per_step mode
             logger.info("🔧 Using per-step mode for granular execution...")
             # Execute steps individually (original approach)
