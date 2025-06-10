@@ -16,6 +16,7 @@
 import os
 import time
 from typing import TYPE_CHECKING, Any, Dict, List, Optional, Type, cast
+from pydantic import SecretStr
 from uuid import uuid4
 
 try:
@@ -61,19 +62,31 @@ def run_step_in_modal(
     os.environ["ZENML_MODAL_ORCHESTRATOR_RUN_ID"] = orchestrator_run_id
 
     try:
-        from zenml.entrypoints.step_entrypoint import main as step_main
+        from zenml.entrypoints.step_entrypoint_configuration import (
+            StepEntrypointConfiguration,
+        )
 
         print(f"🔧 Executing step '{step_name}' directly in process for maximum speed")
         sys.stdout.flush()
 
-        # Run the step directly in the same process - NO subprocess overhead!
-        step_main(step_name=step_name, deployment_id=deployment_id)
+        # Create the entrypoint arguments
+        args = StepEntrypointConfiguration.get_entrypoint_arguments(
+            step_name=step_name, deployment_id=deployment_id
+        )
+
+        # Create the configuration and run the step
+        config = StepEntrypointConfiguration(arguments=args)
+        config.run()
 
         print(f"✅ Step {step_name} completed successfully")
         sys.stdout.flush()
 
     except Exception as e:
+        import traceback
+
+        error_details = traceback.format_exc()
         print(f"💥 Error executing step {step_name}: {e}")
+        print(f"📝 Full traceback:\n{error_details}")
         sys.stdout.flush()
         raise
 
@@ -97,7 +110,9 @@ def run_entire_pipeline_in_modal(
     os.environ["ZENML_MODAL_ORCHESTRATOR_RUN_ID"] = orchestrator_run_id
 
     try:
-        from zenml.entrypoints.step_entrypoint import main as step_main
+        from zenml.entrypoints.step_entrypoint_configuration import (
+            StepEntrypointConfiguration,
+        )
 
         # Execute all steps sequentially in the same process for maximum speed
         for i, step_name in enumerate(step_names, 1):
@@ -106,8 +121,14 @@ def run_entire_pipeline_in_modal(
             )
             sys.stdout.flush()
 
-            # Run the step directly in the same process - NO subprocess overhead!
-            step_main(step_name=step_name, deployment_id=deployment_id)
+            # Create the entrypoint arguments
+            args = StepEntrypointConfiguration.get_entrypoint_arguments(
+                step_name=step_name, deployment_id=deployment_id
+            )
+
+            # Create the configuration and run the step
+            config = StepEntrypointConfiguration(arguments=args)
+            config.run()
 
             print(
                 f"✅ [{i}/{len(step_names)}] Step '{step_name}' completed successfully"
@@ -120,7 +141,11 @@ def run_entire_pipeline_in_modal(
         sys.stdout.flush()
 
     except Exception as e:
+        import traceback
+
+        error_details = traceback.format_exc()
         print(f"💥 Error executing pipeline: {e}")
+        print(f"📝 Full traceback:\n{error_details}")
         sys.stdout.flush()
         raise
 
@@ -133,30 +158,53 @@ def run_entire_pipeline_with_pipeline_entrypoint(
     import os
     import sys
 
-    print("🚀 Running ENTIRE PIPELINE using PipelineEntrypointConfiguration!")
-    print("⚡ This is the FASTEST mode - entire pipeline in same process!")
-    sys.stdout.flush()
+    # Force unbuffered output for real-time log streaming to Modal
+    import time
+
+    print(
+        "🚀 [MODAL] Starting ENTIRE PIPELINE using PipelineEntrypointConfiguration!",
+        flush=True,
+    )
+    print(
+        "⚡ [MODAL] This is the FASTEST mode - entire pipeline in same process!",
+        flush=True,
+    )
+    print(f"📝 [MODAL] Deployment ID: {deployment_id}", flush=True)
+    print(f"🆔 [MODAL] Orchestrator Run ID: {orchestrator_run_id}", flush=True)
+    print(f"⏰ [MODAL] Start time: {time.strftime('%H:%M:%S')}", flush=True)
 
     # Set the orchestrator run ID in the Modal environment
     os.environ["ZENML_MODAL_ORCHESTRATOR_RUN_ID"] = orchestrator_run_id
 
     try:
-        from zenml.entrypoints.pipeline_entrypoint import main as pipeline_main
+        from zenml.entrypoints.pipeline_entrypoint_configuration import (
+            PipelineEntrypointConfiguration,
+        )
 
-        print(f"🔧 Running pipeline directly in process for MAXIMUM SPEED")
-        print(f"📝 Deployment ID: {deployment_id}")
-        sys.stdout.flush()
+        print(
+            "🔧 [MODAL] Initializing pipeline entrypoint configuration...", flush=True
+        )
 
-        # Run the entire pipeline directly in the same process - NO subprocess overhead!
-        # This is MUCH faster than subprocess.run()
-        pipeline_main(deployment_id=deployment_id)
+        # Create the entrypoint arguments
+        args = PipelineEntrypointConfiguration.get_entrypoint_arguments(
+            deployment_id=deployment_id
+        )
 
-        print("🎉 ENTIRE PIPELINE COMPLETED SUCCESSFULLY!")
-        sys.stdout.flush()
+        print("⚙️ [MODAL] Creating pipeline configuration...", flush=True)
+        config = PipelineEntrypointConfiguration(arguments=args)
+
+        print("🏃 [MODAL] Executing entire pipeline...", flush=True)
+        config.run()
+
+        print("🎉 [MODAL] ENTIRE PIPELINE COMPLETED SUCCESSFULLY!", flush=True)
+        print(f"⏰ [MODAL] End time: {time.strftime('%H:%M:%S')}", flush=True)
 
     except Exception as e:
-        print(f"💥 Error executing pipeline: {e}")
-        sys.stdout.flush()
+        import traceback
+
+        error_details = traceback.format_exc()
+        print(f"💥 [MODAL] Error executing pipeline: {e}", flush=True)
+        print(f"📝 [MODAL] Full traceback:\n{error_details}", flush=True)
         raise
 
 
@@ -221,9 +269,19 @@ def get_or_deploy_persistent_modal_app(
     This function deploys a Modal app that stays alive with warm containers
     for maximum speed between pipeline runs.
     """
-    # Use pipeline name + execution mode as app name for easy identification and reuse
+    # Use pipeline name + execution mode + 2-hour window for app reuse
+    # This ensures apps get redeployed every 2 hours to refresh tokens
     mode_suffix = execution_mode.replace("_", "-")
-    app_name = f"zenml-{pipeline_name.replace('_', '-')}-{mode_suffix}"
+
+    # Create a 2-hour timestamp window (rounds down to nearest 2-hour boundary)
+    import time
+
+    current_time = int(time.time())
+    two_hour_window = current_time // (2 * 3600)  # 2 hours = 7200 seconds
+
+    app_name = (
+        f"zenml-{pipeline_name.replace('_', '-')}-{mode_suffix}-{two_hour_window}"
+    )
 
     logger.info(f"🏗️  Getting/deploying persistent Modal app: {app_name}")
 
@@ -260,55 +318,45 @@ def get_or_deploy_persistent_modal_app(
         max_containers=effective_max_containers,  # Allow scaling
     )(execution_func)
 
-    # Try to lookup existing deployed app first, only deploy if truly doesn't exist
+    # Try to lookup existing app in current 2-hour window, deploy if not found
     try:
-        logger.info(f"🔍 Checking for existing Modal app: {app_name}")
+        logger.info(f"🔍 Checking for Modal app in current 2-hour window: {app_name}")
 
-        # Check if app already exists and is deployed
         try:
             modal.App.lookup(app_name, environment_name=environment_name or "main")
             logger.info(
-                f"♻️  Found existing deployed app '{app_name}' - reusing warm containers!"
+                f"♻️  Found existing app '{app_name}' with fresh tokens - reusing warm containers!"
             )
-            logger.info("🔥 Existing app has warm containers ready for immediate use!")
 
-            # Try to lookup the function directly using Function.from_name (Modal 1.0)
+            # Try to get the function directly
             try:
                 existing_function = modal.Function.from_name(
                     app_name,
                     function_name,
                     environment_name=environment_name or "main",
                 )
-                logger.info(
-                    "✅ Successfully retrieved function from existing deployed app!"
-                )
+                logger.info("✅ Successfully retrieved function from existing app!")
                 return existing_function
-            except Exception as func_lookup_error:
-                logger.warning(f"⚠️  Function lookup failed: {func_lookup_error}")
-                logger.info(
-                    "📝 Will deploy new version to ensure function is available"
+            except Exception as func_error:
+                logger.warning(
+                    f"⚠️  Function lookup failed: {func_error}, redeploying..."
                 )
                 # Fall through to deployment
 
-        except modal.exception.NotFoundError:
-            # App doesn't exist, proceed with deployment
-            logger.info(f"🆕 App '{app_name}' not found, deploying new app...")
-            app.deploy(name=app_name, environment_name=environment_name or "main")
-            logger.info(
-                f"✅ App '{app_name}' deployed with {effective_min_containers} warm containers"
-            )
         except Exception as lookup_error:
-            # Other lookup error, proceed with deployment
-            logger.warning(
-                f"⚠️  App lookup issue: {lookup_error}, proceeding with deployment..."
-            )
-            app.deploy(name=app_name, environment_name=environment_name or "main")
+            # App not found or other lookup error - deploy fresh app
             logger.info(
-                f"✅ App '{app_name}' deployed with {effective_min_containers} warm containers"
+                "🆕 No app found for current 2-hour window, deploying fresh app..."
             )
 
+        # Deploy the app
+        app.deploy(name=app_name, environment_name=environment_name or "main")
+        logger.info(
+            f"✅ App '{app_name}' deployed with fresh tokens and {effective_min_containers} warm containers"
+        )
+
     except Exception as e:
-        logger.error(f"❌ Major deployment issue: {e}")
+        logger.error(f"❌ Deployment failed: {e}")
         raise
 
     logger.info(
@@ -351,7 +399,7 @@ class ModalOrchestrator(ContainerizedOrchestrator):
         """Setup Modal client with authentication."""
         if self.config.token:
             # Set Modal token from config
-            os.environ["MODAL_TOKEN_ID"] = self.config.token
+            os.environ["MODAL_TOKEN_ID"] = self.config.token.get_secret_value()
             logger.info("Using Modal token from orchestrator config")
         else:
             logger.info("Using default Modal authentication (~/.modal.toml)")
@@ -560,10 +608,13 @@ class ModalOrchestrator(ContainerizedOrchestrator):
             memory_mb=memory_mb or 16384,  # Default to 16GB RAM for speed
             cloud=settings.cloud or self.config.cloud,
             region=settings.region or self.config.region,
-            timeout=self.config.timeout,
-            min_containers=self.config.min_containers
+            timeout=settings.timeout or self.config.timeout,
+            min_containers=settings.min_containers
+            or self.config.min_containers
             or 1,  # Keep 1 warm container for sequential execution
-            max_containers=self.config.max_containers or 10,  # Scale to 10 containers
+            max_containers=settings.max_containers
+            or self.config.max_containers
+            or 10,  # Scale to 10 containers
             environment_name=settings.environment
             or self.config.environment,  # Use environment from config/settings
             execution_mode=settings.execution_mode
@@ -572,42 +623,86 @@ class ModalOrchestrator(ContainerizedOrchestrator):
 
         logger.info("⚡ Executing with DEPLOYED Modal app and warm containers...")
 
-        # Execute based on execution mode
+        # Execute based on execution mode with improved Modal Function API usage
         execution_mode = settings.execution_mode or self.config.execution_mode
+        sync_execution = (
+            settings.synchronous
+            if hasattr(settings, "synchronous")
+            else self.config.synchronous
+        )
+        enable_log_streaming = (
+            settings.enable_log_streaming
+            if hasattr(settings, "enable_log_streaming")
+            else self.config.enable_log_streaming
+        )
+
+        def execute_modal_function(func_args: tuple, description: str) -> None:
+            """Execute Modal function with proper sync/async and log streaming control."""
+            logger.info(f"🚀 {description}")
+
+            if sync_execution:
+                if enable_log_streaming:
+                    logger.info(
+                        "📡 Using .remote() for synchronous execution with log streaming"
+                    )
+                    # .remote() waits for completion and should stream logs
+                    result = execute_step.remote(*func_args)
+                    logger.info(f"✅ {description} completed successfully!")
+                    return result
+                else:
+                    logger.info(
+                        "⚡ Using .spawn() + .get() for synchronous execution without log streaming"
+                    )
+                    # .spawn() + .get() for sync execution without streaming
+                    function_call = execute_step.spawn(*func_args)
+                    result = function_call.get()  # Wait for completion
+                    logger.info(f"✅ {description} completed successfully!")
+                    return result
+            else:
+                logger.info(
+                    "🔥 Using .spawn() for asynchronous fire-and-forget execution"
+                )
+                # .spawn() for fire-and-forget (async)
+                function_call = execute_step.spawn(*func_args)
+                logger.info(
+                    f"🚀 {description} started asynchronously (not waiting for completion)"
+                )
+                return function_call
 
         if execution_mode == "pipeline_entrypoint":
-            logger.info("🚀 Using pipeline-entrypoint mode for MAXIMUM SPEED!")
             try:
-                # Single function call for entire pipeline - FASTEST!
-                execute_step.remote(deployment.id, orchestrator_run_id)
-                logger.info("🎉 ENTIRE PIPELINE completed successfully!")
+                execute_modal_function(
+                    (deployment.id, orchestrator_run_id),
+                    "Pipeline-entrypoint mode execution (MAXIMUM SPEED)",
+                )
             except Exception as e:
                 logger.error(f"❌ Pipeline failed: {e}")
+                logger.error("💡 Check Modal dashboard for detailed logs")
                 raise
 
         elif execution_mode == "single_function":
-            logger.info("⚡ Using single-function mode for fast execution!")
             try:
-                # Single function call with all step names
-                execute_step.remote(step_names, deployment.id, orchestrator_run_id)
-                logger.info("🎉 All steps completed successfully!")
+                execute_modal_function(
+                    (step_names, deployment.id, orchestrator_run_id),
+                    "Single-function mode execution (all steps in one function)",
+                )
             except Exception as e:
                 logger.error(f"❌ Pipeline failed: {e}")
+                logger.error("💡 Check Modal dashboard for detailed logs")
                 raise
 
         else:  # per_step mode
             logger.info("🔧 Using per-step mode for granular execution...")
-            # Execute steps individually (original approach)
+            # Execute steps individually
             for step_name in step_names:
-                logger.info(
-                    f"🏃‍♂️ Launching step '{step_name}' using deployed Modal function..."
-                )
                 try:
-                    # Use the deployed function directly - no app.run() context needed!
-                    execute_step.remote(step_name, deployment.id, orchestrator_run_id)
-                    logger.info(f"✅ Step '{step_name}' completed successfully")
+                    execute_modal_function(
+                        (step_name, deployment.id, orchestrator_run_id),
+                        f"Step '{step_name}' execution",
+                    )
                 except Exception as e:
                     logger.error(f"❌ Step '{step_name}' failed: {e}")
+                    logger.error("💡 Check Modal dashboard for detailed logs")
                     raise
 
         run_duration = time.time() - start_time
@@ -644,7 +739,9 @@ class ModalOrchestratorSettings(BaseSettings):
     timeout: int = 86400  # 24 hours (Modal's maximum)
     min_containers: Optional[int] = 1  # Keep 1 container warm for sequential execution
     max_containers: Optional[int] = 10  # Allow up to 10 concurrent containers
-    execution_mode: str = "pipeline_entrypoint"  # Default to fastest mode
+    execution_mode: str = "single_function"  # Default to fastest mode
+    synchronous: bool = False  # Wait for completion (True) or fire-and-forget (False)
+    enable_log_streaming: bool = False  # Enable real-time log streaming
 
 
 class ModalOrchestratorConfig(BaseOrchestratorConfig, ModalOrchestratorSettings):
@@ -657,7 +754,7 @@ class ModalOrchestratorConfig(BaseOrchestratorConfig, ModalOrchestratorSettings)
         environment: Modal environment name (optional).
     """
 
-    token: Optional[str] = None
+    token: Optional[SecretStr] = None
     workspace: Optional[str] = None
     environment: Optional[str] = None
 
