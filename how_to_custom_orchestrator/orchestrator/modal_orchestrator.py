@@ -24,7 +24,6 @@ try:
 except ImportError:
     modal = None
 
-from zenml.client import Client
 from zenml.config.base_settings import BaseSettings
 from zenml.config.build_configuration import BuildConfiguration
 from zenml.config.resource_settings import ByteUnit, ResourceSettings
@@ -40,6 +39,7 @@ from zenml.utils import string_utils
 
 if TYPE_CHECKING:
     from zenml.models import PipelineDeploymentResponse, PipelineRunResponse
+    from zenml.models.v2.core.pipeline_deployment import PipelineDeploymentBase
 
 logger = get_logger(__name__)
 
@@ -240,12 +240,17 @@ def get_resource_values(
         Tuple of (cpu_count, memory_mb) with config fallbacks.
     """
     # Prefer pipeline resource settings, fallback to config defaults
-    cpu_count = resource_settings.cpu_count or config.cpu_count
+    cpu_count_raw = resource_settings.cpu_count or config.cpu_count
+    cpu_count: Optional[int] = None
+    if cpu_count_raw is not None:
+        cpu_count = int(cpu_count_raw)
 
     # Convert memory to MB if needed
-    memory_mb = config.memory_mb
+    memory_mb: Optional[int] = config.memory_mb
     if resource_settings.memory:
-        memory_mb = int(resource_settings.get_memory(ByteUnit.MB))
+        memory_value = resource_settings.get_memory(ByteUnit.MB)
+        if memory_value is not None:
+            memory_mb = int(memory_value)
 
     return cpu_count, memory_mb
 
@@ -295,7 +300,7 @@ def get_or_deploy_persistent_modal_app(
     # Create the execution function based on execution mode
     if execution_mode == "pipeline_entrypoint":
         logger.info("🚀 Creating pipeline-entrypoint mode for MAXIMUM SPEED!")
-        execution_func = run_entire_pipeline_with_pipeline_entrypoint
+        execution_func: Any = run_entire_pipeline_with_pipeline_entrypoint
         function_name = "run_entire_pipeline_with_pipeline_entrypoint"
     elif execution_mode == "single_function":
         logger.info("⚡ Creating single-function mode for fast execution")
@@ -343,7 +348,7 @@ def get_or_deploy_persistent_modal_app(
                 )
                 # Fall through to deployment
 
-        except Exception as lookup_error:
+        except Exception:
             # App not found or other lookup error - deploy fresh app
             logger.info(
                 "🆕 No app found for current 2-hour window, deploying fresh app..."
@@ -354,6 +359,7 @@ def get_or_deploy_persistent_modal_app(
         logger.info(
             f"✅ App '{app_name}' deployed with fresh tokens and {effective_min_containers} warm containers"
         )
+        logger.info(f"📱 View real-time logs at: https://modal.com/apps/{app_name}")
 
     except Exception as e:
         logger.error(f"❌ Deployment failed: {e}")
@@ -471,7 +477,7 @@ class ModalOrchestrator(ContainerizedOrchestrator):
             )
 
     def get_docker_builds(
-        self, deployment: "PipelineDeploymentResponse"
+        self, deployment: "PipelineDeploymentBase"
     ) -> List["BuildConfiguration"]:
         """Get the Docker build configurations for the Modal orchestrator.
 
@@ -630,34 +636,17 @@ class ModalOrchestrator(ContainerizedOrchestrator):
             if hasattr(settings, "synchronous")
             else self.config.synchronous
         )
-        enable_log_streaming = (
-            settings.enable_log_streaming
-            if hasattr(settings, "enable_log_streaming")
-            else self.config.enable_log_streaming
-        )
 
-        def execute_modal_function(func_args: tuple, description: str) -> None:
-            """Execute Modal function with proper sync/async and log streaming control."""
+        def execute_modal_function(func_args: tuple, description: str) -> Any:
+            """Execute Modal function with proper sync/async control."""
             logger.info(f"🚀 {description}")
 
             if sync_execution:
-                if enable_log_streaming:
-                    logger.info(
-                        "📡 Using .remote() for synchronous execution with log streaming"
-                    )
-                    # .remote() waits for completion and should stream logs
-                    result = execute_step.remote(*func_args)
-                    logger.info(f"✅ {description} completed successfully!")
-                    return result
-                else:
-                    logger.info(
-                        "⚡ Using .spawn() + .get() for synchronous execution without log streaming"
-                    )
-                    # .spawn() + .get() for sync execution without streaming
-                    function_call = execute_step.spawn(*func_args)
-                    result = function_call.get()  # Wait for completion
-                    logger.info(f"✅ {description} completed successfully!")
-                    return result
+                logger.info("⚡ Using .remote() for synchronous execution")
+                # .remote() waits for completion but doesn't stream logs
+                result = execute_step.remote(*func_args)
+                logger.info(f"✅ {description} completed successfully!")
+                return result
             else:
                 logger.info(
                     "🔥 Using .spawn() for asynchronous fire-and-forget execution"
@@ -734,14 +723,13 @@ class ModalOrchestratorSettings(BaseSettings):
     region: Optional[str] = None
     cloud: Optional[str] = None
     environment: Optional[str] = None
-    cpu_count: Optional[int] = 8  # Default 8 CPU cores for blazing fast execution
-    memory_mb: Optional[int] = 16384  # Default 16GB RAM for maximum speed
+    cpu_count: Optional[int] = 32  # Default 32 CPU cores for blazing fast execution
+    memory_mb: Optional[int] = 65536  # Default 6GB RAM for maximum speed
     timeout: int = 86400  # 24 hours (Modal's maximum)
     min_containers: Optional[int] = 1  # Keep 1 container warm for sequential execution
     max_containers: Optional[int] = 10  # Allow up to 10 concurrent containers
-    execution_mode: str = "single_function"  # Default to fastest mode
-    synchronous: bool = False  # Wait for completion (True) or fire-and-forget (False)
-    enable_log_streaming: bool = False  # Enable real-time log streaming
+    execution_mode: str = "pipeline_entrypoint"  # Default to fastest mode
+    synchronous: bool = True  # Wait for completion (True) or fire-and-forget (False)
 
 
 class ModalOrchestratorConfig(BaseOrchestratorConfig, ModalOrchestratorSettings):
