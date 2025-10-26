@@ -274,8 +274,23 @@ class SlurmOrchestrator(ContainerizedOrchestrator):
             script += f"-e {key} \\\n  "
 
         # Image and command
-        script += f"  {image} \\\n"
-        script += f"  {entrypoint} {arguments}\n"
+        script += f"  {image}"
+
+        # Handle entrypoint and arguments (they may be lists or strings)
+        if isinstance(entrypoint, list):
+            entrypoint_str = " ".join(entrypoint)
+        else:
+            entrypoint_str = entrypoint
+
+        if isinstance(arguments, list):
+            arguments_str = " ".join(arguments)
+        else:
+            arguments_str = arguments
+
+        script += f" \\\n  {entrypoint_str}"
+        if arguments_str:
+            script += f" {arguments_str}"
+        script += "\n"
 
         logger.debug("Generated SLURM script for step %s:\n%s", step_name, script)
         return script
