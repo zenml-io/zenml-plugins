@@ -56,7 +56,7 @@ class SlurmOrchestratorSettings(BaseSettings):
         qos: Quality of Service level (optional).
         job_name_prefix: Prefix for SLURM job names.
         output_dir: Directory to store SLURM output files.
-        is_synchronous: Whether to wait for job completion.
+        synchronous: Whether to wait for job completion.
         sbatch_args: Dictionary of additional sbatch arguments to pass.
         docker_run_args: Dictionary of additional docker run arguments.
         poll_interval: Seconds to wait between job status checks.
@@ -67,7 +67,7 @@ class SlurmOrchestratorSettings(BaseSettings):
     qos: Optional[str] = None
     job_name_prefix: str = "zenml"
     output_dir: str = "/tmp/zenml_slurm_logs"
-    is_synchronous: bool = True
+    synchronous: bool = True
     sbatch_args: Dict[str, Any] = {}
     docker_run_args: Dict[str, Any] = {}
     poll_interval: int = 5
@@ -106,6 +106,15 @@ class SlurmOrchestrator(ContainerizedOrchestrator):
             The settings class.
         """
         return SlurmOrchestratorSettings
+
+    @property
+    def config(self) -> "SlurmOrchestratorConfig":
+        """Returns the SLURM orchestrator config.
+
+        Returns:
+            The SLURM orchestrator configuration.
+        """
+        return cast(SlurmOrchestratorConfig, self._config)
 
     @property
     def validator(self) -> Optional[StackValidator]:
@@ -386,11 +395,9 @@ class SlurmOrchestrator(ContainerizedOrchestrator):
         failed_steps: List[str] = []
         skipped_steps: List[str] = []
 
-        # Get default settings from the orchestrator registration
-        default_settings = cast(
-            SlurmOrchestratorSettings,
-            self.get_settings(None),
-        )
+        # Get default settings from the orchestrator's config
+        # The config contains the orchestrator-level settings (registered with zenml orchestrator register)
+        default_settings = self.config
 
         # Create output directory if configured
         if default_settings.output_dir:
@@ -534,7 +541,7 @@ class SlurmOrchestrator(ContainerizedOrchestrator):
                         raise RuntimeError(error_msg)
 
             # If synchronous, wait for job completion and check exit codes
-            if default_settings.is_synchronous:
+            if default_settings.synchronous:
                 def _wait_for_completion() -> None:
                     """Wait for all submitted jobs to complete and check exit codes."""
                     logger.info("Waiting for SLURM jobs to complete...")
