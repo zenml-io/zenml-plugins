@@ -513,7 +513,8 @@ class SlurmOrchestrator(ContainerizedOrchestrator):
                             if us in submitted_jobs
                         ]
                         if upstream_job_ids:
-                            dependency_str = ":".join(upstream_job_ids)
+                            # SLURM dependency format: afterok:job1,job2 (comma-separated)
+                            dependency_str = ",".join(upstream_job_ids)
                             sbatch_cmd.extend(["--dependency", f"afterok:{dependency_str}"])
 
                     sbatch_cmd.append(script_path)
