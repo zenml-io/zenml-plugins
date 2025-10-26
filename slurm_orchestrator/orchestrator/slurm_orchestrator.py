@@ -255,6 +255,26 @@ class SlurmOrchestrator(ContainerizedOrchestrator):
         local_stores_path = GlobalConfiguration().local_stores_path
         current_dir = os.getcwd()
 
+        # Add Docker readiness check
+        script += "# Wait for Docker to be available\n"
+        script += "echo 'Checking Docker availability...'\n"
+        script += "MAX_RETRIES=30\n"
+        script += "RETRY_COUNT=0\n"
+        script += "while [ $RETRY_COUNT -lt $MAX_RETRIES ]; do\n"
+        script += "  if command -v docker &> /dev/null && docker ps &> /dev/null; then\n"
+        script += "    echo 'Docker is ready'\n"
+        script += "    break\n"
+        script += "  fi\n"
+        script += "  RETRY_COUNT=$((RETRY_COUNT + 1))\n"
+        script += "  echo \"Docker not ready yet (attempt $RETRY_COUNT/$MAX_RETRIES), waiting...\"\n"
+        script += "  sleep 2\n"
+        script += "done\n"
+        script += "if [ $RETRY_COUNT -eq $MAX_RETRIES ]; then\n"
+        script += "  echo 'ERROR: Docker failed to become available after 60 seconds'\n"
+        script += "  exit 127\n"
+        script += "fi\n"
+        script += "\n"
+
         # Docker run command
         script += "# Run step in Docker\n"
         script += "docker run --rm \\\n"
