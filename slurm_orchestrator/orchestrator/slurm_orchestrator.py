@@ -71,6 +71,7 @@ class SlurmOrchestratorSettings(BaseSettings):
     sbatch_args: Dict[str, Any] = {}
     docker_run_args: Dict[str, Any] = {}
     poll_interval: int = 5
+    nodelist: Optional[str] = None  # Specific node(s) to use, e.g., "hpcslurm-computenodeset-0"
 
 
 class SlurmOrchestratorConfig(BaseOrchestratorConfig, SlurmOrchestratorSettings):
@@ -208,6 +209,9 @@ class SlurmOrchestrator(ContainerizedOrchestrator):
 
         if settings.qos:
             script += f"#SBATCH --qos={settings.qos}\n"
+
+        if settings.nodelist:
+            script += f"#SBATCH --nodelist={settings.nodelist}\n"
 
         # Map resource settings to SLURM directives
         if step_resources:
