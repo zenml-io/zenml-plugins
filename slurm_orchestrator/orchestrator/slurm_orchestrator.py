@@ -505,9 +505,8 @@ class SlurmOrchestrator(ContainerizedOrchestrator):
                         step_resources["memory"] = resources.memory
                     if resources.gpu_count:
                         step_resources["gpu"] = resources.gpu_count
-                    if resources.requests:
-                        # requests is a dict, extract time if present
-                        step_resources["time"] = resources.requests.get("time", "01:00:00")
+                    # ResourceSettings doesn't have a requests attribute
+                    # Time limits should be set via SLURM orchestrator settings instead
 
                 # Get step configuration
                 step_environment = copy.deepcopy(base_environment)
