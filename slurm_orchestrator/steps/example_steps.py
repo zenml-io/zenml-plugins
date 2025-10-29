@@ -26,14 +26,15 @@ from zenml import step
 from zenml.config import ResourceSettings
 from orchestrator.slurm_orchestrator import SlurmOrchestratorSettings
 
-@step(
-    settings={
-        "resources": ResourceSettings(
-            cpu_count=4,
-            memory="8GB",
-        )
-    }
-)
+# @step(
+#     settings={
+#         "resources": ResourceSettings(
+#             cpu_count=4,
+#             memory="8GB",
+#         )
+#     }
+# )
+@step
 def importer() -> Annotated[pd.DataFrame, "data"]:
     """Loads the Iris dataset."""
     iris = load_iris()
@@ -48,16 +49,17 @@ def importer() -> Annotated[pd.DataFrame, "data"]:
     )
 
 
-@step(
-    settings={
-        "orchestrator.slurm": SlurmOrchestratorSettings(
-            partition="compute",     # Use specific partition
-            sbatch_args={
-                "exclusive": True,   # Get exclusive node access
-            }
-        )
-    }
-)
+# @step(
+#     settings={
+#         "orchestrator.slurm": SlurmOrchestratorSettings(
+#             partition="compute",     # Use specific partition
+#             sbatch_args={
+#                 "exclusive": True,   # Get exclusive node access
+#             }
+#         )
+#     }
+# )
+@step
 def splitter(
     data: pd.DataFrame,
 ) -> tuple[

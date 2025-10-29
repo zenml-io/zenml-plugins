@@ -29,7 +29,7 @@ deployment_groups:
     use: [network]
     settings:
       node_count_dynamic_max: 4
-      machine_type: n2-standard-2
+      machine_type: n2-standard-2  # Small: 2 vCPUs, 8GB
       allow_automatic_updates: false
       startup_script: |
         #!/usr/bin/env bash
@@ -91,6 +91,7 @@ deployment_groups:
     use: [network]
     settings:
       node_count_dynamic_max: 20
+      machine_type: n2-standard-8  # 8 vCPUs, 32 GB memory - more reasonable default
       bandwidth_tier: gvnic_enabled
       allow_automatic_updates: false
       startup_script: |
