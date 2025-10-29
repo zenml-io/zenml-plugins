@@ -23,9 +23,17 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score
 
 from zenml import step
+from zenml.config import ResourceSettings
+from orchestrator.slurm_orchestrator import SlurmOrchestratorSettings
 
-
-@step
+@step(
+    settings={
+        "resources": ResourceSettings(
+            cpu_count=4,
+            memory="8GB",
+        )
+    }
+)
 def importer() -> Annotated[pd.DataFrame, "data"]:
     """Loads the Iris dataset."""
     iris = load_iris()
@@ -40,7 +48,16 @@ def importer() -> Annotated[pd.DataFrame, "data"]:
     )
 
 
-@step
+@step(
+    settings={
+        "orchestrator.slurm": SlurmOrchestratorSettings(
+            partition="compute",     # Use specific partition
+            sbatch_args={
+                "exclusive": True,   # Get exclusive node access
+            }
+        )
+    }
+)
 def splitter(
     data: pd.DataFrame,
 ) -> tuple[
