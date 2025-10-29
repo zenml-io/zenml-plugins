@@ -20,7 +20,7 @@ from zenml.config import DockerSettings
 docker_settings = DockerSettings(requirements=['scikit-learn', 'pandas', 'numpy'])
 
 
-@pipeline(settings={"docker": docker_settings})
+@pipeline(settings={"docker": docker_settings}, enable_cache=False)
 def ml_pipeline():
     """Simple ML pipeline for Iris dataset classification."""
     data = importer()
