@@ -66,7 +66,7 @@ class SlurmOrchestratorSettings(BaseSettings):
     account: Optional[str] = None
     qos: Optional[str] = None
     job_name_prefix: str = "zenml"
-    output_dir: str = "/home/hamza_zenml_io/zenml_slurm_logs"
+    output_dir: str = "/home/alexej_zenml_io/zenml_slurm_logs"
     synchronous: bool = True
     sbatch_args: Dict[str, Any] = {}
     docker_run_args: Dict[str, Any] = {}
