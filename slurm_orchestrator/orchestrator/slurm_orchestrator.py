@@ -216,11 +216,11 @@ class SlurmOrchestrator(ContainerizedOrchestrator):
         # Map resource settings to SLURM directives
         if step_resources:
             if step_resources.get("cpu_count"):
-                script += f"#SBATCH --cpus-per-task={step_resources['cpu_count']}\n"
+                script += f"#SBATCH --cpus-per-task={int(step_resources['cpu_count'])}\n"
             if step_resources.get("memory"):
                 script += f"#SBATCH --mem={step_resources['memory']}\n"
             if step_resources.get("gpu"):
-                script += f"#SBATCH --gpus={step_resources['gpu']}\n"
+                script += f"#SBATCH --gpus={int(step_resources['gpu'])}\n"
             if step_resources.get("time"):
                 script += f"#SBATCH --time={step_resources['time']}\n"
 
