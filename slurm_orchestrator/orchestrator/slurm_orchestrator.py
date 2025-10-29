@@ -66,7 +66,7 @@ class SlurmOrchestratorSettings(BaseSettings):
     account: Optional[str] = None
     qos: Optional[str] = None
     job_name_prefix: str = "zenml"
-    output_dir: str = "/tmp/zenml_slurm_logs"
+    output_dir: str = "/home/zenml_slurm_logs"
     synchronous: bool = True
     sbatch_args: Dict[str, Any] = {}
     docker_run_args: Dict[str, Any] = {}
@@ -275,8 +275,11 @@ class SlurmOrchestrator(ContainerizedOrchestrator):
         script += "fi\n"
         script += "\n"
 
-        # Docker run command
-        script += "# Run step in Docker\n"
+        # Docker run command with log streaming
+        script += "# Run step in Docker with log streaming to shared storage\n"
+        shared_log_path = f"{settings.output_dir}/{settings.job_name_prefix}_{step_name}_shared.log"
+        script += f"echo 'Starting step {step_name}' | tee {shared_log_path}\n"
+        script += "(\n"
         script += "docker run --rm \\\n"
 
         # Volume mounts - mount both artifact store and code directory
@@ -315,6 +318,12 @@ class SlurmOrchestrator(ContainerizedOrchestrator):
         if arguments_str:
             script += f" {arguments_str}"
         script += "\n"
+
+        # Close the subshell and pipe all output to both SLURM logs and shared storage
+        script += f") 2>&1 | tee -a {shared_log_path}\n"
+        script += f"EXIT_CODE=${{PIPESTATUS[0]}}\n"
+        script += f"echo 'Step {step_name} completed with exit code: $EXIT_CODE' | tee -a {shared_log_path}\n"
+        script += "exit $EXIT_CODE\n"
 
         logger.debug("Generated SLURM script for step %s:\n%s", step_name, script)
         return script
