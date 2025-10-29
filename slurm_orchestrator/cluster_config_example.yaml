@@ -23,118 +23,6 @@ deployment_groups:
     settings:
       local_mount: /home
 
-  # Enhanced startup script for ZenML SLURM orchestrator
-  - id: zenml_base_packages
-    source: modules/scripts/startup-script
-    settings:
-      runners:
-      - type: shell
-        destination: install-zenml-base.sh
-        content: |
-          #!/usr/bin/env bash
-          set -euo pipefail
-
-          # Docker and Python installation script for SLURM compute nodes
-          # This script ensures Docker and Python are available for ZenML pipelines
-
-          STAMP_DIR="/var/lib/hpctk"
-          STAMP="${STAMP_DIR}/bootstrap_docker_python_zenml_v1"
-          mkdir -p "$STAMP_DIR"
-
-          # Exit if already installed
-          if [ -f "$STAMP" ]; then
-              echo "Bootstrap already completed, exiting..."
-              exit 0
-          fi
-
-          echo "Starting Docker and Python installation for ZenML..."
-
-          # Install Docker and Python based on the distribution
-          if command -v dnf >/dev/null 2>&1; then
-              echo "Detected RHEL/CentOS 8+ (dnf)"
-              dnf -y install dnf-plugins-core || true
-              dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo || true
-              dnf -y install python3 python3-pip python3-devel curl ca-certificates git
-              dnf -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-              systemctl enable --now docker || true
-          elif command -v yum >/dev/null 2>&1; then
-              echo "Detected RHEL/CentOS 7 (yum)"
-              yum -y install yum-utils || true
-              yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo || true
-              yum -y install python3 python3-pip python3-devel curl ca-certificates git
-              yum -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
-              systemctl enable --now docker || true
-          elif command -v apt-get >/dev/null 2>&1; then
-              echo "Detected Debian/Ubuntu (apt)"
-              export DEBIAN_FRONTEND=noninteractive
-              apt-get update -y
-              apt-get install -y python3 python3-pip python3-dev ca-certificates curl git
-              curl -fsSL https://get.docker.com | sh
-              systemctl enable --now docker || true
-          else
-              echo "ERROR: Unsupported distribution - no package manager found"
-              exit 1
-          fi
-
-          echo "Creating docker group and adding users..."
-
-          # Create docker group if it doesn't exist
-          groupadd -f docker || true
-
-          # Add slurm user to docker group (SLURM daemon user)
-          if getent passwd slurm >/dev/null 2>&1; then
-              echo "Adding slurm user to docker group"
-              usermod -aG docker slurm || true
-          fi
-
-          # Add google-sudoers group members to docker group
-          if getent group google-sudoers >/dev/null 2>&1; then
-              echo "Adding google-sudoers members to docker group..."
-              getent group google-sudoers | awk -F: '{print $4}' | tr ',' '\n' | while read -r u; do
-                  if [ -n "$u" ]; then
-                      echo "Adding user $u to docker group"
-                      usermod -aG docker "$u" || true
-                  fi
-              done
-          else
-              echo "google-sudoers group not found, skipping..."
-          fi
-
-          # Add common ZenML user patterns to docker group
-          for user_pattern in hamza_zenml_io zenml_user $(whoami); do
-              if getent passwd "$user_pattern" >/dev/null 2>&1; then
-                  echo "Adding user $user_pattern to docker group"
-                  usermod -aG docker "$user_pattern" || true
-              fi
-          done
-
-          # Ensure docker service is running
-          systemctl start docker || true
-          systemctl enable docker || true
-
-          # Verify Docker installation
-          echo "Verifying Docker installation..."
-          if command -v docker >/dev/null 2>&1; then
-              echo "Docker installed successfully"
-              docker --version
-
-              # Test docker access (may fail if no users logged in yet)
-              docker ps &>/dev/null && echo "Docker daemon accessible" || echo "Docker daemon running but access may require re-login"
-          else
-              echo "ERROR: Docker installation failed"
-              exit 1
-          fi
-
-          # Create ZenML log directory in shared storage
-          mkdir -p /home/zenml_slurm_logs
-          chmod 755 /home/zenml_slurm_logs
-
-          # Create stamp file to indicate completion
-          touch "$STAMP"
-          echo "ZenML bootstrap completed successfully at $(date)!"
-
-          # Log completion
-          echo "$(date): Docker and Python bootstrap for ZenML completed" >> /var/log/slurm_zenml_bootstrap.log
 
   - id: debug_nodeset
     source: community/modules/compute/schedmd-slurm-gcp-v6-nodeset
@@ -143,6 +31,51 @@ deployment_groups:
       node_count_dynamic_max: 4
       machine_type: n2-standard-2
       allow_automatic_updates: false
+      startup_script: |
+        #!/usr/bin/env bash
+        set -euo pipefail
+
+        STAMP_DIR="/var/lib/hpctk"
+        STAMP="${STAMP_DIR}/bootstrap_docker_python_v1"
+        mkdir -p "$STAMP_DIR"
+        if [ -f "$STAMP" ]; then exit 0; fi
+
+        if command -v dnf >/dev/null 2>&1; then
+          dnf -y install dnf-plugins-core || true
+          dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo || true
+          dnf -y install python3 python3-pip python3-devel curl ca-certificates git
+          dnf -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+          systemctl enable --now docker || true
+        elif command -v yum >/dev/null 2>&1; then
+          yum -y install yum-utils || true
+          yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo || true
+          yum -y install python3 python3-pip python3-devel curl ca-certificates git
+          yum -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+          systemctl enable --now docker || true
+        elif command -v apt-get >/dev/null 2>&1; then
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update -y
+          apt-get install -y python3 python3-pip python3-dev ca-certificates curl git
+          curl -fsSL https://get.docker.com | sh
+          systemctl enable --now docker || true
+        fi
+
+        groupadd -f docker || true
+        getent passwd slurm >/dev/null 2>&1 && usermod -aG docker slurm || true
+
+        if getent group google-sudoers >/dev/null 2>&1; then
+          getent group google-sudoers | awk -F: '{print $4}' | tr ',' '\n' | while read -r u; do
+            [ -n "$u" ] && usermod -aG docker "$u" || true
+          done
+        fi
+
+        getent passwd hamza_zenml_io >/dev/null 2>&1 && usermod -aG docker hamza_zenml_io || true
+
+        mkdir -p /home/hamza_zenml_io/zenml_slurm_logs
+        chown hamza_zenml_io:hamza_zenml_io /home/hamza_zenml_io/zenml_slurm_logs 2>/dev/null || true
+        chmod 755 /home/hamza_zenml_io/zenml_slurm_logs
+
+        touch "$STAMP"
 
   - id: debug_partition
     source: community/modules/compute/schedmd-slurm-gcp-v6-partition
@@ -160,6 +93,51 @@ deployment_groups:
       node_count_dynamic_max: 20
       bandwidth_tier: gvnic_enabled
       allow_automatic_updates: false
+      startup_script: |
+        #!/usr/bin/env bash
+        set -euo pipefail
+
+        STAMP_DIR="/var/lib/hpctk"
+        STAMP="${STAMP_DIR}/bootstrap_docker_python_v1"
+        mkdir -p "$STAMP_DIR"
+        if [ -f "$STAMP" ]; then exit 0; fi
+
+        if command -v dnf >/dev/null 2>&1; then
+          dnf -y install dnf-plugins-core || true
+          dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo || true
+          dnf -y install python3 python3-pip python3-devel curl ca-certificates git
+          dnf -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+          systemctl enable --now docker || true
+        elif command -v yum >/dev/null 2>&1; then
+          yum -y install yum-utils || true
+          yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo || true
+          yum -y install python3 python3-pip python3-devel curl ca-certificates git
+          yum -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+          systemctl enable --now docker || true
+        elif command -v apt-get >/dev/null 2>&1; then
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update -y
+          apt-get install -y python3 python3-pip python3-dev ca-certificates curl git
+          curl -fsSL https://get.docker.com | sh
+          systemctl enable --now docker || true
+        fi
+
+        groupadd -f docker || true
+        getent passwd slurm >/dev/null 2>&1 && usermod -aG docker slurm || true
+
+        if getent group google-sudoers >/dev/null 2>&1; then
+          getent group google-sudoers | awk -F: '{print $4}' | tr ',' '\n' | while read -r u; do
+            [ -n "$u" ] && usermod -aG docker "$u" || true
+          done
+        fi
+
+        getent passwd hamza_zenml_io >/dev/null 2>&1 && usermod -aG docker hamza_zenml_io || true
+
+        mkdir -p /home/hamza_zenml_io/zenml_slurm_logs
+        chown hamza_zenml_io:hamza_zenml_io /home/hamza_zenml_io/zenml_slurm_logs 2>/dev/null || true
+        chmod 755 /home/hamza_zenml_io/zenml_slurm_logs
+
+        touch "$STAMP"
 
   - id: compute_partition
     source: community/modules/compute/schedmd-slurm-gcp-v6-partition
@@ -177,6 +155,51 @@ deployment_groups:
       disk_type: pd-balanced
       bandwidth_tier: gvnic_enabled
       allow_automatic_updates: false
+      startup_script: |
+        #!/usr/bin/env bash
+        set -euo pipefail
+
+        STAMP_DIR="/var/lib/hpctk"
+        STAMP="${STAMP_DIR}/bootstrap_docker_python_v1"
+        mkdir -p "$STAMP_DIR"
+        if [ -f "$STAMP" ]; then exit 0; fi
+
+        if command -v dnf >/dev/null 2>&1; then
+          dnf -y install dnf-plugins-core || true
+          dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo || true
+          dnf -y install python3 python3-pip python3-devel curl ca-certificates git
+          dnf -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+          systemctl enable --now docker || true
+        elif command -v yum >/dev/null 2>&1; then
+          yum -y install yum-utils || true
+          yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo || true
+          yum -y install python3 python3-pip python3-devel curl ca-certificates git
+          yum -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+          systemctl enable --now docker || true
+        elif command -v apt-get >/dev/null 2>&1; then
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update -y
+          apt-get install -y python3 python3-pip python3-dev ca-certificates curl git
+          curl -fsSL https://get.docker.com | sh
+          systemctl enable --now docker || true
+        fi
+
+        groupadd -f docker || true
+        getent passwd slurm >/dev/null 2>&1 && usermod -aG docker slurm || true
+
+        if getent group google-sudoers >/dev/null 2>&1; then
+          getent group google-sudoers | awk -F: '{print $4}' | tr ',' '\n' | while read -r u; do
+            [ -n "$u" ] && usermod -aG docker "$u" || true
+          done
+        fi
+
+        getent passwd hamza_zenml_io >/dev/null 2>&1 && usermod -aG docker hamza_zenml_io || true
+
+        mkdir -p /home/hamza_zenml_io/zenml_slurm_logs
+        chown hamza_zenml_io:hamza_zenml_io /home/hamza_zenml_io/zenml_slurm_logs 2>/dev/null || true
+        chmod 755 /home/hamza_zenml_io/zenml_slurm_logs
+
+        touch "$STAMP"
 
   - id: h3_partition
     source: community/modules/compute/schedmd-slurm-gcp-v6-partition
@@ -189,7 +212,7 @@ deployment_groups:
     source: community/modules/scheduler/schedmd-slurm-gcp-v6-login
     use: [network]
     settings:
-      machine_type: n2-standard-4
+      machine_type: n2-standard-8
       enable_login_public_ips: true
 
   - id: slurm_controller
@@ -203,6 +226,49 @@ deployment_groups:
     - slurm_login
     settings:
       enable_controller_public_ips: true
-      # Use the enhanced ZenML startup script
-      login_startup_script: $(zenml_base_packages.startup_script)
-      compute_startup_script: $(zenml_base_packages.startup_script)
+      # Login node startup script for ZenML
+      login_startup_script: |
+        #!/usr/bin/env bash
+        set -euo pipefail
+
+        STAMP_DIR="/var/lib/hpctk"
+        STAMP="${STAMP_DIR}/bootstrap_docker_python_v1"
+        mkdir -p "$STAMP_DIR"
+        if [ -f "$STAMP" ]; then exit 0; fi
+
+        if command -v dnf >/dev/null 2>&1; then
+          dnf -y install dnf-plugins-core || true
+          dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo || true
+          dnf -y install python3 python3-pip python3-devel curl ca-certificates git
+          dnf -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+          systemctl enable --now docker || true
+        elif command -v yum >/dev/null 2>&1; then
+          yum -y install yum-utils || true
+          yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo || true
+          yum -y install python3 python3-pip python3-devel curl ca-certificates git
+          yum -y install docker-ce docker-ce-cli containerd.io docker-compose-plugin
+          systemctl enable --now docker || true
+        elif command -v apt-get >/dev/null 2>&1; then
+          export DEBIAN_FRONTEND=noninteractive
+          apt-get update -y
+          apt-get install -y python3 python3-pip python3-dev ca-certificates curl git
+          curl -fsSL https://get.docker.com | sh
+          systemctl enable --now docker || true
+        fi
+
+        groupadd -f docker || true
+        getent passwd slurm >/dev/null 2>&1 && usermod -aG docker slurm || true
+
+        if getent group google-sudoers >/dev/null 2>&1; then
+          getent group google-sudoers | awk -F: '{print $4}' | tr ',' '\n' | while read -r u; do
+            [ -n "$u" ] && usermod -aG docker "$u" || true
+          done
+        fi
+
+        getent passwd hamza_zenml_io >/dev/null 2>&1 && usermod -aG docker hamza_zenml_io || true
+
+        mkdir -p /home/hamza_zenml_io/zenml_slurm_logs
+        chown hamza_zenml_io:hamza_zenml_io /home/hamza_zenml_io/zenml_slurm_logs 2>/dev/null || true
+        chmod 755 /home/hamza_zenml_io/zenml_slurm_logs
+
+        touch "$STAMP"
