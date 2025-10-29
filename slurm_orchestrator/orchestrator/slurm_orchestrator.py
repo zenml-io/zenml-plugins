@@ -503,8 +503,8 @@ class SlurmOrchestrator(ContainerizedOrchestrator):
                         step_resources["cpu_count"] = resources.cpu_count
                     if resources.memory:
                         step_resources["memory"] = resources.memory
-                    if resources.gpu:
-                        step_resources["gpu"] = resources.gpu
+                    if resources.gpu_count:
+                        step_resources["gpu"] = resources.gpu_count
                     if resources.requests:
                         # requests is a dict, extract time if present
                         step_resources["time"] = resources.requests.get("time", "01:00:00")
